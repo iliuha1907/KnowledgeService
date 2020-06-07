@@ -6,7 +6,7 @@ public class ClientsArchive {
 
     private Client[] clients;
 
-    public ClientsArchive(int size){
+    public ClientsArchive(int size) {
         clients = new Client[size];
     }
 
@@ -18,3 +18,4 @@ public class ClientsArchive {
         this.clients = clients;
     }
 }
+

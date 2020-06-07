@@ -5,3 +5,4 @@ public enum RoomsSortCriterion {
     STARS,
     CAPACITY
 }
+

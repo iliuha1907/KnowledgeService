@@ -8,16 +8,16 @@ import java.util.Comparator;
 
 public class ServiceManipulator {
 
-    public static void sortByPrice(Service[] services){
+    public static void sortByPrice(Service[] services) {
         Arrays.sort(services, new Comparator<Service>() {
             @Override
             public int compare(Service o1, Service o2) {
-                return (int)(o1.getPrice()-o2.getPrice());
+                return (int) (o1.getPrice() - o2.getPrice());
             }
         });
     }
 
-    public static void sortByDate(Service[] services){
+    public static void sortByDate(Service[] services) {
         Arrays.sort(services, new Comparator<Service>() {
             @Override
             public int compare(Service o1, Service o2) {
@@ -26,10 +26,10 @@ public class ServiceManipulator {
         });
     }
 
-    public static Service[] getRealServices(Service[] services, int count){
+    public static Service[] getRealServices(Service[] services, int count) {
         Service[] realServices = new Service[count];
-        for(int i =0;i<services.length;i++){
-            if(services[i] == null){
+        for (int i = 0; i < services.length; i++) {
+            if (services[i] == null) {
                 break;
             }
             realServices[i] = services[i];
@@ -37,26 +37,27 @@ public class ServiceManipulator {
         return realServices;
     }
 
-    public static Service[] getClientServices(Service[] services, Client client){
+    public static Service[] getClientServices(Service[] services, Client client) {
         int number = 0;
-        for(int i =0;i<services.length;i++){
-            if(services[i] == null){
+        for (int i = 0; i < services.length; i++) {
+            if (services[i] == null) {
                 break;
             }
-            if(services[i].getClient().equals(client)){
+            if (services[i].getClient().equals(client)) {
                 number++;
             }
         }
         Service[] result = new Service[number];
         int k = 0;
-        for(int i =0;i<services.length;i++){
-            if(services[i] == null){
+        for (int i = 0; i < services.length; i++) {
+            if (services[i] == null) {
                 break;
             }
-            if(services[i].getClient().equals(client)){
-               result[k++] = services[i];
+            if (services[i].getClient().equals(client)) {
+                result[k++] = services[i];
             }
         }
         return result;
     }
 }
+

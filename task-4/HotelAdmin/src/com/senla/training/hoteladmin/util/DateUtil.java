@@ -9,8 +9,7 @@ public class DateUtil {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
         try {
             return simpleDateFormat.parse(data);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException("Invalid data");
         }
 
@@ -21,3 +20,4 @@ public class DateUtil {
         return simpleDateFormat.format(date);
     }
 }
+

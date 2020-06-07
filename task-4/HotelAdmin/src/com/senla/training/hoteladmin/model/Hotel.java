@@ -11,23 +11,23 @@ public class Hotel {
     private Room[] rooms;
     private Client[] clients;
 
-    public Hotel(){
+    public Hotel() {
         services = new Service[DEFAULT_COUNT];
         rooms = new Room[DEFAULT_COUNT];
         clients = new Client[DEFAULT_COUNT];
     }
 
-    public Hotel(int numberOfServices, int numberOfRooms, int numberOfClients){
+    public Hotel(int numberOfServices, int numberOfRooms, int numberOfClients) {
         services = new Service[numberOfServices];
         rooms = new Room[numberOfRooms];
         clients = new Client[numberOfClients];
     }
 
-    public void setServices(Service[] services){
+    public void setServices(Service[] services) {
         this.services = services;
     }
 
-    public void setRooms(Room[] rooms){
+    public void setRooms(Room[] rooms) {
         this.rooms = rooms;
     }
 
@@ -47,3 +47,4 @@ public class Hotel {
         return clients;
     }
 }
+

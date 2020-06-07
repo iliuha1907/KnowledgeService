@@ -69,7 +69,8 @@ public class Client {
     @Override
     public String toString() {
         return String.format("Client %s %s, number of passport: %d, arrival date:%s, departure date: %s, " +
-                "\nroom:%s ",firstName,lastName,passportNumber, DateUtil.getStr(arrivalDate),
+                        "\nroom:%s ", firstName, lastName, passportNumber, DateUtil.getStr(arrivalDate),
                 DateUtil.getStr(departureDate), room.toString());
     }
 }
+

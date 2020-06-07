@@ -4,3 +4,4 @@ public enum ClientsSortCriterion {
     ALPHABET,
     DEPARTURE_DATE
 }
+

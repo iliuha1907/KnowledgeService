@@ -4,3 +4,4 @@ public enum RoomStatus {
     SERVED,
     REPAIRED
 }
+

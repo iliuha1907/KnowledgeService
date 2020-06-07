@@ -14,6 +14,7 @@ import com.senla.training.hoteladmin.util.ClientsManipulator;
 import com.senla.training.hoteladmin.util.Printer;
 import com.senla.training.hoteladmin.util.RoomsManipulator;
 import com.senla.training.hoteladmin.util.ServiceManipulator;
+
 import java.util.Date;
 
 public class Administrator {
@@ -22,7 +23,7 @@ public class Administrator {
     private Hotel hotel;
     private Archivator archivator;
 
-    public Administrator(Hotel hotel, Archivator archivator){
+    public Administrator(Hotel hotel, Archivator archivator) {
         this.hotel = hotel;
         this.archivator = archivator;
     }
@@ -50,17 +51,17 @@ public class Administrator {
 
     public void addResident(Client resident, Date arrival, Date departure) {
         Client[] residents = hotel.getClients();
-        if(currentClient == residents.length){
+        if (currentClient == residents.length) {
             throw new IllegalStateException("No more free rooms");
         }
 
         Room[] rooms = hotel.getRooms();
         boolean hasPlace = false;
-        for (int i =0;i<rooms.length;i++){
-            if(rooms[i] == null){
+        for (int i = 0; i < rooms.length; i++) {
+            if (rooms[i] == null) {
                 break;
             }
-            if(rooms[i].getResident() == null && rooms[i].getStatus() != RoomStatus.REPAIRED){
+            if (rooms[i].getResident() == null && rooms[i].getStatus() != RoomStatus.REPAIRED) {
                 hasPlace = true;
                 resident.setArrivalDate(arrival);
                 resident.setDepartureDate(departure);
@@ -79,27 +80,27 @@ public class Administrator {
         }
     }
 
-    public void removeResident(Client resident){
+    public void removeResident(Client resident) {
         Room[] rooms = hotel.getRooms();
         Client[] residents = hotel.getClients();
         int indexOfClient = -1;
-        for (int i =0;i<residents.length;i++){
-           if(residents[i].equals(resident)){
-               indexOfClient = i;
-               break;
-           }
+        for (int i = 0; i < residents.length; i++) {
+            if (residents[i].equals(resident)) {
+                indexOfClient = i;
+                break;
+            }
         }
-        if(indexOfClient == -1){
+        if (indexOfClient == -1) {
             throw new IllegalArgumentException("No such client!");
         }
 
-        for (int i = indexOfClient;i<currentClient;i++){
-            residents[i]= residents[i+1];
+        for (int i = indexOfClient; i < currentClient; i++) {
+            residents[i] = residents[i + 1];
         }
         currentClient--;
 
-        for (int i =0;i<rooms.length;i++){
-            if(rooms[i].getResident().equals(resident)){
+        for (int i = 0; i < rooms.length; i++) {
+            if (rooms[i].getResident().equals(resident)) {
                 rooms[i].setResident(null);
                 break;
             }
@@ -110,13 +111,13 @@ public class Administrator {
         freeRooms++;
     }
 
-    public void setRoomStatus(int roomNumber, RoomStatus status){
+    public void setRoomStatus(int roomNumber, RoomStatus status) {
         Room[] rooms = hotel.getRooms();
-        for (int i =0;i<rooms.length;i++){
-            if(rooms[i] == null){
+        for (int i = 0; i < rooms.length; i++) {
+            if (rooms[i] == null) {
                 throw new RuntimeException("No such room!");
             }
-            if(rooms[i].getNumber() == roomNumber){
+            if (rooms[i].getNumber() == roomNumber) {
                 rooms[i].setStatus(status);
                 break;
             }
@@ -124,35 +125,35 @@ public class Administrator {
         hotel.setRooms(rooms);
     }
 
-    public void setRoomPrice(int roomNumber, double price){
+    public void setRoomPrice(int roomNumber, double price) {
         Room[] rooms = hotel.getRooms();
-        for (int i =0;i<rooms.length;i++){
-            if(rooms[i] == null){
+        for (int i = 0; i < rooms.length; i++) {
+            if (rooms[i] == null) {
                 throw new RuntimeException("No such room!");
             }
-            if(rooms[i].getNumber() == roomNumber){
+            if (rooms[i].getNumber() == roomNumber) {
                 rooms[i].setPrice(price);
             }
         }
         hotel.setRooms(rooms);
     }
 
-    public void setServicePrice(ServiceType type, double price){
+    public void setServicePrice(ServiceType type, double price) {
         Service[] services = hotel.getServices();
-        for (int i =0;i<services.length;i++){
-            if(services[i] == null){
+        for (int i = 0; i < services.length; i++) {
+            if (services[i] == null) {
                 throw new RuntimeException("No such service!");
             }
-            if(services[i].getType() == type){
+            if (services[i].getType() == type) {
                 services[i].setPrice(price);
             }
         }
         hotel.setServices(services);
     }
 
-    public void getSortedRooms(RoomsSortCriterion criterion){
-        Room[] rooms = RoomsManipulator.getRealRooms(hotel.getRooms(),currentRoom);
-        switch (criterion){
+    public void getSortedRooms(RoomsSortCriterion criterion) {
+        Room[] rooms = RoomsManipulator.getRealRooms(hotel.getRooms(), currentRoom);
+        switch (criterion) {
             case PRICE:
                 RoomsManipulator.sortRoomsByPrice(rooms);
                 break;
@@ -166,9 +167,9 @@ public class Administrator {
         Printer.printRooms(rooms);
     }
 
-    public void getSortedFreeRooms(RoomsSortCriterion criterion){
-        Room[] free = RoomsManipulator.getFreeRooms(hotel.getRooms(),freeRooms);
-        switch (criterion){
+    public void getSortedFreeRooms(RoomsSortCriterion criterion) {
+        Room[] free = RoomsManipulator.getFreeRooms(hotel.getRooms(), freeRooms);
+        switch (criterion) {
             case PRICE:
                 RoomsManipulator.sortRoomsByPrice(free);
                 break;
@@ -182,9 +183,9 @@ public class Administrator {
         Printer.printRooms(free);
     }
 
-    public void getSortedClients(ClientsSortCriterion criterion){
-        Client[] clients = ClientsManipulator.getRealClients(hotel.getClients(),currentClient);
-        switch (criterion){
+    public void getSortedClients(ClientsSortCriterion criterion) {
+        Client[] clients = ClientsManipulator.getRealClients(hotel.getClients(), currentClient);
+        switch (criterion) {
             case ALPHABET:
                 ClientsManipulator.sortByAlphabet(clients);
                 break;
@@ -195,25 +196,25 @@ public class Administrator {
         Printer.printClients(clients);
     }
 
-    public void getFreeRoomsAfterDate(Date date){
-        RoomsManipulator.displayFreeRoomsAfterDate(hotel.getRooms(),date);
+    public void getFreeRoomsAfterDate(Date date) {
+        RoomsManipulator.displayFreeRoomsAfterDate(hotel.getRooms(), date);
     }
 
-    public double getPriceRoom(int roomNumber){
-        double price = RoomsManipulator.getRoomPrice(hotel.getRooms(),roomNumber);
-        if(price == -1){
+    public double getPriceRoom(int roomNumber) {
+        double price = RoomsManipulator.getRoomPrice(hotel.getRooms(), roomNumber);
+        if (price == -1) {
             throw new RuntimeException("No such room");
         }
         return price;
     }
 
-    public void getLast3Residents(int roomNumber){
+    public void getLast3Residents(int roomNumber) {
         archivator.displayLast3Residents(roomNumber);
     }
 
-    public void getClientServices(Client client, ServiceSortCriterion criterion){
-        Service[] services = ServiceManipulator.getClientServices(hotel.getServices(),client);
-        switch (criterion){
+    public void getClientServices(Client client, ServiceSortCriterion criterion) {
+        Service[] services = ServiceManipulator.getClientServices(hotel.getServices(), client);
+        switch (criterion) {
             case DATE:
                 ServiceManipulator.sortByDate(services);
                 break;
@@ -224,19 +225,20 @@ public class Administrator {
         Printer.printServices(services);
     }
 
-    public void getServices(){
+    public void getServices() {
         Printer.printServices(hotel.getServices());
     }
 
-    public void getRoomInfo(int roomNumber){
-        RoomsManipulator.displayRoom(hotel.getRooms(),roomNumber);
+    public void getRoomInfo(int roomNumber) {
+        RoomsManipulator.displayRoom(hotel.getRooms(), roomNumber);
     }
 
-    public int getNumberOfResidents(){
+    public int getNumberOfResidents() {
         return currentClient;
     }
 
-    public int getNumberOfFreeRooms(){
+    public int getNumberOfFreeRooms() {
         return freeRooms;
     }
 }
+

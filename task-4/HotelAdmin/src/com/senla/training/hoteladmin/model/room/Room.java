@@ -13,7 +13,7 @@ public class Room {
     private int stars;
     private Client resident;
 
-    public Room(int number, RoomStatus status, double price, int capacity, int stars){
+    public Room(int number, RoomStatus status, double price, int capacity, int stars) {
         this.number = number;
         this.status = status;
         this.price = price;
@@ -22,23 +22,23 @@ public class Room {
         resident = null;
     }
 
-    public void setStatus(RoomStatus status){
+    public void setStatus(RoomStatus status) {
         this.status = status;
     }
 
-    public void setPrice(double price){
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public void setResident(Client resident){
+    public void setResident(Client resident) {
         this.resident = resident;
     }
 
-    public void setCapacity(int capacity){
+    public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
-    public void setStars(int stars){
+    public void setStars(int stars) {
         this.stars = stars;
     }
 
@@ -46,7 +46,7 @@ public class Room {
         return number;
     }
 
-    public RoomStatus getStatus(){
+    public RoomStatus getStatus() {
         return status;
     }
 
@@ -58,11 +58,11 @@ public class Room {
         return resident;
     }
 
-    public int getStars(){
+    public int getStars() {
         return stars;
     }
 
-    public int getCapacity(){
+    public int getCapacity() {
         return capacity;
     }
 
@@ -78,12 +78,13 @@ public class Room {
 
     @Override
     public String toString() {
-        String result = String.format("Room # %d, status:%s, capacity: %d, stars: %d, price: %.2f",number
-        ,status.toString(),capacity,stars,price);
-        if(resident != null){
-            result += ", taken from "+ DateUtil.getStr(resident.getArrivalDate())+
-                    " to "+DateUtil.getStr(resident.getDepartureDate());
+        String result = String.format("Room # %d, status:%s, capacity: %d, stars: %d, price: %.2f", number
+                , status.toString(), capacity, stars, price);
+        if (resident != null) {
+            result += ", taken from " + DateUtil.getStr(resident.getArrivalDate()) +
+                    " to " + DateUtil.getStr(resident.getDepartureDate());
         }
         return result;
     }
 }
+
