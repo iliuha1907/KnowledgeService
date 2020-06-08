@@ -30,7 +30,6 @@ public class Main {
         admin.addResident(kostyaClient, DateUtil.getDate("01.01.2016"),
                 DateUtil.getDate("01.02.2016"));
         admin.removeResident(kostyaClient);
-
         admin.addResident(petrClient, DateUtil.getDate("01.01.2016"),
                 DateUtil.getDate("10.02.2016"));
         admin.addResident(vasiliClient, DateUtil.getDate("07.02.2017"),

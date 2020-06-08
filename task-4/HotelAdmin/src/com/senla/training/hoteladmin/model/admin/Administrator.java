@@ -85,13 +85,13 @@ public class Administrator {
         Client[] residents = hotel.getClients();
         int indexOfClient = -1;
         for (int i = 0; i < residents.length; i++) {
+            if(residents[i] == null){
+                throw new IllegalArgumentException("No such client!");
+            }
             if (residents[i].equals(resident)) {
                 indexOfClient = i;
                 break;
             }
-        }
-        if (indexOfClient == -1) {
-            throw new IllegalArgumentException("No such client!");
         }
 
         for (int i = indexOfClient; i < currentClient; i++) {
