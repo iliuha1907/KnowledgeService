@@ -133,6 +133,7 @@ public class Administrator {
             }
             if (rooms[i].getNumber() == roomNumber) {
                 rooms[i].setPrice(price);
+                break;
             }
         }
         hotel.setRooms(rooms);
@@ -142,7 +143,7 @@ public class Administrator {
         Service[] services = hotel.getServices();
         for (int i = 0; i < services.length; i++) {
             if (services[i] == null) {
-                throw new RuntimeException("No such service!");
+                break;
             }
             if (services[i].getType() == type) {
                 services[i].setPrice(price);
