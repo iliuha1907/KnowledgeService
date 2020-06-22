@@ -1,10 +1,18 @@
 package com.senla.training.hoteladmin.view;
 
 public class Navigator {
+    private static Navigator instance;
     private Menu currentMenu;
 
-    public Navigator(Menu currentMenu) {
+    private Navigator(Menu currentMenu) {
         this.currentMenu = currentMenu;
+    }
+
+    public static Navigator getInstance(Menu currentMenu){
+        if(instance == null){
+            instance = new Navigator(currentMenu);
+        }
+        return instance;
     }
 
     public void printMenu() {

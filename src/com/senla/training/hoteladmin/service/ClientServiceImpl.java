@@ -2,7 +2,7 @@ package com.senla.training.hoteladmin.service;
 
 import com.senla.training.hoteladmin.repo.*;
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.model.client.ClientsSortCriterion;
+import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.sort.ClientsSorter;
@@ -24,7 +24,7 @@ public class ClientServiceImpl implements ClientService {
         this.roomsRepo = roomsRepo;
     }
 
-    public static ClientServiceImpl getInstance(ArchivService archivService, ClientsRepo clientsRepo,
+    public static ClientService getInstance(ArchivService archivService, ClientsRepo clientsRepo,
                                                 RoomsRepo roomsRepo) {
         if(instance == null){
             instance = new ClientServiceImpl(archivService,clientsRepo,roomsRepo);
@@ -33,13 +33,14 @@ public class ClientServiceImpl implements ClientService {
         return instance;
     }
 
+    @Override
     public boolean addResident(Client resident, Date arrival, Date departure) {
         List<Client> residents = clientsRepo.getClients();
         List<Room> rooms = roomsRepo.getRooms();
         boolean hasPlace = false;
-        ListIterator iterator = rooms.listIterator();
+        ListIterator<Room> iterator = rooms.listIterator();
         while (iterator.hasNext()){
-            Room room = (Room)iterator.next();
+            Room room = iterator.next();
             if (room.getResident() == null && room.getStatus() != RoomStatus.REPAIRED) {
                 hasPlace = true;
                 resident.setArrivalDate(arrival);
@@ -59,6 +60,7 @@ public class ClientServiceImpl implements ClientService {
         return true;
     }
 
+    @Override
     public boolean removeResident(Client resident) {
         List<Room> rooms = roomsRepo.getRooms();
         List<Client> residents = clientsRepo.getClients();
@@ -66,9 +68,9 @@ public class ClientServiceImpl implements ClientService {
             return false;
         }
 
-        ListIterator iterator = rooms.listIterator();
+        ListIterator<Room> iterator = rooms.listIterator();
         while (iterator.hasNext()){
-            Room room = (Room)iterator.next();
+            Room room = iterator.next();
             if(room.getResident() == null){
                 continue;
             }
@@ -84,19 +86,19 @@ public class ClientServiceImpl implements ClientService {
         return true;
     }
 
+    @Override
     public List<Client> getSortedClients(ClientsSortCriterion criterion) {
         List<Client> clients = clientsRepo.getClients();
-        switch (criterion) {
-            case ALPHABET:
-                ClientsSorter.sortByAlphabet(clients);
-                break;
-            case DEPARTURE_DATE:
-                ClientsSorter.sortByDeparture(clients);
-                break;
+        if(criterion.equals(ClientsSortCriterion.ALPHABET)){
+            ClientsSorter.sortByAlphabet(clients);
+        }
+        else if(criterion.equals(ClientsSortCriterion.DEPARTURE_DATE)){
+            ClientsSorter.sortByDeparture(clients);
         }
         return clients;
     }
 
+    @Override
     public Integer getNumberOfResidents() {
         return clientsRepo.getClients().size();
     }
@@ -113,8 +115,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> getLast3Residents(Integer roomNumber) {
-        return archivService.getLast3Residents(roomNumber);
+    public List<Client> getLastThreeResidents(Integer roomNumber) {
+        return archivService.getLastThreeResidents(roomNumber);
     }
 }
 

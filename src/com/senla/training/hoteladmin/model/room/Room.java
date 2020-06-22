@@ -69,7 +69,7 @@ public class Room {
 
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof Room) && this.number == ((Room) obj).getNumber();
+        return (obj instanceof Room) && this.number.equals(((Room) obj).getNumber());
     }
 
     @Override

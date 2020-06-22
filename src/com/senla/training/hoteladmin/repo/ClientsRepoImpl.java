@@ -13,17 +13,19 @@ public class ClientsRepoImpl implements ClientsRepo {
         clients = new LinkedList<>();
     }
 
-    public static ClientsRepoImpl getInstance() {
+    public static ClientsRepo getInstance() {
         if (instance == null) {
             instance = new ClientsRepoImpl();
         }
         return instance;
     }
 
+    @Override
     public void setClients(List<Client> clients) {
         this.clients = clients;
     }
 
+    @Override
     public List<Client> getClients() {
         return clients;
     }

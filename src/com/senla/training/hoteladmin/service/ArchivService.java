@@ -7,5 +7,5 @@ import java.util.List;
 public interface ArchivService {
     void addClient(Client client);
 
-    List<Client> getLast3Residents(Integer roomNumber);
+    List<Client> getLastThreeResidents(Integer roomNumber);
 }

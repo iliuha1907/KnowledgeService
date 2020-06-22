@@ -3,16 +3,24 @@ package com.senla.training.hoteladmin.view;
 import com.senla.training.hoteladmin.util.UserInteraction;
 
 public class MenuController {
+    private static MenuController instance;
     private Builder builder;
     private Navigator navigator;
 
-    public MenuController(Builder builder) {
+    private MenuController(Builder builder) {
         this.builder = builder;
-        builder.buildMenu();
-        navigator = new Navigator(builder.getRootMenu());
+    }
+
+    public static MenuController getInstance(Builder builder){
+        if(instance == null){
+            instance = new MenuController(builder);
+        }
+        return instance;
     }
 
     public void run() {
+        builder.buildMenu();
+        navigator = Navigator.getInstance(builder.getRootMenu());
         UserInteraction userInteraction = UserInteraction.getInstance();
         while (true) {
             navigator.printMenu();

@@ -11,20 +11,21 @@ public class ClientsArchiveRepoImpl implements ClientsArchiveRepo {
     private List<Client> clients;
 
     private ClientsArchiveRepoImpl() {
-        clients = new LinkedList<Client>();
+        clients = new LinkedList<>();
     }
 
-    public static ClientsArchiveRepoImpl getInstance() {
+    public static ClientsArchiveRepo getInstance() {
         if (instance == null) {
             instance = new ClientsArchiveRepoImpl();
         }
         return instance;
     }
-
+    @Override
     public List<Client> getClients() {
         return clients;
     }
 
+    @Override
     public void setClients(List<Client> clients) {
         this.clients = clients;
     }

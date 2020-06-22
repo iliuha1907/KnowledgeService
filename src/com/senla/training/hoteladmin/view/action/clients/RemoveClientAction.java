@@ -10,7 +10,7 @@ import com.senla.training.hoteladmin.util.UserInteraction;
 import com.senla.training.hoteladmin.view.IAction;
 
 public class RemoveClientAction implements IAction {
-    private ClientController clientController = new ClientController(ClientServiceImpl.
+    private ClientController clientController = ClientController.getInstance(ClientServiceImpl.
             getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
                     ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance()));
 

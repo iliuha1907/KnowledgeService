@@ -7,7 +7,7 @@ import com.senla.training.hoteladmin.view.IAction;
 import com.senla.training.hoteladmin.util.UserInteraction;
 
 public class PriceForRoomAction implements IAction {
-    private RoomController roomController = new RoomController(
+    private RoomController roomController = RoomController.getInstance(
             RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()));
 
     @Override

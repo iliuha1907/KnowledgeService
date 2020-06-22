@@ -3,7 +3,7 @@ package com.senla.training.hoteladmin.controller;
 import com.senla.training.hoteladmin.service.RoomService;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.model.room.RoomsSortCriterion;
+import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.hoteladmin.util.DateUtil;
 
 import java.math.BigDecimal;
@@ -11,10 +11,18 @@ import java.util.Date;
 import java.util.List;
 
 public class RoomController {
+    private static RoomController instance;
     private RoomService roomService;
 
-    public RoomController(RoomService roomService) {
+    private RoomController(RoomService roomService) {
         this.roomService = roomService;
+    }
+
+    public static RoomController getInstance(RoomService roomService){
+        if(instance == null){
+            instance = new RoomController(roomService);
+        }
+        return instance;
     }
 
     public String addRoom(Integer number, RoomStatus status, BigDecimal price, Integer capacity,
@@ -45,27 +53,33 @@ public class RoomController {
 
     public String getSortedRooms(RoomsSortCriterion criterion) {
         List<Room> rooms = roomService.getSortedRooms(criterion);
-        StringBuilder result = new StringBuilder("Rooms sorted by " + criterion.toString() + "\n");
+        String title = "Rooms sorted by " + criterion.toString() + "\n";
+        StringBuilder result = new StringBuilder(title);
         rooms.forEach(e -> {
-            result.append(e + "\n");
+            String part = e + "\n";
+            result.append(part);
         });
         return result.toString();
     }
 
     public String getSortedFreeRooms(RoomsSortCriterion criterion) {
         List<Room> rooms = roomService.getSortedFreeRooms(criterion);
-        StringBuilder result = new StringBuilder("Free rooms sorted by " + criterion.toString() + "\n");
+        String title = "Free rooms sorted by " + criterion.toString() + "\n";
+        StringBuilder result = new StringBuilder(title);
         rooms.forEach(e -> {
-            result.append(e + "\n");
+            String part = e + "\n";
+            result.append(part);
         });
         return result.toString();
     }
 
     public String getFreeRoomsAfterDate(Date date) {
         List<Room> rooms = roomService.getFreeRoomsAfterDate(date);
-        StringBuilder result = new StringBuilder("Rooms, free after " + DateUtil.getStr(date) + "\n");
+        String title = "Rooms, free after " + DateUtil.getStr(date) + "\n";
+        StringBuilder result = new StringBuilder(title);
         rooms.forEach(e -> {
-            result.append(e + "\n");
+            String part = e + "\n";
+            result.append(part);
         });
         return result.toString();
     }

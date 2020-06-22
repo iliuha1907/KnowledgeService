@@ -10,7 +10,7 @@ import com.senla.training.hoteladmin.view.IAction;
 import java.math.BigDecimal;
 
 public class AddRoomAction implements IAction {
-    private RoomController roomController = new RoomController(
+    private RoomController roomController =  RoomController.getInstance(
             RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()));
 
     @Override

@@ -13,7 +13,7 @@ import com.senla.training.hoteladmin.util.UserInteraction;
 import java.util.Date;
 
 public class AddClientAction implements IAction {
-    private ClientController clientController = new ClientController(ClientServiceImpl.
+    private ClientController clientController =  ClientController.getInstance(ClientServiceImpl.
             getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
                     ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance()));
 

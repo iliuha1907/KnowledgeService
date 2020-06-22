@@ -13,17 +13,19 @@ public class RoomsRepoImpl implements RoomsRepo{
         rooms = new LinkedList<>();
     }
 
-    public static RoomsRepoImpl getInstance() {
+    public static RoomsRepo getInstance() {
         if (instance == null) {
             instance = new RoomsRepoImpl();
         }
         return instance;
     }
 
+    @Override
     public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
     }
 
+    @Override
     public List<Room> getRooms() {
         return rooms;
     }

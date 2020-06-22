@@ -6,7 +6,7 @@ import com.senla.training.hoteladmin.view.MenuController;
 public class Main {
 
     public static void main(String[] args) {
-        MenuController menuController = new MenuController(new Builder());
+        MenuController menuController = MenuController.getInstance(Builder.getInstance());
         menuController.run();
     }
 }

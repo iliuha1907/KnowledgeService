@@ -6,7 +6,7 @@ import com.senla.training.hoteladmin.service.RoomServiceImpl;
 import com.senla.training.hoteladmin.view.IAction;
 
 public class FreeRoomsCountAction implements IAction {
-    private RoomController roomController = new RoomController(
+    private RoomController roomController = RoomController.getInstance(
             RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()));
 
     @Override

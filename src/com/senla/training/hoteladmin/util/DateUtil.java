@@ -5,11 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtil {
-
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
     public static Date getDate(String data) {
-        DateFormat inputFormatter = new SimpleDateFormat("dd.MM.yyyy");
         try {
-            return inputFormatter.parse(data);
+            return simpleDateFormat.parse(data);
         } catch (Exception ex) {
             throw new RuntimeException("Invalid data");
         }
@@ -17,7 +16,6 @@ public class DateUtil {
     }
 
     public static String getStr(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
         return simpleDateFormat.format(date);
     }
 }

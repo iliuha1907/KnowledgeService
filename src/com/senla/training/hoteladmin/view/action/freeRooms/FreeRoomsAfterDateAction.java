@@ -10,7 +10,7 @@ import com.senla.training.hoteladmin.util.UserInteraction;
 import java.util.Date;
 
 public class FreeRoomsAfterDateAction implements IAction {
-    private RoomController roomController = new RoomController(
+    private RoomController roomController = RoomController.getInstance(
             RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()));
 
     @Override

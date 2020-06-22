@@ -1,23 +1,31 @@
 package com.senla.training.hoteladmin.controller;
 
 import com.senla.training.hoteladmin.service.ClientService;
-import com.senla.training.hoteladmin.service.SVCService;
+import com.senla.training.hoteladmin.service.SvcService;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.svc.Service;
-import com.senla.training.hoteladmin.model.svc.ServiceSortCriterion;
+import com.senla.training.hoteladmin.util.sort.ServiceSortCriterion;
 import com.senla.training.hoteladmin.model.svc.ServiceType;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class SVCController {
-    private SVCService svcService;
+public class SvcController {
+    private static SvcController instance;
+    private SvcService svcService;
     private ClientService clientService;
 
-    public SVCController(SVCService svcService, ClientService clientService) {
+    private SvcController(SvcService svcService, ClientService clientService) {
         this.svcService = svcService;
         this.clientService = clientService;
+    }
+
+    public static SvcController getInstance(SvcService svcService, ClientService clientService){
+        if(instance == null){
+            instance = new SvcController(svcService, clientService);
+        }
+        return instance;
     }
 
     public String addService(BigDecimal price, ServiceType type, Integer clientPass, Date date) {
@@ -49,7 +57,8 @@ public class SVCController {
         List<Service> services = svcService.getSortedClientServices(client, criterion);
         StringBuilder result = new StringBuilder("Services:\n");
         services.forEach(e -> {
-            result.append(e + "\n");
+            String part = e + "\n";
+            result.append(part);
         });
         return result.toString();
     }
@@ -58,7 +67,8 @@ public class SVCController {
         List<Service> services = svcService.getServices(ServiceSortCriterion.PRICE);
         StringBuilder result = new StringBuilder("Services:\n");
         services.forEach(e -> {
-            result.append(e + "\n");
+            String part = e + "\n";
+            result.append(part);
         });
         return result.toString();
     }

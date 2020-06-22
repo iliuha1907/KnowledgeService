@@ -1,7 +1,7 @@
 package com.senla.training.hoteladmin.service;
 
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.model.client.ClientsSortCriterion;
+import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 
 import java.util.Date;
 import java.util.List;
@@ -17,6 +17,6 @@ public interface ClientService {
 
     Client getClientByPass(Integer passNummber);
 
-    List<Client> getLast3Residents(Integer roomNumber);
+    List<Client> getLastThreeResidents(Integer roomNumber);
 }
 

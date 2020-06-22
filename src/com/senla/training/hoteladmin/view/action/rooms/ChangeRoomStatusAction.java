@@ -8,7 +8,7 @@ import com.senla.training.hoteladmin.util.UserInteraction;
 import com.senla.training.hoteladmin.view.IAction;
 
 public class ChangeRoomStatusAction implements IAction {
-    private RoomController roomController = new RoomController(
+    private RoomController roomController =  RoomController.getInstance(
             RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()));
 
     @Override

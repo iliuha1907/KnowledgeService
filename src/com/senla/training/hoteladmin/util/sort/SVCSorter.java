@@ -4,7 +4,7 @@ import com.senla.training.hoteladmin.model.svc.Service;
 
 import java.util.List;
 
-public class SVCSorter {
+public class SvcSorter {
     public static void sortByPrice(List<Service> services) {
         services.sort((o1, o2) -> {
             if (o1.getPrice() == null && o2.getPrice() == null) {

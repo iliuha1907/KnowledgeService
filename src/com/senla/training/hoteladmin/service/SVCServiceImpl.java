@@ -1,33 +1,34 @@
 package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hoteladmin.repo.SVCRepo;
+import com.senla.training.hoteladmin.repo.SvcRepo;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.svc.Service;
-import com.senla.training.hoteladmin.model.svc.ServiceSortCriterion;
+import com.senla.training.hoteladmin.util.sort.ServiceSortCriterion;
 import com.senla.training.hoteladmin.model.svc.ServiceType;
-import com.senla.training.hoteladmin.util.sort.SVCSorter;
+import com.senla.training.hoteladmin.util.sort.SvcSorter;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-public class SVCServiceImpl implements SVCService {
-    private static SVCServiceImpl instance;
-    private SVCRepo svcRepo;
+public class SvcServiceImpl implements SvcService {
+    private static SvcServiceImpl instance;
+    private SvcRepo svcRepo;
 
-    private SVCServiceImpl(SVCRepo svcRepo) {
+    private SvcServiceImpl(SvcRepo svcRepo) {
         this.svcRepo = svcRepo;
     }
 
-    public static SVCServiceImpl getInstance(SVCRepo svcRepo) {
+    public static SvcService getInstance(SvcRepo svcRepo) {
         if (instance == null) {
-            instance = new SVCServiceImpl(svcRepo);
+            instance = new SvcServiceImpl(svcRepo);
             return instance;
         }
         return instance;
     }
 
+    @Override
     public boolean addService(Service service) {
         if (!(service.getDate().compareTo(service.getClient().getArrivalDate()) > -1 &&
                 service.getDate().compareTo(service.getClient().getDepartureDate()) < 1)) {
@@ -39,12 +40,13 @@ public class SVCServiceImpl implements SVCService {
         return true;
     }
 
+    @Override
     public boolean setServicePrice(ServiceType type, BigDecimal price) {
         boolean exists = false;
         List<Service> services = svcRepo.getServices();
-        ListIterator iterator = services.listIterator();
+        ListIterator<Service> iterator = services.listIterator();
         while (iterator.hasNext()) {
-            Service service = (Service) iterator.next();
+            Service service = iterator.next();
             if (service.getType().equals(type)) {
                 service.setPrice(price);
                 exists = true;
@@ -64,28 +66,26 @@ public class SVCServiceImpl implements SVCService {
         return result;
     }
 
+    @Override
     public List<Service> getSortedClientServices(Client client, ServiceSortCriterion criterion) {
         List<Service> services = getClientServices(svcRepo.getServices(), client);
-        switch (criterion) {
-            case DATE:
-                SVCSorter.sortByDate(services);
-                break;
-            case PRICE:
-                SVCSorter.sortByPrice(services);
-                break;
+        if(criterion.equals(ServiceSortCriterion.DATE)){
+            SvcSorter.sortByDate(services);
+        }
+        else if(criterion.equals(ServiceSortCriterion.PRICE)){
+            SvcSorter.sortByPrice(services);
         }
         return services;
     }
 
+    @Override
     public List<Service> getServices(ServiceSortCriterion criterion) {
         List<Service> services = svcRepo.getServices();
-        switch (criterion) {
-            case DATE:
-                SVCSorter.sortByDate(services);
-                break;
-            case PRICE:
-                SVCSorter.sortByPrice(services);
-                break;
+        if(criterion.equals(ServiceSortCriterion.DATE)){
+            SvcSorter.sortByDate(services);
+        }
+        else if(criterion.equals(ServiceSortCriterion.PRICE)){
+            SvcSorter.sortByPrice(services);
         }
         return services;
     }

@@ -3,7 +3,7 @@ package com.senla.training.hoteladmin.service;
 import com.senla.training.hoteladmin.repo.RoomsRepo;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.model.room.RoomsSortCriterion;
+import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.hoteladmin.util.sort.RoomsSorter;
 
 import java.math.BigDecimal;
@@ -20,7 +20,7 @@ public class RoomServiceImpl implements RoomService {
         this.roomsRepo = roomsRepo;
     }
 
-    public static RoomServiceImpl getInstance(RoomsRepo roomsRepo) {
+    public static RoomService getInstance(RoomsRepo roomsRepo) {
         if (instance == null) {
             instance = new RoomServiceImpl(roomsRepo);
             return instance;
@@ -28,6 +28,7 @@ public class RoomServiceImpl implements RoomService {
         return instance;
     }
 
+    @Override
     public boolean addRoom(Room room) {
         if (!checkRoomNumber(room.getNumber())) {
             return false;
@@ -38,11 +39,12 @@ public class RoomServiceImpl implements RoomService {
         return true;
     }
 
+    @Override
     public boolean setRoomStatus(Integer roomNumber, RoomStatus status) {
         List<Room> rooms = roomsRepo.getRooms();
-        ListIterator iterator = rooms.listIterator();
+        ListIterator<Room> iterator = rooms.listIterator();
         while (iterator.hasNext()) {
-            Room room = (Room) iterator.next();
+            Room room = iterator.next();
             if (room.getNumber().equals(roomNumber)) {
                 room.setStatus(status);
                 roomsRepo.setRooms(rooms);
@@ -52,11 +54,12 @@ public class RoomServiceImpl implements RoomService {
         return false;
     }
 
+    @Override
     public boolean setRoomPrice(Integer roomNumber, BigDecimal price) {
         List<Room> rooms = roomsRepo.getRooms();
-        ListIterator iterator = rooms.listIterator();
+        ListIterator<Room> iterator = rooms.listIterator();
         while (iterator.hasNext()) {
-            Room room = (Room) iterator.next();
+            Room room = iterator.next();
             if (room.getNumber().equals(roomNumber)) {
                 room.setPrice(price);
                 roomsRepo.setRooms(rooms);
@@ -66,38 +69,37 @@ public class RoomServiceImpl implements RoomService {
         return false;
     }
 
+    @Override
     public List<Room> getSortedRooms(RoomsSortCriterion criterion) {
         List<Room> rooms = roomsRepo.getRooms();
-        switch (criterion) {
-            case PRICE:
-                RoomsSorter.sortRoomsByPrice(rooms);
-                break;
-            case STARS:
-                RoomsSorter.sortRoomsByStars(rooms);
-                break;
-            case CAPACITY:
-                RoomsSorter.sortRoomsByCapacity(rooms);
-                break;
+        if(criterion.equals(RoomsSortCriterion.PRICE)){
+            RoomsSorter.sortRoomsByPrice(rooms);
+        }
+        else if(criterion.equals(RoomsSortCriterion.STARS)){
+            RoomsSorter.sortRoomsByStars(rooms);
+        }
+        else if(criterion.equals(RoomsSortCriterion.CAPACITY)){
+            RoomsSorter.sortRoomsByCapacity(rooms);
         }
         return rooms;
     }
 
+    @Override
     public List<Room> getSortedFreeRooms(RoomsSortCriterion criterion) {
         List<Room> free = getFreeRooms(roomsRepo.getRooms());
-        switch (criterion) {
-            case PRICE:
-                RoomsSorter.sortRoomsByPrice(free);
-                break;
-            case STARS:
-                RoomsSorter.sortRoomsByStars(free);
-                break;
-            case CAPACITY:
-                RoomsSorter.sortRoomsByCapacity(free);
-                break;
+        if(criterion.equals(RoomsSortCriterion.PRICE)){
+            RoomsSorter.sortRoomsByPrice(free);
+        }
+        else if(criterion.equals(RoomsSortCriterion.STARS)){
+            RoomsSorter.sortRoomsByStars(free);
+        }
+        else if(criterion.equals(RoomsSortCriterion.CAPACITY)){
+            RoomsSorter.sortRoomsByCapacity(free);
         }
         return free;
     }
 
+    @Override
     public List<Room> getFreeRoomsAfterDate(Date date) {
         List<Room> rooms = roomsRepo.getRooms();
         List<Room> free = new LinkedList<>();
@@ -110,6 +112,7 @@ public class RoomServiceImpl implements RoomService {
         return free;
     }
 
+    @Override
     public BigDecimal getPriceRoom(Integer roomNumber) {
         List<Room> rooms = roomsRepo.getRooms();
         BigDecimal price = null;
@@ -122,6 +125,7 @@ public class RoomServiceImpl implements RoomService {
         return price;
     }
 
+    @Override
     public Room getRoom(Integer roomNumber) {
         List<Room> rooms = roomsRepo.getRooms();
         for (Room room : rooms) {
@@ -132,6 +136,7 @@ public class RoomServiceImpl implements RoomService {
         return null;
     }
 
+    @Override
     public Integer getNumberOfFreeRooms() {
         Integer freeRooms = 0;
         List<Room> rooms = roomsRepo.getRooms();

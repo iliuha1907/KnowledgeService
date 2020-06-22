@@ -2,7 +2,7 @@ package com.senla.training.hoteladmin.service;
 
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.model.room.RoomsSortCriterion;
+import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 
 import java.math.BigDecimal;
 import java.util.Date;

@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ArchivServiceImpl implements ArchivService {
+    private final Integer LAST_CLIENTS = 3;
     private static ArchivServiceImpl instance;
     private ClientsArchiveRepo archive;
 
@@ -14,7 +15,7 @@ public class ArchivServiceImpl implements ArchivService {
         this.archive = archive;
     }
 
-    public static ArchivServiceImpl getInstance(ClientsArchiveRepo archive) {
+    public static ArchivService getInstance(ClientsArchiveRepo archive) {
         if(instance == null){
             instance = new ArchivServiceImpl(archive);
             return instance;
@@ -22,16 +23,19 @@ public class ArchivServiceImpl implements ArchivService {
         return instance;
     }
 
+    @Override
     public void addClient(Client client) {
         List<Client> clients = archive.getClients();
         clients.add(client);
         archive.setClients(clients);
     }
 
-    public List<Client> getLast3Residents(Integer roomNumber) {
+    @Override
+    public List<Client> getLastThreeResidents(Integer roomNumber) {
         List<Client> clients = archive.getClients();
         List<Client> residents = new LinkedList<>();
-         int times = 3;
+
+        Integer times =LAST_CLIENTS;
         for(Client client:clients){
             if (client.getRoom().getNumber().equals(roomNumber)) {
                 residents.add(client);

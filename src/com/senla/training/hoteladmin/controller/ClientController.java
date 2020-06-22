@@ -2,16 +2,24 @@ package com.senla.training.hoteladmin.controller;
 
 import com.senla.training.hoteladmin.service.ClientService;
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.model.client.ClientsSortCriterion;
+import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 
 import java.util.Date;
 import java.util.List;
 
 public class ClientController {
+    private static ClientController instance;
     private ClientService clientService;
 
-    public ClientController(ClientService clientService) {
+    private ClientController(ClientService clientService) {
         this.clientService = clientService;
+    }
+
+    public static ClientController getInstance(ClientService clientService){
+        if(instance == null){
+            instance = new ClientController(clientService);
+        }
+        return instance;
     }
 
     public String addResident(Integer passportNumber, String firstName, String lastName,
@@ -38,9 +46,11 @@ public class ClientController {
 
     public String getSortedClients(ClientsSortCriterion criterion) {
         List<Client> clients = clientService.getSortedClients(criterion);
-        StringBuilder result = new StringBuilder("Clients, sorted by " + criterion.toString() + "\n");
+        String title = "Clients, sorted by " + criterion.toString() + "\n";
+        StringBuilder result = new StringBuilder(title);
         clients.forEach(e -> {
-            result.append(e + "\n");
+            String part = e + "\n";
+            result.append(part);
         });
         return result.toString();
     }
@@ -49,11 +59,13 @@ public class ClientController {
         return "Number of residents: " + clientService.getNumberOfResidents();
     }
 
-    public String getLast3Residents(int roomNumber) {
-        List<Client> clients = clientService.getLast3Residents(roomNumber);
-        StringBuilder result = new StringBuilder("Last 3 residents of room " + roomNumber + "\n");
+    public String getLastThreeResidents(int roomNumber) {
+        List<Client> clients = clientService.getLastThreeResidents(roomNumber);
+        String title = "Last 3 residents of room " + roomNumber + "\n";
+        StringBuilder result = new StringBuilder(title);
         clients.forEach(e -> {
-            result.append(e + "\n");
+            String part = e + "\n";
+            result.append(part);
         });
         return result.toString();
     }
