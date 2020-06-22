@@ -1,6 +1,7 @@
 package com.senla.training.hoteladmin.service;
 
 import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.svc.Service;
 import com.senla.training.hoteladmin.util.sort.ServiceSortCriterion;
 import com.senla.training.hoteladmin.model.svc.ServiceType;
@@ -16,5 +17,11 @@ public interface SvcService {
     List<Service> getSortedClientServices(Client client, ServiceSortCriterion criterion);
 
     List<Service> getServices(ServiceSortCriterion criterion);
+
+    boolean exportServices();
+
+    boolean importServices(ClientService clientService, RoomService roomService);
+
+    void updateService(Service service);
 }
 

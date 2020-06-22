@@ -31,13 +31,13 @@ public class ArchivServiceImpl implements ArchivService {
     }
 
     @Override
-    public List<Client> getLastThreeResidents(Integer roomNumber) {
+    public List<Client> getLastThreeResidents(Integer roomId) {
         List<Client> clients = archive.getClients();
         List<Client> residents = new LinkedList<>();
 
         Integer times =LAST_CLIENTS;
         for(Client client:clients){
-            if (client.getRoom().getNumber().equals(roomNumber)) {
+            if (client.getRoom().getId().equals(roomId)) {
                 residents.add(client);
                 times--;
                 if (times == 0) {

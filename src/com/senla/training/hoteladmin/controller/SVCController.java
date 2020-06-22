@@ -1,9 +1,12 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.service.ClientService;
-import com.senla.training.hoteladmin.service.SvcService;
+import com.senla.training.hoteladmin.repo.ClientsArchiveRepoImpl;
+import com.senla.training.hoteladmin.repo.ClientsRepoImpl;
+import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
+import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.svc.Service;
+import com.senla.training.hoteladmin.util.ServiceIdProvider;
 import com.senla.training.hoteladmin.util.sort.ServiceSortCriterion;
 import com.senla.training.hoteladmin.model.svc.ServiceType;
 
@@ -29,11 +32,11 @@ public class SvcController {
     }
 
     public String addService(BigDecimal price, ServiceType type, Integer clientPass, Date date) {
-        Client client = clientService.getClientByPass(clientPass);
+        Client client = clientService.getClientById(clientPass);
         if (client == null) {
             return "Error at adding service: no such client!";
         }
-        Service service = new Service(price, type, client, date);
+        Service service = new Service(ServiceIdProvider.getNextId(),price, type, client, date);
         if (!svcService.addService(service)) {
             return "Error at adding service: incompatible dates!";
         } else {
@@ -50,7 +53,7 @@ public class SvcController {
     }
 
     public String getSortedClientServices(Integer passportNumber, ServiceSortCriterion criterion) {
-        Client client = clientService.getClientByPass(passportNumber);
+        Client client = clientService.getClientById(passportNumber);
         if (client == null) {
             return "Error at getting services of a client: no such client!";
         }
@@ -71,6 +74,28 @@ public class SvcController {
             result.append(part);
         });
         return result.toString();
+    }
+
+    public String exportServices(){
+        if(svcService.exportServices()){
+            return "Successfully exported services";
+        }
+        else {
+            return "Could not export services";
+        }
+    }
+
+    public String importServices(){
+        if(svcService.importServices( ClientServiceImpl.
+                getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
+                        ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance()),
+                RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()))){
+            svcService.exportServices();
+            return "Successfully imported services";
+        }
+        else {
+            return "Could not import services";
+        }
     }
 }
 

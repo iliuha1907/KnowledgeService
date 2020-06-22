@@ -16,12 +16,15 @@ public class ChangeRoomPriceAction implements IAction {
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        System.out.println("Enter number of the room");
-        Integer roomNumber;
+        System.out.println("Enter id of the room");
+        Integer roomId;
         try {
-            roomNumber = userInteraction.getInt();
+            roomId = userInteraction.getInt();
+            if (roomId < 1) {
+                throw new Exception();
+            }
         } catch (Exception ex) {
-            System.out.println("Wrong number");
+            System.out.println("Wrong id");
             return;
         }
 
@@ -36,7 +39,7 @@ public class ChangeRoomPriceAction implements IAction {
             System.out.println("Wrong price");
             return;
         }
-        System.out.println(roomController.setRoomPrice(roomNumber, price));
+        System.out.println(roomController.setRoomPrice(roomId, price));
     }
 }
 

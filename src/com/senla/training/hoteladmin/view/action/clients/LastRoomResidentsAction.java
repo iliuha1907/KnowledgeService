@@ -18,18 +18,18 @@ public class LastRoomResidentsAction implements IAction {
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        System.out.println("Enter number of the room");
-        Integer roomNumber;
+        System.out.println("Enter id of the room");
+        Integer roomId;
         try {
-            roomNumber = userInteraction.getInt();
-            if (roomNumber < 1) {
+            roomId = userInteraction.getInt();
+            if (roomId < 1) {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            System.out.println("Wrong number");
+            System.out.println("Wrong id");
             return;
         }
-        System.out.println(clientController.getLastThreeResidents(roomNumber));
+        System.out.println(clientController.getLastThreeResidents(roomId));
     }
 }
 

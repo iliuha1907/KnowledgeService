@@ -12,11 +12,11 @@ public class RoomDetailsAction implements IAction {
 
     @Override
     public void execute() {
-        System.out.println("Enter number of the room");
+        System.out.println("Enter id of the room");
         try {
             System.out.println(roomController.getRoomInfo(UserInteraction.getInstance().getInt()));
         } catch (Exception ex) {
-            System.out.println("Wrong number");
+            System.out.println("Wrong id");
             return;
         }
 

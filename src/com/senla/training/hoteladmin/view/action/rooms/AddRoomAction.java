@@ -17,18 +17,6 @@ public class AddRoomAction implements IAction {
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        System.out.println("Enter number of the room");
-        Integer roomNumber;
-        try {
-            roomNumber = userInteraction.getInt();
-            if (roomNumber < 1) {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            System.out.println("Wrong number");
-            return;
-        }
-
         RoomStatus roomStatus;
         try {
             roomStatus = userInteraction.getRoomStatus();
@@ -74,7 +62,7 @@ public class AddRoomAction implements IAction {
             return;
         }
 
-        System.out.println(roomController.addRoom(roomNumber, roomStatus, price, capacity, stars));
+        System.out.println(roomController.addRoom(roomStatus, price, capacity, stars));
     }
 }
 

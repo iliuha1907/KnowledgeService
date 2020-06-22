@@ -1,5 +1,6 @@
 package com.senla.training.hoteladmin.service;
 
+import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
@@ -26,6 +27,12 @@ public interface RoomService {
     Room getRoom(Integer roomNumber);
 
     Integer getNumberOfFreeRooms();
+
+    boolean exportRooms();
+
+    boolean importRooms(ClientService clientService);
+
+    void updateRoom(Room rooms);
 
 }
 

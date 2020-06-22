@@ -2,12 +2,15 @@ package com.senla.training.hoteladmin.service;
 
 import com.senla.training.hoteladmin.repo.*;
 import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.util.ClientIdProvider;
+import com.senla.training.hoteladmin.util.file.ClientFileHelper;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.sort.ClientsSorter;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -104,10 +107,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client getClientByPass(Integer passNummber) {
+    public Client getClientById(Integer id) {
         List<Client> clients = clientsRepo.getClients();
         for (Client client:clients){
-            if(client.getPassportNumber().equals(passNummber)){
+            if(client.getId().equals(id)){
                 return client;
             }
         }
@@ -115,8 +118,52 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> getLastThreeResidents(Integer roomNumber) {
-        return archivService.getLastThreeResidents(roomNumber);
+    public List<Client> getLastThreeResidents(Integer id) {
+        return archivService.getLastThreeResidents(id);
+    }
+
+    @Override
+    public boolean exportClients() {
+        try {
+            ClientFileHelper.writeClients(clientsRepo.getClients());
+        }
+        catch (Exception ex){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean importClients(RoomService roomService) {
+        List<Client> clients;
+        try {
+            clients = ClientFileHelper.readClients();
+            clients.forEach(e->{
+                updateClient(e);
+                roomService.updateRoom(e.getRoom());
+            });
+        }
+        catch (Exception ex){
+            return false;
+        }
+
+        return true;
+    }
+
+    public void updateClient(Client client){
+        if(client == null){
+            return;
+        }
+        List<Client> clients = clientsRepo.getClients();
+        int index = clients.indexOf(client);
+        if(index == -1){
+            client.setId(ClientIdProvider.getNextId());
+            clients.add(client);
+        }
+        else {
+            clients.set(index,client);
+        }
+        clientsRepo.setClients(clients);
     }
 }
 

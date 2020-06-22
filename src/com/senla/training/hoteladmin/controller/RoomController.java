@@ -1,8 +1,15 @@
 package com.senla.training.hoteladmin.controller;
 
+import com.senla.training.hoteladmin.repo.ClientsArchiveRepoImpl;
+import com.senla.training.hoteladmin.repo.ClientsRepoImpl;
+import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
+import com.senla.training.hoteladmin.service.ArchivServiceImpl;
+import com.senla.training.hoteladmin.service.ClientServiceImpl;
 import com.senla.training.hoteladmin.service.RoomService;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.service.RoomServiceImpl;
+import com.senla.training.hoteladmin.util.RoomIdProvider;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.hoteladmin.util.DateUtil;
 
@@ -25,9 +32,9 @@ public class RoomController {
         return instance;
     }
 
-    public String addRoom(Integer number, RoomStatus status, BigDecimal price, Integer capacity,
+    public String addRoom( RoomStatus status, BigDecimal price, Integer capacity,
                           Integer stars) {
-        Room room = new Room(number, status, price, capacity, stars);
+        Room room = new Room(RoomIdProvider.getNextId(), status, price, capacity, stars);
         if (roomService.addRoom(room)) {
             return "Successfully added room";
         } else {
@@ -104,6 +111,27 @@ public class RoomController {
 
     public String getNumberOfFreeRooms() {
         return "Number of free rooms: " + roomService.getNumberOfFreeRooms();
+    }
+
+    public String exportRooms(){
+        if(roomService.exportRooms()){
+            return "Successfully exported rooms";
+        }
+        else {
+            return "Could not export rooms";
+        }
+    }
+
+    public String importRooms(){
+        if(roomService.importRooms( ClientServiceImpl.
+                getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
+                        ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance()))){
+            roomService.exportRooms();
+            return "Successfully imported rooms";
+        }
+        else {
+            return "Could not import rooms";
+        }
     }
 }
 

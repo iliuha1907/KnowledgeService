@@ -6,29 +6,17 @@ import com.senla.training.hoteladmin.repo.ClientsRepoImpl;
 import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
 import com.senla.training.hoteladmin.service.ArchivServiceImpl;
 import com.senla.training.hoteladmin.service.ClientServiceImpl;
-import com.senla.training.hoteladmin.util.UserInteraction;
 import com.senla.training.hoteladmin.view.IAction;
 
-public class RemoveClientAction implements IAction {
+public class ImportClientsAction implements IAction {
+
     private ClientController clientController = ClientController.getInstance(ClientServiceImpl.
             getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
                     ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance()));
 
     @Override
     public void execute() {
-        UserInteraction userInteraction = UserInteraction.getInstance();
-        System.out.println("Enter id of the client");
-        Integer id;
-        try {
-            id = userInteraction.getInt();
-            if (id < 0) {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            System.out.println("Wrong id");
-            return;
-        }
-        System.out.println(clientController.removeResident(id));
+        System.out.println(clientController.importClients());
     }
 }
 

@@ -15,12 +15,15 @@ public class ChangeRoomStatusAction implements IAction {
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        System.out.println("Enter number of the room");
-        Integer roomNumber;
+        System.out.println("Enter id of the room");
+        Integer roomId;
         try {
-            roomNumber = userInteraction.getInt();
+            roomId = userInteraction.getInt();
+            if (roomId < 1) {
+                throw new Exception();
+            }
         } catch (Exception ex) {
-            System.out.println("Wrong number");
+            System.out.println("Wrong id");
             return;
         }
 
@@ -31,7 +34,7 @@ public class ChangeRoomStatusAction implements IAction {
             System.out.println(ex.getMessage());
             return;
         }
-        System.out.println(roomController.setRoomStatus(roomNumber, roomStatus));
+        System.out.println(roomController.setRoomStatus(roomId, roomStatus));
     }
 }
 

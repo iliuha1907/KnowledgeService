@@ -1,8 +1,12 @@
 package com.senla.training.hoteladmin.service;
 
+import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.repo.SvcRepo;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.svc.Service;
+import com.senla.training.hoteladmin.util.ServiceIdProvider;
+import com.senla.training.hoteladmin.util.file.RoomFileHelper;
+import com.senla.training.hoteladmin.util.file.ServiceFileHelper;
 import com.senla.training.hoteladmin.util.sort.ServiceSortCriterion;
 import com.senla.training.hoteladmin.model.svc.ServiceType;
 import com.senla.training.hoteladmin.util.sort.SvcSorter;
@@ -88,6 +92,52 @@ public class SvcServiceImpl implements SvcService {
             SvcSorter.sortByPrice(services);
         }
         return services;
+    }
+
+    @Override
+    public boolean exportServices() {
+        try {
+            ServiceFileHelper.writeServices(svcRepo.getServices());
+        }
+        catch (Exception ex){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean importServices(ClientService clientService, RoomService roomService) {
+        List<Service> services;
+        try {
+            services = ServiceFileHelper.readServices();
+            services.forEach(e->{
+                updateService(e);
+                clientService.updateClient(e.getClient());
+                roomService.updateRoom(e.getClient().getRoom());
+            });
+        }
+        catch (Exception ex){
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void updateService(Service service) {
+        if(service == null){
+            return;
+        }
+        List<Service> services = svcRepo.getServices();
+        int index = services.indexOf(service);
+        if(index == -1){
+            service.setId(ServiceIdProvider.getNextId());
+            services.add(service);
+        }
+        else {
+            services.set(index,service);
+        }
+        svcRepo.setServices(services);
     }
 }
 

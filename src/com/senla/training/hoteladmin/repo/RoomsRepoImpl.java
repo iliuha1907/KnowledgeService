@@ -2,6 +2,7 @@ package com.senla.training.hoteladmin.repo;
 
 import com.senla.training.hoteladmin.model.room.Room;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class RoomsRepoImpl implements RoomsRepo{
     private List<Room> rooms;
 
     private RoomsRepoImpl() {
-        rooms = new LinkedList<>();
+        rooms = new ArrayList<>();
     }
 
     public static RoomsRepo getInstance() {

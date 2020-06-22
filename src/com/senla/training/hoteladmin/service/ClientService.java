@@ -15,8 +15,14 @@ public interface ClientService {
 
     Integer getNumberOfResidents();
 
-    Client getClientByPass(Integer passNummber);
+    Client getClientById(Integer id);
 
     List<Client> getLastThreeResidents(Integer roomNumber);
+
+    boolean exportClients();
+
+    boolean importClients(RoomService roomService);
+
+    void updateClient(Client client);
 }
 

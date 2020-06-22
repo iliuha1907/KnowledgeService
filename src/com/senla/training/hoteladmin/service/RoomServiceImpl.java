@@ -1,8 +1,12 @@
 package com.senla.training.hoteladmin.service;
 
+import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.repo.RoomsRepo;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.util.RoomIdProvider;
+import com.senla.training.hoteladmin.util.file.ClientFileHelper;
+import com.senla.training.hoteladmin.util.file.RoomFileHelper;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.hoteladmin.util.sort.RoomsSorter;
 
@@ -30,7 +34,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public boolean addRoom(Room room) {
-        if (!checkRoomNumber(room.getNumber())) {
+        if (!checkRoomNumber(room.getId())) {
             return false;
         }
         List<Room> rooms = roomsRepo.getRooms();
@@ -40,12 +44,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean setRoomStatus(Integer roomNumber, RoomStatus status) {
+    public boolean setRoomStatus(Integer roomId, RoomStatus status) {
         List<Room> rooms = roomsRepo.getRooms();
         ListIterator<Room> iterator = rooms.listIterator();
         while (iterator.hasNext()) {
             Room room = iterator.next();
-            if (room.getNumber().equals(roomNumber)) {
+            if (room.getId().equals(roomId)) {
                 room.setStatus(status);
                 roomsRepo.setRooms(rooms);
                 return true;
@@ -55,12 +59,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean setRoomPrice(Integer roomNumber, BigDecimal price) {
+    public boolean setRoomPrice(Integer roomId, BigDecimal price) {
         List<Room> rooms = roomsRepo.getRooms();
         ListIterator<Room> iterator = rooms.listIterator();
         while (iterator.hasNext()) {
             Room room = iterator.next();
-            if (room.getNumber().equals(roomNumber)) {
+            if (room.getId().equals(roomId)) {
                 room.setPrice(price);
                 roomsRepo.setRooms(rooms);
                 return true;
@@ -113,11 +117,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public BigDecimal getPriceRoom(Integer roomNumber) {
+    public BigDecimal getPriceRoom(Integer roomId) {
         List<Room> rooms = roomsRepo.getRooms();
         BigDecimal price = null;
         for (Room room : rooms) {
-            if (room.getNumber().equals(roomNumber)) {
+            if (room.getId().equals(roomId)) {
                 price = room.getPrice();
                 break;
             }
@@ -126,10 +130,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room getRoom(Integer roomNumber) {
+    public Room getRoom(Integer roomId) {
         List<Room> rooms = roomsRepo.getRooms();
         for (Room room : rooms) {
-            if (room.getNumber().equals(roomNumber)) {
+            if (room.getId().equals(roomId)) {
                 return room;
             }
         }
@@ -148,6 +152,57 @@ public class RoomServiceImpl implements RoomService {
         return freeRooms;
     }
 
+    @Override
+    public boolean exportRooms() {
+        try {
+            RoomFileHelper.writeRooms(roomsRepo.getRooms());
+        }
+        catch (Exception ex){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean
+    importRooms(ClientService clientService) {
+        List<Room> oldRooms = roomsRepo.getRooms();
+        List<Room> rooms;
+        try {
+            rooms = RoomFileHelper.readRooms();
+            rooms.forEach(e->{
+                int index = oldRooms.indexOf(e);
+                if(index!=-1) {
+                    clientService.removeResident(oldRooms.get(index).getResident());
+                }
+                updateRoom(e);
+                clientService.updateClient(e.getResident());
+            });
+        }
+        catch (Exception ex){
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void updateRoom(Room room) {
+        if(room == null){
+            return;
+        }
+        List<Room> rooms = roomsRepo.getRooms();
+        int index = rooms.indexOf(room);
+        if(index == -1){
+            room.setId(RoomIdProvider.getNextId());
+            rooms.add(room);
+        }
+        else {
+            rooms.set(index,room);
+        }
+        roomsRepo.setRooms(rooms);
+    }
+
     private List<Room> getFreeRooms(List<Room> rooms) {
         LinkedList<Room> free = new LinkedList<>();
         rooms.forEach(e -> {
@@ -158,10 +213,10 @@ public class RoomServiceImpl implements RoomService {
         return free;
     }
 
-    private boolean checkRoomNumber(Integer roomNumber) {
+    private boolean checkRoomNumber(Integer roomId) {
         List<Room> rooms = roomsRepo.getRooms();
         for (Room room : rooms) {
-            if (room.getNumber().equals(roomNumber)) {
+            if (room.getId().equals(roomId)) {
                 return false;
             }
         }

@@ -1,7 +1,10 @@
 package com.senla.training.hoteladmin.controller;
 
+import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
 import com.senla.training.hoteladmin.service.ClientService;
 import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.service.RoomServiceImpl;
+import com.senla.training.hoteladmin.util.ClientIdProvider;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 
 import java.util.Date;
@@ -22,11 +25,11 @@ public class ClientController {
         return instance;
     }
 
-    public String addResident(Integer passportNumber, String firstName, String lastName,
+    public String addResident(String firstName, String lastName,
                               Date arrival, Date departure) {
-        Client client = new Client(passportNumber, firstName, lastName);
-        if (clientService.getClientByPass(passportNumber) != null) {
-            return "Error at adding client: client with this passport number already exists!";
+        Client client = new Client(ClientIdProvider.getNextId(), firstName, lastName);
+        if (clientService.getClientById(client.getId()) != null) {
+            return "Error at adding client: client with this id already exists!";
         }
         if (clientService.addResident(client, arrival, departure)) {
             return "Successfully added resident";
@@ -35,8 +38,8 @@ public class ClientController {
         }
     }
 
-    public String removeResident(Integer passportNumber) {
-        Client client = clientService.getClientByPass(passportNumber);
+    public String removeResident(Integer id) {
+        Client client = clientService.getClientById(id);
         if (client == null) {
             return "Error at removing resident: no such resident!";
         }
@@ -68,6 +71,25 @@ public class ClientController {
             result.append(part);
         });
         return result.toString();
+    }
+
+    public String exportClients(){
+        if(clientService.exportClients()){
+            return "Successfully exported clients";
+        }
+        else {
+            return "Could not export clients";
+        }
+    }
+
+    public String importClients(){
+        if(clientService.importClients( RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()))){
+            clientService.exportClients();
+            return "Successfully imported clients";
+        }
+        else {
+            return "Could not import clients";
+        }
     }
 
 }

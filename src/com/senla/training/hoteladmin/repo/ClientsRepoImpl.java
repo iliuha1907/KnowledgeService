@@ -2,6 +2,7 @@ package com.senla.training.hoteladmin.repo;
 
 import com.senla.training.hoteladmin.model.client.Client;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class ClientsRepoImpl implements ClientsRepo {
     private List<Client> clients;
 
     private ClientsRepoImpl() {
-        clients = new LinkedList<>();
+        clients = new ArrayList<>();
     }
 
     public static ClientsRepo getInstance() {

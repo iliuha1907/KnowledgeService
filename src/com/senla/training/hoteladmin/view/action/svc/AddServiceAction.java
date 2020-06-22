@@ -24,15 +24,15 @@ public class AddServiceAction implements IAction {
     @Override
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
-        System.out.println("Enter passport number of the client");
-        Integer passNumber;
+        System.out.println("Enter id of the client");
+        Integer id;
         try {
-            passNumber = userInteraction.getInt();
-            if (passNumber < 0) {
+            id = userInteraction.getInt();
+            if (id < 0) {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            System.out.println("Wrong passport number");
+            System.out.println("Wrong id");
             return;
         }
 
@@ -44,7 +44,7 @@ public class AddServiceAction implements IAction {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            System.out.println("Wrong passport number");
+            System.out.println("Wrong price");
             return;
         }
 
@@ -64,7 +64,7 @@ public class AddServiceAction implements IAction {
             System.out.println("Wrong date");
             return;
         }
-        System.out.println(svcController.addService(price, type, passNumber, date));
+        System.out.println(svcController.addService(price, type, id, date));
     }
 }
 

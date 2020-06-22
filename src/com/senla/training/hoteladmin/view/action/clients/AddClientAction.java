@@ -21,18 +21,6 @@ public class AddClientAction implements IAction {
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        System.out.println("Enter passport number of the client");
-        Integer passNumber;
-        try {
-            passNumber = userInteraction.getInt();
-            if (passNumber < 0) {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            System.out.println("Wrong passport number");
-            return;
-        }
-
         System.out.println("Enter first name");
         String firstName = userInteraction.getString();
         System.out.println("Enter last name");
@@ -55,7 +43,7 @@ public class AddClientAction implements IAction {
             System.out.println("Wrong departure date");
             return;
         }
-        System.out.println(clientController.addResident(passNumber, firstName, lastName, arrival, departure));
+        System.out.println(clientController.addResident(firstName, lastName, arrival, departure));
     }
 }
 

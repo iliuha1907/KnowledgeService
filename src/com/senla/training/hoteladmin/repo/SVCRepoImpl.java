@@ -2,6 +2,7 @@ package com.senla.training.hoteladmin.repo;
 
 import com.senla.training.hoteladmin.model.svc.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class SvcRepoImpl implements SvcRepo {
     private List<Service> services;
 
     private SvcRepoImpl() {
-        services = new LinkedList<>();
+        services = new ArrayList<>();
     }
 
     public static SvcRepo getInstance() {
