@@ -3,12 +3,9 @@ package com.senla.training.hoteladmin.controller;
 import com.senla.training.hoteladmin.repo.ClientsArchiveRepoImpl;
 import com.senla.training.hoteladmin.repo.ClientsRepoImpl;
 import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
-import com.senla.training.hoteladmin.service.ArchivServiceImpl;
-import com.senla.training.hoteladmin.service.ClientServiceImpl;
-import com.senla.training.hoteladmin.service.RoomService;
+import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.service.RoomServiceImpl;
 import com.senla.training.hoteladmin.util.RoomIdProvider;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.hoteladmin.util.DateUtil;
@@ -125,7 +122,8 @@ public class RoomController {
     public String importRooms(){
         if(roomService.importRooms( ClientServiceImpl.
                 getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
-                        ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance()))){
+                        ClientsRepoImpl.getInstance(),
+                        RoomsRepoImpl.getInstance(), ClientWriterImpl.getInstance()))){
             return "Successfully imported rooms";
         }
         else {

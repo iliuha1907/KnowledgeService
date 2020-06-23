@@ -1,12 +1,10 @@
 package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.repo.RoomsRepo;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.RoomIdProvider;
-import com.senla.training.hoteladmin.util.file.ClientFileHelper;
-import com.senla.training.hoteladmin.util.file.RoomFileHelper;
+import com.senla.training.hoteladmin.util.file.RoomParser;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.hoteladmin.util.sort.RoomsSorter;
 
@@ -19,14 +17,16 @@ import java.util.ListIterator;
 public class RoomServiceImpl implements RoomService {
     private static RoomServiceImpl instance;
     private RoomsRepo roomsRepo;
+    private RoomWriter roomWriter;
 
-    private RoomServiceImpl(RoomsRepo roomsRepo) {
+    private RoomServiceImpl(RoomsRepo roomsRepo, RoomWriter roomWriter) {
         this.roomsRepo = roomsRepo;
+        this.roomWriter = roomWriter;
     }
 
-    public static RoomService getInstance(RoomsRepo roomsRepo) {
+    public static RoomService getInstance(RoomsRepo roomsRepo, RoomWriter roomWriter) {
         if (instance == null) {
-            instance = new RoomServiceImpl(roomsRepo);
+            instance = new RoomServiceImpl(roomsRepo, roomWriter);
             return instance;
         }
         return instance;
@@ -155,7 +155,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public boolean exportRooms() {
         try {
-            RoomFileHelper.writeRooms(roomsRepo.getRooms());
+            roomWriter.writeRooms(roomsRepo.getRooms());
         }
         catch (Exception ex){
             return false;
@@ -168,7 +168,7 @@ public class RoomServiceImpl implements RoomService {
         List<Room> oldRooms = roomsRepo.getRooms();
         List<Room> rooms;
         try {
-            rooms = RoomFileHelper.readRooms();
+            rooms = roomWriter.readRooms();
             rooms.forEach(e->{
                 int index = oldRooms.indexOf(e);
                 if(index!=-1 && !(oldRooms.get(index).getResident().equals(e.getResident()))) {

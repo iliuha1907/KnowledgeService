@@ -4,6 +4,7 @@ import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
 import com.senla.training.hoteladmin.service.ClientService;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.service.RoomServiceImpl;
+import com.senla.training.hoteladmin.service.RoomWriterImpl;
 import com.senla.training.hoteladmin.util.ClientIdProvider;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 
@@ -83,7 +84,8 @@ public class ClientController {
     }
 
     public String importClients(){
-        if(clientService.importClients( RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()))){
+        if(clientService.importClients( RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance(),
+                RoomWriterImpl.getInstance()))){
             return "Successfully imported clients";
         }
         else {

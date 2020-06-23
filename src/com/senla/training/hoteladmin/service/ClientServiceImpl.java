@@ -3,14 +3,13 @@ package com.senla.training.hoteladmin.service;
 import com.senla.training.hoteladmin.repo.*;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.util.ClientIdProvider;
-import com.senla.training.hoteladmin.util.file.ClientFileHelper;
+import com.senla.training.hoteladmin.util.file.ClientParser;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.sort.ClientsSorter;
 
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -19,18 +18,20 @@ public class ClientServiceImpl implements ClientService {
     private ArchivService archivService;
     private ClientsRepo clientsRepo;
     private RoomsRepo roomsRepo;
+    private ClientWriter clientWriter;
 
     private ClientServiceImpl(ArchivService archivService, ClientsRepo clientsRepo,
-                             RoomsRepo roomsRepo){
+                             RoomsRepo roomsRepo, ClientWriter clientWriter){
         this.archivService = archivService;
         this.clientsRepo = clientsRepo;
         this.roomsRepo = roomsRepo;
+        this.clientWriter = clientWriter;
     }
 
     public static ClientService getInstance(ArchivService archivService, ClientsRepo clientsRepo,
-                                                RoomsRepo roomsRepo) {
+                                                RoomsRepo roomsRepo, ClientWriter clientWriter) {
         if(instance == null){
-            instance = new ClientServiceImpl(archivService,clientsRepo,roomsRepo);
+            instance = new ClientServiceImpl(archivService,clientsRepo,roomsRepo, clientWriter);
             return instance;
         }
         return instance;
@@ -125,7 +126,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public boolean exportClients() {
         try {
-            ClientFileHelper.writeClients(clientsRepo.getClients());
+            clientWriter.writeClients(clientsRepo.getClients());
         }
         catch (Exception ex){
             return false;
@@ -137,7 +138,7 @@ public class ClientServiceImpl implements ClientService {
     public boolean importClients(RoomService roomService) {
         List<Client> clients;
         try {
-            clients = ClientFileHelper.readClients();
+            clients = clientWriter.readClients();
             clients.forEach(e->{
                 updateClient(e);
                 roomService.updateRoom(e.getRoom());

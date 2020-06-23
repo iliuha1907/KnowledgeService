@@ -1,12 +1,10 @@
 package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.repo.SvcRepo;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.svc.Service;
 import com.senla.training.hoteladmin.util.ServiceIdProvider;
-import com.senla.training.hoteladmin.util.file.RoomFileHelper;
-import com.senla.training.hoteladmin.util.file.ServiceFileHelper;
+import com.senla.training.hoteladmin.util.file.ServiceParser;
 import com.senla.training.hoteladmin.util.sort.ServiceSortCriterion;
 import com.senla.training.hoteladmin.model.svc.ServiceType;
 import com.senla.training.hoteladmin.util.sort.SvcSorter;
@@ -19,14 +17,16 @@ import java.util.ListIterator;
 public class SvcServiceImpl implements SvcService {
     private static SvcServiceImpl instance;
     private SvcRepo svcRepo;
+    private ServiceWriter serviceWriter;
 
-    private SvcServiceImpl(SvcRepo svcRepo) {
+    private SvcServiceImpl(SvcRepo svcRepo, ServiceWriter serviceWriter) {
         this.svcRepo = svcRepo;
+        this.serviceWriter = serviceWriter;
     }
 
-    public static SvcService getInstance(SvcRepo svcRepo) {
+    public static SvcService getInstance(SvcRepo svcRepo, ServiceWriter serviceWriter) {
         if (instance == null) {
-            instance = new SvcServiceImpl(svcRepo);
+            instance = new SvcServiceImpl(svcRepo, serviceWriter);
             return instance;
         }
         return instance;
@@ -97,7 +97,7 @@ public class SvcServiceImpl implements SvcService {
     @Override
     public boolean exportServices() {
         try {
-            ServiceFileHelper.writeServices(svcRepo.getServices());
+            serviceWriter.writeServices(svcRepo.getServices());
         }
         catch (Exception ex){
             return false;
@@ -109,7 +109,7 @@ public class SvcServiceImpl implements SvcService {
     public boolean importServices(ClientService clientService, RoomService roomService) {
         List<Service> services;
         try {
-            services = ServiceFileHelper.readServices();
+            services = serviceWriter.readServices();
             services.forEach(e->{
                 updateService(e);
                 clientService.updateClient(e.getClient());

@@ -88,8 +88,8 @@ public class SvcController {
     public String importServices(){
         if(svcService.importServices( ClientServiceImpl.
                 getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
-                        ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance()),
-                RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()))){
+                        ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance(),ClientWriterImpl.getInstance()),
+                RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance(),RoomWriterImpl.getInstance()))){
             return "Successfully imported services";
         }
         else {
