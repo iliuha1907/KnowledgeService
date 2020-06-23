@@ -22,8 +22,8 @@ public class ServiceFileHelper {
         FileWriter fileWriter = new FileWriter(new File(FILE_NAME));
         for (Service service : services) {
             fileWriter.write(getStringFromService(service));
-            fileWriter.write(getStringFromResident(service.getClient()));
-            fileWriter.write(getStringFromRoom(service.getClient().getRoom()) + "\n");
+            fileWriter.write(ClientFileHelper.getStringFromResident(service.getClient()));
+            fileWriter.write(RoomFileHelper.getStringFromRoom(service.getClient().getRoom()) + "\n");
         }
         fileWriter.close();
     }
@@ -37,6 +37,19 @@ public class ServiceFileHelper {
         }
         reader.close();
         return services;
+    }
+
+    public static String getStringFromService(Service service) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(service.getId());
+        stringBuilder.append(SEPARATOR);
+        stringBuilder.append(service.getPrice());
+        stringBuilder.append(SEPARATOR);
+        stringBuilder.append(service.getType());
+        stringBuilder.append(SEPARATOR);
+        stringBuilder.append(DateUtil.getStr(service.getDate()));
+        stringBuilder.append(SEPARATOR);
+        return stringBuilder.toString();
     }
 
     private static Service parseService(String data) {
@@ -64,50 +77,6 @@ public class ServiceFileHelper {
         room.setResident(client);
         client.setRoom(room);
         return new Service(id, price, type, client, date);
-    }
-
-
-    private static String getStringFromRoom(Room room) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(room.getId());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(room.getStatus());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(room.getCapacity());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(room.getStars());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(room.getPrice());
-        stringBuilder.append(SEPARATOR);
-        return stringBuilder.toString();
-    }
-
-    private static String getStringFromService(Service service) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(service.getId());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(service.getPrice());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(service.getType());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(DateUtil.getStr(service.getDate()));
-        stringBuilder.append(SEPARATOR);
-        return stringBuilder.toString();
-    }
-
-    private static String getStringFromResident(Client client) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(client.getId());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(client.getFirstName());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(client.getLastName());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(DateUtil.getStr(client.getArrivalDate()));
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(DateUtil.getStr(client.getDepartureDate()));
-        stringBuilder.append(SEPARATOR);
-        return stringBuilder.toString();
     }
 }
 

@@ -19,7 +19,7 @@ public class ClientFileHelper {
         FileWriter fileWriter = new FileWriter(new File(FILE_NAME));
         for (Client client : clients) {
             fileWriter.write(getStringFromResident(client));
-            fileWriter.write(getStringFromRoom(client.getRoom()) + "\n");
+            fileWriter.write(RoomFileHelper.getStringFromRoom(client.getRoom()) + "\n");
         }
         fileWriter.close();
     }
@@ -35,48 +35,10 @@ public class ClientFileHelper {
         return clients;
     }
 
-    private static Client parseClient(String data) {
-        int startReading = 0;
-        String[] fields = data.split(SEPARATOR);
-        Integer clientId = Integer.parseInt(fields[startReading++]);
-        String clientFirstName = fields[startReading++];
-        String clientLastName = fields[startReading++];
-        Date clientArrival = DateUtil.getDate(fields[startReading++]);
-        Date clientDep = DateUtil.getDate(fields[startReading++]);
-
-
-        Integer id = Integer.parseInt(fields[startReading++]);
-        RoomStatus roomStatus = RoomStatus.valueOf(fields[startReading++]);
-        Integer capacity = Integer.parseInt(fields[startReading++]);
-        Integer stars = Integer.parseInt(fields[startReading++]);
-        BigDecimal price = new BigDecimal(fields[startReading++]);
-
-        Client client = new Client(clientId, clientFirstName, clientLastName, clientArrival, clientDep);
-        Room room = new Room(id, roomStatus, price, capacity, stars);
-        room.setResident(client);
-        client.setRoom(room);
-        return client;
-    }
-
-    private static String getStringFromRoom(Room room) {
-        if (room == null) {
+    public static String getStringFromResident(Client client) {
+        if (client == null) {
             return "-" + SEPARATOR;
         }
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(room.getId());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(room.getStatus());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(room.getCapacity());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(room.getStars());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(room.getPrice());
-        stringBuilder.append(SEPARATOR);
-        return stringBuilder.toString();
-    }
-
-    private static String getStringFromResident(Client client) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(client.getId());
         stringBuilder.append(SEPARATOR);
@@ -89,6 +51,28 @@ public class ClientFileHelper {
         stringBuilder.append(DateUtil.getStr(client.getDepartureDate()));
         stringBuilder.append(SEPARATOR);
         return stringBuilder.toString();
+    }
+
+    private static Client parseClient(String data) {
+        int startReading = 0;
+        String[] fields = data.split(SEPARATOR);
+        Integer clientId = Integer.parseInt(fields[startReading++]);
+        String clientFirstName = fields[startReading++];
+        String clientLastName = fields[startReading++];
+        Date clientArrival = DateUtil.getDate(fields[startReading++]);
+        Date clientDep = DateUtil.getDate(fields[startReading++]);
+
+        Integer id = Integer.parseInt(fields[startReading++]);
+        RoomStatus roomStatus = RoomStatus.valueOf(fields[startReading++]);
+        Integer capacity = Integer.parseInt(fields[startReading++]);
+        Integer stars = Integer.parseInt(fields[startReading++]);
+        BigDecimal price = new BigDecimal(fields[startReading++]);
+
+        Client client = new Client(clientId, clientFirstName, clientLastName, clientArrival, clientDep);
+        Room room = new Room(id, roomStatus, price, capacity, stars);
+        room.setResident(client);
+        client.setRoom(room);
+        return client;
     }
 }
 

@@ -22,7 +22,7 @@ public class RoomFileHelper {
         FileWriter fileWriter = new FileWriter(new File(FILE_NAME));
         for (Room room : rooms) {
             fileWriter.write(getStringFromRoom(room));
-            fileWriter.write(getStringFromResident(room.getResident()) + "\n");
+            fileWriter.write(ClientFileHelper.getStringFromResident(room.getResident()) + "\n");
         }
         fileWriter.close();
     }
@@ -38,33 +38,10 @@ public class RoomFileHelper {
         return rooms;
     }
 
-    private static Room parseRoom(String data) {
-        int startReading = 0;
-        String[] fields = data.split(SEPARATOR);
-        Integer id = Integer.parseInt(fields[startReading++]);
-        RoomStatus roomStatus = RoomStatus.valueOf(fields[startReading++]);
-        Integer capacity = Integer.parseInt(fields[startReading++]);
-        Integer stars = Integer.parseInt(fields[startReading++]);
-        BigDecimal price = new BigDecimal(fields[startReading++]);
-
-        if (fields[startReading].equals("-")) {
-            return new Room(id, roomStatus, price, capacity, stars);
+    public static String getStringFromRoom(Room room) {
+        if (room == null) {
+            return "-" + SEPARATOR;
         }
-
-
-        Integer clientId = Integer.parseInt(fields[startReading++]);
-        String clientFirstName = fields[startReading++];
-        String clientLastName = fields[startReading++];
-        Date clientArrival = DateUtil.getDate(fields[startReading++]);
-        Date clientDep = DateUtil.getDate(fields[startReading++]);
-        Room room = new Room(id, roomStatus, price, capacity, stars);
-        Client client = new Client(clientId, clientFirstName, clientLastName, clientArrival, clientDep);
-        room.setResident(client);
-        client.setRoom(room);
-        return room;
-    }
-
-    private static String getStringFromRoom(Room room) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(room.getId());
         stringBuilder.append(SEPARATOR);
@@ -79,22 +56,30 @@ public class RoomFileHelper {
         return stringBuilder.toString();
     }
 
-    private static String getStringFromResident(Client client) {
-        if (client == null) {
-            return "-" + SEPARATOR;
+    private static Room parseRoom(String data) {
+        int startReading = 0;
+        String[] fields = data.split(SEPARATOR);
+        Integer id = Integer.parseInt(fields[startReading++]);
+        RoomStatus roomStatus = RoomStatus.valueOf(fields[startReading++]);
+        Integer capacity = Integer.parseInt(fields[startReading++]);
+        Integer stars = Integer.parseInt(fields[startReading++]);
+        BigDecimal price = new BigDecimal(fields[startReading++]);
+
+        if (fields[startReading].equals("-")) {
+            return new Room(id, roomStatus, price, capacity, stars);
         }
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(client.getId());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(client.getFirstName());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(client.getLastName());
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(DateUtil.getStr(client.getArrivalDate()));
-        stringBuilder.append(SEPARATOR);
-        stringBuilder.append(DateUtil.getStr(client.getDepartureDate()));
-        stringBuilder.append(SEPARATOR);
-        return stringBuilder.toString();
+
+        Integer clientId = Integer.parseInt(fields[startReading++]);
+        String clientFirstName = fields[startReading++];
+        String clientLastName = fields[startReading++];
+        Date clientArrival = DateUtil.getDate(fields[startReading++]);
+        Date clientDep = DateUtil.getDate(fields[startReading++]);
+        Room room = new Room(id, roomStatus, price, capacity, stars);
+        Client client = new Client(clientId, clientFirstName, clientLastName, clientArrival, clientDep);
+        room.setResident(client);
+        client.setRoom(room);
+        return room;
     }
+
 }
 
