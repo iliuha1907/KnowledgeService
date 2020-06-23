@@ -164,15 +164,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean
-    importRooms(ClientService clientService) {
+    public boolean importRooms(ClientService clientService) {
         List<Room> oldRooms = roomsRepo.getRooms();
         List<Room> rooms;
         try {
             rooms = RoomFileHelper.readRooms();
             rooms.forEach(e->{
                 int index = oldRooms.indexOf(e);
-                if(index!=-1) {
+                if(index!=-1 && !(oldRooms.get(index).getResident().equals(e.getResident()))) {
                     clientService.removeResident(oldRooms.get(index).getResident());
                 }
                 updateRoom(e);
