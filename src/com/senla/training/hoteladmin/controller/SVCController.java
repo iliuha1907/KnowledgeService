@@ -90,7 +90,6 @@ public class SvcController {
                 getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
                         ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance()),
                 RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()))){
-            svcService.exportServices();
             return "Successfully imported services";
         }
         else {

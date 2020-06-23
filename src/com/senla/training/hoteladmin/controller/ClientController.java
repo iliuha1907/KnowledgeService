@@ -84,7 +84,6 @@ public class ClientController {
 
     public String importClients(){
         if(clientService.importClients( RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()))){
-            clientService.exportClients();
             return "Successfully imported clients";
         }
         else {

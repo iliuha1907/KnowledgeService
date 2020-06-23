@@ -126,7 +126,6 @@ public class RoomController {
         if(roomService.importRooms( ClientServiceImpl.
                 getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
                         ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance()))){
-            roomService.exportRooms();
             return "Successfully imported rooms";
         }
         else {
