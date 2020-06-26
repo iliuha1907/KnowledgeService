@@ -27,8 +27,8 @@ public class ServiceWriterImpl implements ServiceWriter {
         FileWriter fileWriter = new FileWriter(new File(FILE_NAME));
         for (Service service : services) {
             fileWriter.write(ServiceParser.getStringFromService(service, SEPARATOR));
-            fileWriter.write(ClientParser.getStringFromResident(service.getClient(), SEPARATOR));
-            fileWriter.write(RoomParser.getStringFromRoom(service.getClient().getRoom(), SEPARATOR) + "\n");
+            fileWriter.write(service.getClient().getId() + SEPARATOR);
+            fileWriter.write(service.getClient().getRoom().getId() + SEPARATOR + "\n");
         }
         fileWriter.close();
     }

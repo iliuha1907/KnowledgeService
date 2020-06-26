@@ -26,7 +26,7 @@ public class ClientWriterImpl implements ClientWriter {
         FileWriter fileWriter = new FileWriter(new File(FILE_NAME));
         for (Client client : clients) {
             fileWriter.write(ClientParser.getStringFromResident(client, SEPARATOR));
-            fileWriter.write(RoomParser.getStringFromRoom(client.getRoom(), SEPARATOR) + "\n");
+            fileWriter.write(client.getRoom().getId() + SEPARATOR + "\n");
         }
         fileWriter.close();
     }

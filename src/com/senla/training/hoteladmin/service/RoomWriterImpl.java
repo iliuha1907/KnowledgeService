@@ -26,7 +26,7 @@ public class RoomWriterImpl implements RoomWriter {
         FileWriter fileWriter = new FileWriter(new File(FILE_NAME));
         for (Room room : rooms) {
             fileWriter.write(RoomParser.getStringFromRoom(room, SEPARATOR));
-            fileWriter.write(ClientParser.getStringFromResident(room.getResident(), SEPARATOR) + "\n");
+            fileWriter.write(room.getResident().getId() + SEPARATOR + "\n");
         }
         fileWriter.close();
     }

@@ -3,6 +3,11 @@ package com.senla.training.hoteladmin.util.file;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.repo.ClientsArchiveRepoImpl;
+import com.senla.training.hoteladmin.repo.ClientsRepoImpl;
+import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
+import com.senla.training.hoteladmin.repo.SvcRepoImpl;
+import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.util.DateUtil;
 
 import java.io.*;
@@ -32,6 +37,11 @@ public class RoomParser {
     }
 
     public static Room parseRoom(String data, String SEPARATOR) {
+        ClientService clientService = ClientServiceImpl.
+                getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
+                        SvcServiceImpl.getInstance(SvcRepoImpl.getInstance(), ServiceWriterImpl.getInstance()),
+                        ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance(), ClientWriterImpl.getInstance());
+
         int startReading = 0;
         String[] fields = data.split(SEPARATOR);
         Integer id = Integer.parseInt(fields[startReading++]);
@@ -45,12 +55,11 @@ public class RoomParser {
         }
 
         Integer clientId = Integer.parseInt(fields[startReading++]);
-        String clientFirstName = fields[startReading++];
-        String clientLastName = fields[startReading++];
-        Date clientArrival = DateUtil.getDate(fields[startReading++]);
-        Date clientDep = DateUtil.getDate(fields[startReading++]);
         Room room = new Room(id, roomStatus, price, capacity, stars);
-        Client client = new Client(clientId, clientFirstName, clientLastName, clientArrival, clientDep);
+        Client client = clientService.getClientById(clientId);
+        if (client == null) {
+            return null;
+        }
         room.setResident(client);
         client.setRoom(room);
         return room;

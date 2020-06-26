@@ -5,6 +5,11 @@ import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.model.svc.Service;
 import com.senla.training.hoteladmin.model.svc.ServiceType;
+import com.senla.training.hoteladmin.repo.ClientsArchiveRepoImpl;
+import com.senla.training.hoteladmin.repo.ClientsRepoImpl;
+import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
+import com.senla.training.hoteladmin.repo.SvcRepoImpl;
+import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.util.DateUtil;
 
 import java.math.BigDecimal;
@@ -26,6 +31,14 @@ public class ServiceParser {
     }
 
     public static Service parseService(String data, String SEPARATOR) {
+        ClientService clientService = ClientServiceImpl.
+                getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
+                        SvcServiceImpl.getInstance(SvcRepoImpl.getInstance(), ServiceWriterImpl.getInstance()),
+                        ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance(), ClientWriterImpl.getInstance());
+
+        RoomService roomService = RoomServiceImpl.getInstance
+                (RoomsRepoImpl.getInstance(), RoomWriterImpl.getInstance());
+
         int startReading = 0;
         String[] fields = data.split(SEPARATOR);
         Integer id = Integer.parseInt(fields[startReading++]);
@@ -34,19 +47,12 @@ public class ServiceParser {
         Date date = DateUtil.getDate(fields[startReading++]);
 
         Integer clientId = Integer.parseInt(fields[startReading++]);
-        String clientFirstName = fields[startReading++];
-        String clientLastName = fields[startReading++];
-        Date clientArrival = DateUtil.getDate(fields[startReading++]);
-        Date clientDep = DateUtil.getDate(fields[startReading++]);
-
-        Client client = new Client(clientId, clientFirstName, clientLastName, clientArrival, clientDep);
-        Room room;
         Integer roomId = Integer.parseInt(fields[startReading++]);
-        RoomStatus roomStatus = RoomStatus.valueOf(fields[startReading++]);
-        Integer capacity = Integer.parseInt(fields[startReading++]);
-        Integer stars = Integer.parseInt(fields[startReading++]);
-        BigDecimal roomPrice = new BigDecimal(fields[startReading++]);
-        room = new Room(roomId, roomStatus, roomPrice, capacity, stars);
+        Client client = clientService.getClientById(clientId);
+        Room room = roomService.getRoom(roomId);
+        if (client == null || room == null) {
+            return null;
+        }
         room.setResident(client);
         client.setRoom(room);
         return new Service(id, price, type, client, date);
