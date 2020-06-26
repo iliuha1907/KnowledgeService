@@ -18,6 +18,10 @@ public interface SvcService {
 
     List<Service> getServices(ServiceSortCriterion criterion);
 
+    Service getService(Integer clientId);
+
+    boolean removeService(Integer clientId);
+
     boolean exportServices();
 
     boolean importServices(ClientService clientService, RoomService roomService);

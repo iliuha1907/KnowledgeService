@@ -1,5 +1,6 @@
 package com.senla.training.hoteladmin.service;
 
+import com.senla.training.hoteladmin.model.svc.Service;
 import com.senla.training.hoteladmin.repo.*;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.util.ClientIdProvider;
@@ -16,22 +17,24 @@ import java.util.ListIterator;
 public class ClientServiceImpl implements ClientService {
     private static ClientServiceImpl instance;
     private ArchivService archivService;
+    private SvcService svcService;
     private ClientsRepo clientsRepo;
     private RoomsRepo roomsRepo;
     private ClientWriter clientWriter;
 
-    private ClientServiceImpl(ArchivService archivService, ClientsRepo clientsRepo,
+    private ClientServiceImpl(ArchivService archivService, SvcService svcService, ClientsRepo clientsRepo,
                              RoomsRepo roomsRepo, ClientWriter clientWriter){
         this.archivService = archivService;
+        this.svcService = svcService;
         this.clientsRepo = clientsRepo;
         this.roomsRepo = roomsRepo;
         this.clientWriter = clientWriter;
     }
 
-    public static ClientService getInstance(ArchivService archivService, ClientsRepo clientsRepo,
-                                                RoomsRepo roomsRepo, ClientWriter clientWriter) {
+    public static ClientService getInstance(ArchivService archivService, SvcService svcService,
+                                            ClientsRepo clientsRepo, RoomsRepo roomsRepo, ClientWriter clientWriter) {
         if(instance == null){
-            instance = new ClientServiceImpl(archivService,clientsRepo,roomsRepo, clientWriter);
+            instance = new ClientServiceImpl(archivService, svcService, clientsRepo,roomsRepo, clientWriter);
             return instance;
         }
         return instance;
@@ -87,6 +90,7 @@ public class ClientServiceImpl implements ClientService {
         roomsRepo.setRooms(rooms);
         clientsRepo.setClients(residents);
         archivService.addClient(resident);
+        svcService.removeService(resident.getId());
         return true;
     }
 

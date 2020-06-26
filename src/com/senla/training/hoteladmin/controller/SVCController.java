@@ -3,6 +3,7 @@ package com.senla.training.hoteladmin.controller;
 import com.senla.training.hoteladmin.repo.ClientsArchiveRepoImpl;
 import com.senla.training.hoteladmin.repo.ClientsRepoImpl;
 import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
+import com.senla.training.hoteladmin.repo.SvcRepoImpl;
 import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.svc.Service;
@@ -86,9 +87,9 @@ public class SvcController {
     }
 
     public String importServices(){
-        if(svcService.importServices( ClientServiceImpl.
-                getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
-                        ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance(),ClientWriterImpl.getInstance()),
+        if(svcService.importServices( ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
+                SvcServiceImpl.getInstance(SvcRepoImpl.getInstance(), ServiceWriterImpl.getInstance()),
+                ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance(), ClientWriterImpl.getInstance()),
                 RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance(),RoomWriterImpl.getInstance()))){
             return "Successfully imported services";
         }

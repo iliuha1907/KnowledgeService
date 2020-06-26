@@ -1,5 +1,6 @@
 package com.senla.training.hoteladmin.view.action.svc;
 
+import com.senla.training.hoteladmin.controller.ClientController;
 import com.senla.training.hoteladmin.controller.SvcController;
 import com.senla.training.hoteladmin.model.svc.ServiceType;
 import com.senla.training.hoteladmin.repo.ClientsArchiveRepoImpl;
@@ -18,7 +19,8 @@ public class AddServiceAction implements IAction {
     private SvcController svcController = SvcController.getInstance(
             SvcServiceImpl.getInstance(SvcRepoImpl.getInstance(), ServiceWriterImpl.getInstance()),
             ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
-                    ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance(), ClientWriterImpl.getInstance()));
+                            SvcServiceImpl.getInstance(SvcRepoImpl.getInstance(), ServiceWriterImpl.getInstance()),
+                            ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance(), ClientWriterImpl.getInstance()));
 
     @Override
     public void execute() {

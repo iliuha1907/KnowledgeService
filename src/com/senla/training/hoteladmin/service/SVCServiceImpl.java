@@ -95,6 +95,30 @@ public class SvcServiceImpl implements SvcService {
     }
 
     @Override
+    public Service getService(Integer clientId) {
+        List<Service> services = svcRepo.getServices();
+        for(Service service:services){
+            if(service.getClient().getId().equals(clientId)){
+                return service;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean removeService(Integer clientId) {
+        List<Service> services = svcRepo.getServices();
+        Service service = getService(clientId);
+        if(services.remove(service)){
+            svcRepo.setServices(services);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
     public boolean exportServices() {
         try {
             serviceWriter.writeServices(svcRepo.getServices());
