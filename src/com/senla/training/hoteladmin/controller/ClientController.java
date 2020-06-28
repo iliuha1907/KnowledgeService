@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
+import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
 import com.senla.training.hoteladmin.service.ClientService;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.service.RoomServiceImpl;
@@ -84,7 +84,7 @@ public class ClientController {
     }
 
     public String importClients(){
-        if(clientService.importClients( RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance(),
+        if(clientService.importClients( RoomServiceImpl.getInstance(RoomsRepositoryImpl.getInstance(),
                 RoomWriterImpl.getInstance()))){
             return "Successfully imported clients";
         }

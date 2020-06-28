@@ -1,12 +1,12 @@
 package com.senla.training.hoteladmin.util.sort;
 
-import com.senla.training.hoteladmin.model.svc.Service;
+import com.senla.training.hoteladmin.model.svc.HotelService;
 
 import java.util.List;
 
-public class SvcSorter {
-    public static void sortByPrice(List<Service> services) {
-        services.sort((o1, o2) -> {
+public class HotelServiceSorter {
+    public static void sortByPrice(List<HotelService> hotelServices) {
+        hotelServices.sort((o1, o2) -> {
             if (o1.getPrice() == null && o2.getPrice() == null) {
                 return 0;
             }
@@ -20,8 +20,8 @@ public class SvcSorter {
         });
     }
 
-    public static void sortByDate(List<Service> services) {
-        services.sort((o1, o2) ->
+    public static void sortByDate(List<HotelService> hotelServices) {
+        hotelServices.sort((o1, o2) ->
         {
             if (o1.getDate() == null && o2.getDate() == null) {
                 return 0;

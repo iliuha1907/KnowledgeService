@@ -1,10 +1,8 @@
 package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hoteladmin.model.svc.Service;
-import com.senla.training.hoteladmin.repo.*;
+import com.senla.training.hoteladmin.repository.*;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.util.ClientIdProvider;
-import com.senla.training.hoteladmin.util.file.ClientParser;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
@@ -17,24 +15,24 @@ import java.util.ListIterator;
 public class ClientServiceImpl implements ClientService {
     private static ClientServiceImpl instance;
     private ArchivService archivService;
-    private SvcService svcService;
-    private ClientsRepo clientsRepo;
-    private RoomsRepo roomsRepo;
+    private HotelServiceService hotelServiceService;
+    private ClientsRepository clientsRepository;
+    private RoomsRepository roomsRepository;
     private ClientWriter clientWriter;
 
-    private ClientServiceImpl(ArchivService archivService, SvcService svcService, ClientsRepo clientsRepo,
-                             RoomsRepo roomsRepo, ClientWriter clientWriter){
+    private ClientServiceImpl(ArchivService archivService, HotelServiceService hotelServiceService, ClientsRepository clientsRepository,
+                              RoomsRepository roomsRepository, ClientWriter clientWriter){
         this.archivService = archivService;
-        this.svcService = svcService;
-        this.clientsRepo = clientsRepo;
-        this.roomsRepo = roomsRepo;
+        this.hotelServiceService = hotelServiceService;
+        this.clientsRepository = clientsRepository;
+        this.roomsRepository = roomsRepository;
         this.clientWriter = clientWriter;
     }
 
-    public static ClientService getInstance(ArchivService archivService, SvcService svcService,
-                                            ClientsRepo clientsRepo, RoomsRepo roomsRepo, ClientWriter clientWriter) {
+    public static ClientService getInstance(ArchivService archivService, HotelServiceService hotelServiceService,
+                                            ClientsRepository clientsRepository, RoomsRepository roomsRepository, ClientWriter clientWriter) {
         if(instance == null){
-            instance = new ClientServiceImpl(archivService, svcService, clientsRepo,roomsRepo, clientWriter);
+            instance = new ClientServiceImpl(archivService, hotelServiceService, clientsRepository, roomsRepository, clientWriter);
             return instance;
         }
         return instance;
@@ -42,8 +40,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public boolean addResident(Client resident, Date arrival, Date departure) {
-        List<Client> residents = clientsRepo.getClients();
-        List<Room> rooms = roomsRepo.getRooms();
+        List<Client> residents = clientsRepository.getClients();
+        List<Room> rooms = roomsRepository.getRooms();
         boolean hasPlace = false;
         ListIterator<Room> iterator = rooms.listIterator();
         while (iterator.hasNext()){
@@ -54,9 +52,9 @@ public class ClientServiceImpl implements ClientService {
                 resident.setDepartureDate(departure);
                 resident.setRoom(room);
                 room.setResident(resident);
-                roomsRepo.setRooms(rooms);
+                roomsRepository.setRooms(rooms);
                 residents.add(resident);
-                clientsRepo.setClients(residents);
+                clientsRepository.setClients(residents);
                 break;
             }
         }
@@ -69,8 +67,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public boolean removeResident(Client resident) {
-        List<Room> rooms = roomsRepo.getRooms();
-        List<Client> residents = clientsRepo.getClients();
+        List<Room> rooms = roomsRepository.getRooms();
+        List<Client> residents = clientsRepository.getClients();
         if(!residents.remove(resident)){
             return false;
         }
@@ -87,16 +85,16 @@ public class ClientServiceImpl implements ClientService {
             }
         }
 
-        roomsRepo.setRooms(rooms);
-        clientsRepo.setClients(residents);
+        roomsRepository.setRooms(rooms);
+        clientsRepository.setClients(residents);
         archivService.addClient(resident);
-        svcService.removeService(resident.getId());
+        hotelServiceService.removeService(resident.getId());
         return true;
     }
 
     @Override
     public List<Client> getSortedClients(ClientsSortCriterion criterion) {
-        List<Client> clients = clientsRepo.getClients();
+        List<Client> clients = clientsRepository.getClients();
         if(criterion.equals(ClientsSortCriterion.ALPHABET)){
             ClientsSorter.sortByAlphabet(clients);
         }
@@ -108,12 +106,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Integer getNumberOfResidents() {
-        return clientsRepo.getClients().size();
+        return clientsRepository.getClients().size();
     }
 
     @Override
     public Client getClientById(Integer id) {
-        List<Client> clients = clientsRepo.getClients();
+        List<Client> clients = clientsRepository.getClients();
         for (Client client:clients){
             if(client.getId().equals(id)){
                 return client;
@@ -130,7 +128,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public boolean exportClients() {
         try {
-            clientWriter.writeClients(clientsRepo.getClients());
+            clientWriter.writeClients(clientsRepository.getClients());
         }
         catch (Exception ex){
             return false;
@@ -159,7 +157,7 @@ public class ClientServiceImpl implements ClientService {
         if(client == null){
             return;
         }
-        List<Client> clients = clientsRepo.getClients();
+        List<Client> clients = clientsRepository.getClients();
         int index = clients.indexOf(client);
         if(index == -1){
             client.setId(ClientIdProvider.getNextId());
@@ -168,7 +166,7 @@ public class ClientServiceImpl implements ClientService {
         else {
             clients.set(index,client);
         }
-        clientsRepo.setClients(clients);
+        clientsRepository.setClients(clients);
     }
 }
 

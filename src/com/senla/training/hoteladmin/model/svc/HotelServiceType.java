@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.model.svc;
 
-public enum ServiceType {
+public enum HotelServiceType {
     SPA,
     MASSAGE,
     SAUNA

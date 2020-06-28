@@ -1,20 +1,19 @@
 package com.senla.training.hoteladmin.model.svc;
 
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.util.DateUtil;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Service {
+public class HotelService {
     private Integer id;
     private BigDecimal price;
-    private ServiceType type;
+    private HotelServiceType type;
     private Client client;
     private Date date;
 
-    public Service(Integer id, BigDecimal price, ServiceType type, Client client, Date date) {
+    public HotelService(Integer id, BigDecimal price, HotelServiceType type, Client client, Date date) {
         this.id = id;
         this.price = price;
         this.type = type;
@@ -28,10 +27,6 @@ public class Service {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public void setType(ServiceType type) {
-        this.type = type;
     }
 
     public void setClient(Client client) {
@@ -50,7 +45,7 @@ public class Service {
         return price;
     }
 
-    public ServiceType getType() {
+    public HotelServiceType getType() {
         return type;
     }
 
@@ -64,15 +59,13 @@ public class Service {
 
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof Service) && this.id.equals(((Service) obj).getId());
+        return (obj instanceof HotelService) && this.id.equals(((HotelService) obj).getId());
     }
 
     @Override
     public int hashCode() {
         return id;
     }
-
-
 
     @Override
     public String toString() {

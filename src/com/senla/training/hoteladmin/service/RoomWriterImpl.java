@@ -1,7 +1,6 @@
 package com.senla.training.hoteladmin.service;
 
 import com.senla.training.hoteladmin.model.room.Room;
-import com.senla.training.hoteladmin.util.file.ClientParser;
 import com.senla.training.hoteladmin.util.file.RoomParser;
 
 import java.io.*;

@@ -1,12 +1,11 @@
 package com.senla.training.hoteladmin.view.action.svc;
 
-import com.senla.training.hoteladmin.controller.ClientController;
-import com.senla.training.hoteladmin.controller.SvcController;
-import com.senla.training.hoteladmin.model.svc.ServiceType;
-import com.senla.training.hoteladmin.repo.ClientsArchiveRepoImpl;
-import com.senla.training.hoteladmin.repo.ClientsRepoImpl;
-import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
-import com.senla.training.hoteladmin.repo.SvcRepoImpl;
+import com.senla.training.hoteladmin.controller.HotelServiceController;
+import com.senla.training.hoteladmin.model.svc.HotelServiceType;
+import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
+import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
+import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
+import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
 import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.util.DateUtil;
 import com.senla.training.hoteladmin.util.UserInteraction;
@@ -16,11 +15,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class AddServiceAction implements IAction {
-    private SvcController svcController = SvcController.getInstance(
-            SvcServiceImpl.getInstance(SvcRepoImpl.getInstance(), ServiceWriterImpl.getInstance()),
-            ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
-                            SvcServiceImpl.getInstance(SvcRepoImpl.getInstance(), ServiceWriterImpl.getInstance()),
-                            ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance(), ClientWriterImpl.getInstance()));
+    private HotelServiceController hotelServiceController = HotelServiceController.getInstance(
+            HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
+            ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
+                            HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
+                            ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(), ClientWriterImpl.getInstance()));
 
     @Override
     public void execute() {
@@ -49,7 +48,7 @@ public class AddServiceAction implements IAction {
             return;
         }
 
-        ServiceType type;
+        HotelServiceType type;
         try {
             type = userInteraction.getServiceType();
         } catch (Exception ex) {
@@ -65,7 +64,7 @@ public class AddServiceAction implements IAction {
             System.out.println("Wrong date");
             return;
         }
-        System.out.println(svcController.addService(price, type, id, date));
+        System.out.println(hotelServiceController.addService(price, type, id, date));
     }
 }
 

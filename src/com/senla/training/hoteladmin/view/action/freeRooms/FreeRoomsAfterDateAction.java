@@ -1,7 +1,7 @@
 package com.senla.training.hoteladmin.view.action.freeRooms;
 
 import com.senla.training.hoteladmin.controller.RoomController;
-import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
+import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
 import com.senla.training.hoteladmin.service.RoomServiceImpl;
 import com.senla.training.hoteladmin.service.RoomWriterImpl;
 import com.senla.training.hoteladmin.util.DateUtil;
@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class FreeRoomsAfterDateAction implements IAction {
     private RoomController roomController =  RoomController.getInstance(
-            RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance(), RoomWriterImpl.getInstance()));
+            RoomServiceImpl.getInstance(RoomsRepositoryImpl.getInstance(), RoomWriterImpl.getInstance()));
 
     @Override
     public void execute() {

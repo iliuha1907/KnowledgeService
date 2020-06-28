@@ -1,23 +1,23 @@
 package com.senla.training.hoteladmin.view.action.svc;
 
-import com.senla.training.hoteladmin.controller.SvcController;
-import com.senla.training.hoteladmin.repo.ClientsArchiveRepoImpl;
-import com.senla.training.hoteladmin.repo.ClientsRepoImpl;
-import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
-import com.senla.training.hoteladmin.repo.SvcRepoImpl;
+import com.senla.training.hoteladmin.controller.HotelServiceController;
+import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
+import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
+import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
+import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
 import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.view.IAction;
 
 public class ServicesAction implements IAction {
-    private SvcController svcController = SvcController.getInstance(
-            SvcServiceImpl.getInstance(SvcRepoImpl.getInstance(), ServiceWriterImpl.getInstance()),
-            ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
-                    SvcServiceImpl.getInstance(SvcRepoImpl.getInstance(), ServiceWriterImpl.getInstance()),
-                    ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance(), ClientWriterImpl.getInstance()));
+    private HotelServiceController hotelServiceController = HotelServiceController.getInstance(
+            HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
+            ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
+                    HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
+                    ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(), ClientWriterImpl.getInstance()));
 
     @Override
     public void execute() {
-        System.out.println(svcController.getServices());
+        System.out.println(hotelServiceController.getServices());
     }
 }
 

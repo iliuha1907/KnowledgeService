@@ -39,18 +39,9 @@ public class Room {
         this.resident = resident;
     }
 
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
-    public void setStars(Integer stars) {
-        this.stars = stars;
-    }
-
     public Integer getId() {
         return id;
     }
-
 
     public RoomStatus getStatus() {
         return status;

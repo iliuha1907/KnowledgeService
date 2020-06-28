@@ -2,19 +2,13 @@ package com.senla.training.hoteladmin.util.file;
 
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.room.Room;
-import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.repo.RoomsRepo;
-import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
+import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
 import com.senla.training.hoteladmin.service.RoomService;
 import com.senla.training.hoteladmin.service.RoomServiceImpl;
 import com.senla.training.hoteladmin.service.RoomWriterImpl;
 import com.senla.training.hoteladmin.util.DateUtil;
 
-import java.io.*;
-import java.math.BigDecimal;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 public class ClientParser {
 
@@ -38,7 +32,7 @@ public class ClientParser {
 
     public static Client parseClient(String data, String SEPARATOR) {
         RoomService roomService = RoomServiceImpl.getInstance
-                (RoomsRepoImpl.getInstance(), RoomWriterImpl.getInstance());
+                (RoomsRepositoryImpl.getInstance(), RoomWriterImpl.getInstance());
         int startReading = 0;
         String[] fields = data.split(SEPARATOR);
         Integer clientId = Integer.parseInt(fields[startReading++]);

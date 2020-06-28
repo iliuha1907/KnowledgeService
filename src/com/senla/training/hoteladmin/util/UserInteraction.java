@@ -1,7 +1,7 @@
 package com.senla.training.hoteladmin.util;
 
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.model.svc.ServiceType;
+import com.senla.training.hoteladmin.model.svc.HotelServiceType;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -48,17 +48,17 @@ public class UserInteraction {
         throw new IllegalArgumentException("Unknown command");
     }
 
-    public ServiceType getServiceType() {
+    public HotelServiceType getServiceType() {
         System.out.println("Enter 1 to spa, 2 to massage, 3 to sauna");
         Integer choice = Integer.parseInt(input.nextLine());
         if(choice == 1){
-            return ServiceType.SPA;
+            return HotelServiceType.SPA;
         }
         else if(choice == 2){
-            return ServiceType.MASSAGE;
+            return HotelServiceType.MASSAGE;
         }
         else if(choice == 3){
-            return ServiceType.SAUNA;
+            return HotelServiceType.SAUNA;
         }
         throw new IllegalArgumentException("Unknown command");
     }

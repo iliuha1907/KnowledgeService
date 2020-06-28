@@ -1,22 +1,21 @@
-package com.senla.training.hoteladmin.repo;
+package com.senla.training.hoteladmin.repository;
 
 import com.senla.training.hoteladmin.model.client.Client;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-public class ClientsRepoImpl implements ClientsRepo {
-    private static ClientsRepoImpl instance;
+public class ClientsRepositoryImpl implements ClientsRepository {
+    private static ClientsRepositoryImpl instance;
     private List<Client> clients;
 
-    private ClientsRepoImpl() {
+    private ClientsRepositoryImpl() {
         clients = new ArrayList<>();
     }
 
-    public static ClientsRepo getInstance() {
+    public static ClientsRepository getInstance() {
         if (instance == null) {
-            instance = new ClientsRepoImpl();
+            instance = new ClientsRepositoryImpl();
         }
         return instance;
     }

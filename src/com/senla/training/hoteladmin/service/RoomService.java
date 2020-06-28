@@ -1,6 +1,5 @@
 package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
