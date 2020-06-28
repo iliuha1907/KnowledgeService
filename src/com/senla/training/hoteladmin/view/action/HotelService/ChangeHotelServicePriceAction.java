@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.view.action.HotelService;
+package com.senla.training.hoteladmin.view.action.hotelService;
 
 import com.senla.training.hoteladmin.controller.HotelServiceController;
 import com.senla.training.hoteladmin.model.svc.HotelServiceType;
