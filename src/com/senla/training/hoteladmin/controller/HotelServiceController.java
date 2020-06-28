@@ -61,8 +61,7 @@ public class HotelServiceController {
         List<HotelService> hotelServices = hotelServiceService.getSortedClientServices(client, criterion);
         StringBuilder result = new StringBuilder("Services:\n");
         hotelServices.forEach(e -> {
-            String part = e + "\n";
-            result.append(part);
+            result.append(e).append("\n");
         });
         return result.toString();
     }
@@ -71,8 +70,7 @@ public class HotelServiceController {
         List<HotelService> hotelServices = hotelServiceService.getServices(HotelServiceSortCriterion.PRICE);
         StringBuilder result = new StringBuilder("Services:\n");
         hotelServices.forEach(e -> {
-            String part = e + "\n";
-            result.append(part);
+            result.append(e).append("\n");
         });
         return result.toString();
     }

@@ -61,8 +61,7 @@ public class RoomController {
         String title = "Rooms sorted by " + criterion.toString() + "\n";
         StringBuilder result = new StringBuilder(title);
         rooms.forEach(e -> {
-            String part = e + "\n";
-            result.append(part);
+            result.append(e).append("\n");
         });
         return result.toString();
     }
@@ -72,8 +71,7 @@ public class RoomController {
         String title = "Free rooms sorted by " + criterion.toString() + "\n";
         StringBuilder result = new StringBuilder(title);
         rooms.forEach(e -> {
-            String part = e + "\n";
-            result.append(part);
+            result.append(e).append("\n");
         });
         return result.toString();
     }
@@ -83,8 +81,7 @@ public class RoomController {
         String title = "Rooms, free after " + DateUtil.getStr(date) + "\n";
         StringBuilder result = new StringBuilder(title);
         rooms.forEach(e -> {
-            String part = e + "\n";
-            result.append(part);
+            result.append(e).append("\n");
         });
         return result.toString();
     }

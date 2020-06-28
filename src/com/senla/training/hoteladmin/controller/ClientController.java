@@ -53,8 +53,7 @@ public class ClientController {
         String title = "Clients, sorted by " + criterion.toString() + "\n";
         StringBuilder result = new StringBuilder(title);
         clients.forEach(e -> {
-            String part = e + "\n";
-            result.append(part);
+            result.append(e).append("\n");
         });
         return result.toString();
     }
@@ -68,8 +67,7 @@ public class ClientController {
         String title = "Last 3 residents of room " + roomNumber + "\n";
         StringBuilder result = new StringBuilder(title);
         clients.forEach(e -> {
-            String part = e + "\n";
-            result.append(part);
+            result.append(e).append("\n");
         });
         return result.toString();
     }
