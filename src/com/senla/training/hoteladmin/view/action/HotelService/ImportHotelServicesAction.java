@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.view.action.svc;
+package com.senla.training.hoteladmin.view.action.HotelService;
 
 import com.senla.training.hoteladmin.controller.HotelServiceController;
 import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
@@ -8,7 +8,7 @@ import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
 import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.view.IAction;
 
-public class ImportServicesAction implements IAction {
+public class ImportHotelServicesAction implements IAction {
     private HotelServiceController hotelServiceController = HotelServiceController.getInstance(
             HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
             ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),

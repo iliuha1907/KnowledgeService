@@ -3,16 +3,17 @@ package com.senla.training.hoteladmin.view;
 import com.senla.training.hoteladmin.view.action.clients.*;
 import com.senla.training.hoteladmin.view.action.freeRooms.*;
 import com.senla.training.hoteladmin.view.action.rooms.*;
-import com.senla.training.hoteladmin.view.action.svc.*;
+import com.senla.training.hoteladmin.view.action.HotelService.*;
 
 public class Builder {
     private static Builder instance;
     private Menu rootMenu;
 
-    private Builder(){}
+    private Builder() {
+    }
 
-    public static Builder getInstance(){
-        if(instance == null){
+    public static Builder getInstance() {
+        if (instance == null) {
             instance = new Builder();
         }
         return instance;
@@ -80,11 +81,11 @@ public class Builder {
 
     private void buildServiceMenu(Menu svcMenu) {
         MenuItem[] itemsSVC = new MenuItem[6];
-        IAction servicesDate = new ClientServicesDateAction();
-        IAction servicesPrice = new ClientServicesPriceAction();
-        IAction servicesAll = new ServicesAction();
-        IAction addService = new AddServiceAction();
-        IAction changeServicePrice = new ChangeServicePriceAction();
+        IAction servicesDate = new ClientHotelServicesDateAction();
+        IAction servicesPrice = new ClientHotelServicesPriceAction();
+        IAction servicesAll = new HotelServicesAction();
+        IAction addService = new AddHotelServiceAction();
+        IAction changeServicePrice = new ChangeHotelServicePriceAction();
         itemsSVC[0] = new MenuItem("Main menu", null, rootMenu);
         itemsSVC[1] = new MenuItem("Display services of a client, sorted by date", servicesDate, null);
         itemsSVC[2] = new MenuItem("Display services of a client, sorted by price", servicesPrice, null);
@@ -95,10 +96,10 @@ public class Builder {
     }
 
     private void buildRootMenu(Menu roomMenu, Menu clientMenu, Menu svcMenu){
-        IAction exportSvc = new ExportServicesAction();
+        IAction exportSvc = new ExportHotelServicesAction();
         IAction exportCl = new ExportClientsAction();
         IAction exportRooms = new ExportRoomsAction();
-        IAction importSvc = new ImportServicesAction();
+        IAction importSvc = new ImportHotelServicesAction();
         IAction importCl = new ImportClientsAction();
         IAction importRooms = new ImportRoomsAction();
         MenuItem[] itemsMain = new MenuItem[9];

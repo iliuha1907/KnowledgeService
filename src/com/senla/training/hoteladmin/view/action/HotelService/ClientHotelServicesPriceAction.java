@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.view.action.svc;
+package com.senla.training.hoteladmin.view.action.HotelService;
 
 import com.senla.training.hoteladmin.controller.HotelServiceController;
 import com.senla.training.hoteladmin.service.*;
@@ -10,7 +10,7 @@ import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
 import com.senla.training.hoteladmin.view.IAction;
 import com.senla.training.hoteladmin.util.UserInteraction;
 
-public class ClientServicesDateAction implements IAction {
+public class ClientHotelServicesPriceAction implements IAction {
     private HotelServiceController hotelServiceController = HotelServiceController.getInstance(
             HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
             ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
@@ -32,8 +32,7 @@ public class ClientServicesDateAction implements IAction {
             return;
         }
         System.out.println(hotelServiceController.getSortedClientServices(id,
-                HotelServiceSortCriterion.DATE));
-
+                HotelServiceSortCriterion.PRICE));
     }
 }
 
