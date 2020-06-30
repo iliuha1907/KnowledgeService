@@ -1,7 +1,7 @@
-package com.senla.training.hoteladmin.service;
+package com.senla.training.hoteladmin.service.writer;
 
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.util.file.ClientParser;
+import com.senla.training.hoteladmin.util.fileCsv.ClientParser;
 
 import java.io.*;
 import java.util.ArrayList;

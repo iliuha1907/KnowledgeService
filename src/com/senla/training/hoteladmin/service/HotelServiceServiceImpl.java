@@ -3,7 +3,7 @@ package com.senla.training.hoteladmin.service;
 import com.senla.training.hoteladmin.model.svc.HotelService;
 import com.senla.training.hoteladmin.repository.HotelServiceRepository;
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.util.HotelServiceIdProvider;
+import com.senla.training.hoteladmin.service.writer.HotelServiceWriter;
 import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
 import com.senla.training.hoteladmin.model.svc.HotelServiceType;
 import com.senla.training.hoteladmin.util.sort.HotelServiceSorter;
@@ -72,10 +72,9 @@ public class HotelServiceServiceImpl implements HotelServiceService {
     @Override
     public List<HotelService> getSortedClientServices(Client client, HotelServiceSortCriterion criterion) {
         List<HotelService> hotelServices = getClientServices(hotelServiceRepository.getHotelServices(), client);
-        if(criterion.equals(HotelServiceSortCriterion.DATE)){
+        if (criterion.equals(HotelServiceSortCriterion.DATE)) {
             HotelServiceSorter.sortByDate(hotelServices);
-        }
-        else if(criterion.equals(HotelServiceSortCriterion.PRICE)){
+        } else if (criterion.equals(HotelServiceSortCriterion.PRICE)) {
             HotelServiceSorter.sortByPrice(hotelServices);
         }
         return hotelServices;
@@ -84,10 +83,9 @@ public class HotelServiceServiceImpl implements HotelServiceService {
     @Override
     public List<HotelService> getServices(HotelServiceSortCriterion criterion) {
         List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
-        if(criterion.equals(HotelServiceSortCriterion.DATE)){
+        if (criterion.equals(HotelServiceSortCriterion.DATE)) {
             HotelServiceSorter.sortByDate(hotelServices);
-        }
-        else if(criterion.equals(HotelServiceSortCriterion.PRICE)){
+        } else if (criterion.equals(HotelServiceSortCriterion.PRICE)) {
             HotelServiceSorter.sortByPrice(hotelServices);
         }
         return hotelServices;
@@ -96,8 +94,19 @@ public class HotelServiceServiceImpl implements HotelServiceService {
     @Override
     public HotelService getService(Integer clientId) {
         List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
-        for(HotelService hotelService : hotelServices){
-            if(hotelService.getClient().getId().equals(clientId)){
+        for (HotelService hotelService : hotelServices) {
+            if (hotelService.getClient().getId().equals(clientId)) {
+                return hotelService;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public HotelService getServiceById(Integer id) {
+        List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
+        for (HotelService hotelService : hotelServices) {
+            if (hotelService.getId().equals(id)) {
                 return hotelService;
             }
         }
@@ -108,11 +117,10 @@ public class HotelServiceServiceImpl implements HotelServiceService {
     public boolean removeService(Integer clientId) {
         List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
         HotelService hotelService = getService(clientId);
-        if(hotelServices.remove(hotelService)){
+        if (hotelServices.remove(hotelService)) {
             hotelServiceRepository.setHotelServices(hotelServices);
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -121,25 +129,21 @@ public class HotelServiceServiceImpl implements HotelServiceService {
     public boolean exportServices() {
         try {
             hotelServiceWriter.writeServices(hotelServiceRepository.getHotelServices());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             return false;
         }
         return true;
     }
 
     @Override
-    public boolean importServices(ClientService clientService, RoomService roomService) {
+    public boolean importServices() {
         List<HotelService> hotelServices;
         try {
             hotelServices = hotelServiceWriter.readServices();
-            hotelServices.forEach(e->{
+            hotelServices.forEach(e -> {
                 updateService(e);
-                clientService.updateClient(e.getClient());
-                roomService.updateRoom(e.getClient().getRoom());
             });
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             return false;
         }
 
@@ -148,16 +152,14 @@ public class HotelServiceServiceImpl implements HotelServiceService {
 
     @Override
     public void updateService(HotelService hotelService) {
-        if(hotelService == null){
+        if (hotelService == null) {
             return;
         }
         List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
         int index = hotelServices.indexOf(hotelService);
-        if(index == -1){
-            hotelService.setId(HotelServiceIdProvider.getNextId());
+        if (index == -1) {
             hotelServices.add(hotelService);
-        }
-        else {
+        } else {
             hotelServices.set(index, hotelService);
         }
         hotelServiceRepository.setHotelServices(hotelServices);

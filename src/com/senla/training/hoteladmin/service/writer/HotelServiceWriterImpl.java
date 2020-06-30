@@ -1,7 +1,7 @@
-package com.senla.training.hoteladmin.service;
+package com.senla.training.hoteladmin.service.writer;
 
 import com.senla.training.hoteladmin.model.svc.HotelService;
-import com.senla.training.hoteladmin.util.file.HotelServiceParser;
+import com.senla.training.hoteladmin.util.fileCsv.HotelServiceParser;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -25,8 +25,7 @@ public class HotelServiceWriterImpl implements HotelServiceWriter {
         FileWriter fileWriter = new FileWriter(new File(FILE_NAME));
         for (HotelService hotelService : hotelServices) {
             fileWriter.write(HotelServiceParser.getStringFromService(hotelService, SEPARATOR));
-            fileWriter.write(hotelService.getClient().getId() + SEPARATOR);
-            fileWriter.write(hotelService.getClient().getRoom().getId() + SEPARATOR + "\n");
+            fileWriter.write(hotelService.getClient().getId() + SEPARATOR + "\n");
         }
         fileWriter.close();
     }

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ArchivServiceImpl implements ArchivService {
-    private final Integer LAST_CLIENTS = 3;
+    private final Integer NUMBER_OF_RESIDENTS = 3;
     private static ArchivServiceImpl instance;
     private ClientsArchiveRepository archive;
 
@@ -35,7 +35,7 @@ public class ArchivServiceImpl implements ArchivService {
         List<Client> clients = archive.getClients();
         List<Client> residents = new LinkedList<>();
 
-        Integer times =LAST_CLIENTS;
+        Integer times = NUMBER_OF_RESIDENTS;
         for(Client client:clients){
             if (client.getRoom().getId().equals(roomId)) {
                 residents.add(client);

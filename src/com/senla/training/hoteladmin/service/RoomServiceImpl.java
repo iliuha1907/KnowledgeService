@@ -3,7 +3,7 @@ package com.senla.training.hoteladmin.service;
 import com.senla.training.hoteladmin.repository.RoomsRepository;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.util.RoomIdProvider;
+import com.senla.training.hoteladmin.service.writer.RoomWriter;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.hoteladmin.util.sort.RoomsSorter;
 
@@ -17,15 +17,18 @@ public class RoomServiceImpl implements RoomService {
     private static RoomServiceImpl instance;
     private RoomsRepository roomsRepository;
     private RoomWriter roomWriter;
+    private ClientService clientService;
 
-    private RoomServiceImpl(RoomsRepository roomsRepository, RoomWriter roomWriter) {
+    private RoomServiceImpl(RoomsRepository roomsRepository, RoomWriter roomWriter, ClientService clientService) {
         this.roomsRepository = roomsRepository;
         this.roomWriter = roomWriter;
+        this.clientService = clientService;
     }
 
-    public static RoomService getInstance(RoomsRepository roomsRepository, RoomWriter roomWriter) {
+    public static RoomService getInstance(RoomsRepository roomsRepository, RoomWriter roomWriter,
+                                          ClientService clientService) {
         if (instance == null) {
-            instance = new RoomServiceImpl(roomsRepository, roomWriter);
+            instance = new RoomServiceImpl(roomsRepository, roomWriter, clientService);
             return instance;
         }
         return instance;
@@ -75,13 +78,11 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<Room> getSortedRooms(RoomsSortCriterion criterion) {
         List<Room> rooms = roomsRepository.getRooms();
-        if(criterion.equals(RoomsSortCriterion.PRICE)){
+        if (criterion.equals(RoomsSortCriterion.PRICE)) {
             RoomsSorter.sortRoomsByPrice(rooms);
-        }
-        else if(criterion.equals(RoomsSortCriterion.STARS)){
+        } else if (criterion.equals(RoomsSortCriterion.STARS)) {
             RoomsSorter.sortRoomsByStars(rooms);
-        }
-        else if(criterion.equals(RoomsSortCriterion.CAPACITY)){
+        } else if (criterion.equals(RoomsSortCriterion.CAPACITY)) {
             RoomsSorter.sortRoomsByCapacity(rooms);
         }
         return rooms;
@@ -90,13 +91,11 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<Room> getSortedFreeRooms(RoomsSortCriterion criterion) {
         List<Room> free = getFreeRooms(roomsRepository.getRooms());
-        if(criterion.equals(RoomsSortCriterion.PRICE)){
+        if (criterion.equals(RoomsSortCriterion.PRICE)) {
             RoomsSorter.sortRoomsByPrice(free);
-        }
-        else if(criterion.equals(RoomsSortCriterion.STARS)){
+        } else if (criterion.equals(RoomsSortCriterion.STARS)) {
             RoomsSorter.sortRoomsByStars(free);
-        }
-        else if(criterion.equals(RoomsSortCriterion.CAPACITY)){
+        } else if (criterion.equals(RoomsSortCriterion.CAPACITY)) {
             RoomsSorter.sortRoomsByCapacity(free);
         }
         return free;
@@ -155,8 +154,7 @@ public class RoomServiceImpl implements RoomService {
     public boolean exportRooms() {
         try {
             roomWriter.writeRooms(roomsRepository.getRooms());
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             return false;
         }
         return true;
@@ -168,16 +166,15 @@ public class RoomServiceImpl implements RoomService {
         List<Room> rooms;
         try {
             rooms = roomWriter.readRooms();
-            rooms.forEach(e->{
+            rooms.forEach(e -> {
                 int index = oldRooms.indexOf(e);
-                if(index!=-1 && !(oldRooms.get(index).getResident().equals(e.getResident()))) {
+                if (index != -1 && !(oldRooms.get(index).getResident().equals(e.getResident()))) {
                     clientService.removeResident(oldRooms.get(index).getResident());
                 }
                 updateRoom(e);
-                clientService.updateClient(e.getResident());
+                //clientService.updateClient(e.getResident());
             });
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             return false;
         }
 
@@ -186,17 +183,18 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void updateRoom(Room room) {
-        if(room == null){
+        if (room == null) {
             return;
         }
         List<Room> rooms = roomsRepository.getRooms();
         int index = rooms.indexOf(room);
-        if(index == -1){
-            room.setId(RoomIdProvider.getNextId());
+        if (index == -1) {
             rooms.add(room);
-        }
-        else {
-            rooms.set(index,room);
+        } else {
+            if (!rooms.get(index).getResident().equals(room.getResident())) {
+                clientService.removeResident(rooms.get(index).getResident());
+            }
+            rooms.set(index, room);
         }
         roomsRepository.setRooms(rooms);
     }
@@ -220,6 +218,5 @@ public class RoomServiceImpl implements RoomService {
         }
         return true;
     }
-
 }
 

@@ -17,11 +17,11 @@ public interface ClientService {
 
     Client getClientById(Integer id);
 
-    List<Client> getLastThreeResidents(Integer roomNumber);
+    List<Client> getLastThreeResidents(Integer roomId);
 
     boolean exportClients();
 
-    boolean importClients(RoomService roomService);
+    boolean importClients();
 
     void updateClient(Client client);
 }

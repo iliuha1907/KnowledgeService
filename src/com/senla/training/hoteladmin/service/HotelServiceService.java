@@ -19,11 +19,13 @@ public interface HotelServiceService {
 
     HotelService getService(Integer clientId);
 
+    HotelService getServiceById(Integer id);
+
     boolean removeService(Integer clientId);
 
     boolean exportServices();
 
-    boolean importServices(ClientService clientService, RoomService roomService);
+    boolean importServices();
 
     void updateService(HotelService hotelService);
 }

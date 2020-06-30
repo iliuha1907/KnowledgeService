@@ -1,11 +1,15 @@
-package com.senla.training.hoteladmin.util.file;
+package com.senla.training.hoteladmin.util.fileCsv;
 
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.room.Room;
+import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
+import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
+import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
 import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
-import com.senla.training.hoteladmin.service.RoomService;
-import com.senla.training.hoteladmin.service.RoomServiceImpl;
-import com.senla.training.hoteladmin.service.RoomWriterImpl;
+import com.senla.training.hoteladmin.service.*;
+import com.senla.training.hoteladmin.service.writer.ClientWriterImpl;
+import com.senla.training.hoteladmin.service.writer.HotelServiceWriterImpl;
+import com.senla.training.hoteladmin.service.writer.RoomWriterImpl;
 import com.senla.training.hoteladmin.util.DateUtil;
 
 import java.util.Date;
@@ -32,7 +36,13 @@ public class ClientParser {
 
     public static Client parseClient(String data, String SEPARATOR) {
         RoomService roomService = RoomServiceImpl.getInstance
-                (RoomsRepositoryImpl.getInstance(), RoomWriterImpl.getInstance());
+                (RoomsRepositoryImpl.getInstance(), RoomWriterImpl.getInstance(),
+                        ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance
+                                        (ClientsArchiveRepositoryImpl.getInstance()), HotelServiceServiceImpl.getInstance
+                                        (HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
+                                ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(),
+                                ClientWriterImpl.getInstance()));
+
         int startReading = 0;
         String[] fields = data.split(SEPARATOR);
         Integer clientId = Integer.parseInt(fields[startReading++]);
@@ -45,7 +55,7 @@ public class ClientParser {
 
         Client client = new Client(clientId, clientFirstName, clientLastName, clientArrival, clientDep);
         Room room = roomService.getRoom(roomId);
-        if (room == null) {
+        if (room == null || room.getResident() != null) {
             return null;
         }
         room.setResident(client);

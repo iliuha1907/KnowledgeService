@@ -8,6 +8,9 @@ import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
 import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
 import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
 import com.senla.training.hoteladmin.service.*;
+import com.senla.training.hoteladmin.service.writer.ClientWriterImpl;
+import com.senla.training.hoteladmin.service.writer.HotelServiceWriterImpl;
+import com.senla.training.hoteladmin.service.writer.RoomWriterImpl;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.hoteladmin.view.action.clients.*;
@@ -23,18 +26,20 @@ public class Builder {
     private RoomController roomController;
 
     private Builder() {
-        clientController = ClientController.getInstance(ClientServiceImpl.
-                getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
-                        HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
-                        ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(), ClientWriterImpl.getInstance()));
+        ClientService clientService = ClientServiceImpl.getInstance
+                (ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
+                        HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(),
+                                HotelServiceWriterImpl.getInstance()),
+                        ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(), ClientWriterImpl.getInstance());
+        clientController = ClientController.getInstance(clientService);
 
         hotelServiceController = HotelServiceController.getInstance(
-                HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
-                ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
-                        HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
-                        ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(), ClientWriterImpl.getInstance()));
+                HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(),
+                        HotelServiceWriterImpl.getInstance()),
+                clientService);
         roomController = RoomController.getInstance(
-                RoomServiceImpl.getInstance(RoomsRepositoryImpl.getInstance(), RoomWriterImpl.getInstance()));
+                RoomServiceImpl.getInstance(RoomsRepositoryImpl.getInstance(),
+                        RoomWriterImpl.getInstance(), clientService));
     }
 
     public static Builder getInstance() {
@@ -96,7 +101,7 @@ public class Builder {
                 System.out.println(clientController.getSortedClients(ClientsSortCriterion.DEPARTURE_DATE)), null);
         itemsClients[2] = new MenuItem("Display clients, sorted by alphabet",
                 () -> System.out.println(clientController.getSortedClients(ClientsSortCriterion.ALPHABET)), null);
-        itemsClients[3] = new MenuItem("Display last 3 residents of a room", lastClients, null);
+        itemsClients[3] = new MenuItem("Display last residents of a room", lastClients, null);
         itemsClients[4] = new MenuItem("Display number of residents", () ->
                 System.out.println(clientController.getNumberOfResidents()), null);
         itemsClients[5] = new MenuItem("Add resident", addClient, null);

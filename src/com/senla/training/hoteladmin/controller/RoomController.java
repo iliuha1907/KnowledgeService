@@ -7,6 +7,8 @@ import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
 import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.service.writer.ClientWriterImpl;
+import com.senla.training.hoteladmin.service.writer.HotelServiceWriterImpl;
 import com.senla.training.hoteladmin.util.RoomIdProvider;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.hoteladmin.util.DateUtil;
@@ -33,11 +35,11 @@ public class RoomController {
     public String addRoom( RoomStatus status, BigDecimal price, Integer capacity,
                           Integer stars) {
         Room room = new Room(RoomIdProvider.getNextId(), status, price, capacity, stars);
-        if (roomService.addRoom(room)) {
-            return "Successfully added room";
-        } else {
-            return "Error at adding room: number of the room already exists!";
+        while (roomService.getRoom(room.getId()) != null) {
+            room.setId(RoomIdProvider.getNextId());
         }
+        roomService.addRoom(room);
+        return "Successfully added room";
     }
 
     public String setRoomStatus(int roomNumber, RoomStatus status) {

@@ -1,15 +1,12 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.model.svc.HotelService;
-import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
-import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
-import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
-import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
-import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.model.svc.HotelService;
+import com.senla.training.hoteladmin.model.svc.HotelServiceType;
+import com.senla.training.hoteladmin.service.ClientService;
+import com.senla.training.hoteladmin.service.HotelServiceService;
 import com.senla.training.hoteladmin.util.HotelServiceIdProvider;
 import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
-import com.senla.training.hoteladmin.model.svc.HotelServiceType;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -37,8 +34,14 @@ public class HotelServiceController {
         if (client == null) {
             return "Error at adding hotelService: no such client!";
         }
-        HotelService hotelService = new HotelService(HotelServiceIdProvider.getNextId(),price, type, client, date);
+        Integer startId = HotelServiceIdProvider.getId();
+        HotelService hotelService = new HotelService(HotelServiceIdProvider.getNextId(), price, type, client, date);
+        while (hotelServiceService.getServiceById(hotelService.getId()) != null) {
+            hotelService.setId(HotelServiceIdProvider.getNextId());
+        }
+
         if (!hotelServiceService.addService(hotelService)) {
+            HotelServiceIdProvider.setId(startId);
             return "Error at adding hotelService: incompatible dates!";
         } else {
             return "Successfully added hotelService";
@@ -85,10 +88,7 @@ public class HotelServiceController {
     }
 
     public String importServices(){
-        if(hotelServiceService.importServices( ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
-                HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
-                ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(), ClientWriterImpl.getInstance()),
-                RoomServiceImpl.getInstance(RoomsRepositoryImpl.getInstance(),RoomWriterImpl.getInstance()))){
+        if(hotelServiceService.importServices()){
             return "Successfully imported services";
         }
         else {

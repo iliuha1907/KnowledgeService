@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.service;
+package com.senla.training.hoteladmin.service.writer;
 
 import com.senla.training.hoteladmin.model.svc.HotelService;
 

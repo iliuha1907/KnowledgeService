@@ -7,6 +7,8 @@ import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
 import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
 import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
 import com.senla.training.hoteladmin.service.*;
+import com.senla.training.hoteladmin.service.writer.ClientWriterImpl;
+import com.senla.training.hoteladmin.service.writer.HotelServiceWriterImpl;
 import com.senla.training.hoteladmin.util.UserInteraction;
 import com.senla.training.hoteladmin.view.IAction;
 

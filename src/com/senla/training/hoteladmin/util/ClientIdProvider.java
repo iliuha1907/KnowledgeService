@@ -7,8 +7,12 @@ public class ClientIdProvider {
         return ++nextId;
     }
 
-    public static void reduceId(){
-        nextId--;
+    public static void setId(Integer value){
+        nextId = value;
+    }
+
+    public static Integer getId(){
+        return nextId;
     }
 }
 

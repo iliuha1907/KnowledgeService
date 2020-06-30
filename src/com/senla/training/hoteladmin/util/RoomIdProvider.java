@@ -6,5 +6,13 @@ public class RoomIdProvider {
     public static Integer getNextId() {
         return ++nextId;
     }
+
+    public static void setId(Integer value){
+        nextId = value;
+    }
+
+    public static Integer getId(){
+        return nextId;
+    }
 }
 
