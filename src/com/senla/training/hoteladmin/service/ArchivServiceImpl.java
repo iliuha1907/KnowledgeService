@@ -40,7 +40,7 @@ public class ArchivServiceImpl implements ArchivService {
             if (client.getRoom().getId().equals(roomId)) {
                 residents.add(client);
                 times--;
-                if (times == 0) {
+                if (times.equals(0)) {
                     break;
                 }
             }
