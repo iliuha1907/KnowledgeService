@@ -35,6 +35,7 @@ public class ClientController {
         if (clientService.addResident(client, arrival, departure)) {
             return "Successfully added resident";
         } else {
+            ClientIdProvider.reduceId();
             return "Error at adding client: no free rooms";
         }
     }

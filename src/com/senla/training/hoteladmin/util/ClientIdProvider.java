@@ -6,5 +6,9 @@ public class ClientIdProvider {
     public static Integer getNextId() {
         return ++nextId;
     }
+
+    public static void reduceId(){
+        nextId--;
+    }
 }
 
