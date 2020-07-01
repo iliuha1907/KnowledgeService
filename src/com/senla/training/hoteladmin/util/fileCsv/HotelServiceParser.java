@@ -1,8 +1,8 @@
 package com.senla.training.hoteladmin.util.fileCsv;
 
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.model.svc.HotelService;
-import com.senla.training.hoteladmin.model.svc.HotelServiceType;
+import com.senla.training.hoteladmin.model.hotelService.HotelService;
+import com.senla.training.hoteladmin.model.hotelService.HotelServiceType;
 import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
 import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
 import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;

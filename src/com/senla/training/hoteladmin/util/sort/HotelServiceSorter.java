@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.util.sort;
 
-import com.senla.training.hoteladmin.model.svc.HotelService;
+import com.senla.training.hoteladmin.model.hotelService.HotelService;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.senla.training.hoteladmin.view.action.hotelService;
 
 import com.senla.training.hoteladmin.controller.HotelServiceController;
-import com.senla.training.hoteladmin.model.svc.HotelServiceType;
+import com.senla.training.hoteladmin.model.hotelService.HotelServiceType;
 import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
 import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
 import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;

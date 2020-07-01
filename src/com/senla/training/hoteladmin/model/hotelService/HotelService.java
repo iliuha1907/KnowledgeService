@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.model.svc;
+package com.senla.training.hoteladmin.model.hotelService;
 
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.util.DateUtil;

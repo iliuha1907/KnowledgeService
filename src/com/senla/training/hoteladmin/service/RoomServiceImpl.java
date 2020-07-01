@@ -172,7 +172,6 @@ public class RoomServiceImpl implements RoomService {
                     clientService.removeResident(oldRooms.get(index).getResident());
                 }
                 updateRoom(e);
-                //clientService.updateClient(e.getResident());
             });
         } catch (Exception ex) {
             return false;

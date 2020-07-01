@@ -1,7 +1,7 @@
 package com.senla.training.hoteladmin.util;
 
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.model.svc.HotelServiceType;
+import com.senla.training.hoteladmin.model.hotelService.HotelServiceType;
 
 import java.math.BigDecimal;
 import java.util.Scanner;

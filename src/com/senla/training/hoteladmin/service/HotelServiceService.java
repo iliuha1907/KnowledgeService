@@ -1,9 +1,9 @@
 package com.senla.training.hoteladmin.service;
 
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.model.svc.HotelService;
+import com.senla.training.hoteladmin.model.hotelService.HotelService;
 import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
-import com.senla.training.hoteladmin.model.svc.HotelServiceType;
+import com.senla.training.hoteladmin.model.hotelService.HotelServiceType;
 
 import java.math.BigDecimal;
 import java.util.List;

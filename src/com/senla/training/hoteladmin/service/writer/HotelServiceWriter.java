@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.service.writer;
 
-import com.senla.training.hoteladmin.model.svc.HotelService;
+import com.senla.training.hoteladmin.model.hotelService.HotelService;
 
 import java.io.IOException;
 import java.util.List;
