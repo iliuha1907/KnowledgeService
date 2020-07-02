@@ -1,54 +1,32 @@
-package com.senla.training.hoteladmin.view.action.rooms;
+package com.senla.training.hotelAdmin.view.action.rooms;
 
-import com.senla.training.hoteladmin.controller.RoomController;
-import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
-import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
-import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
-import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
-import com.senla.training.hoteladmin.service.ArchivServiceImpl;
-import com.senla.training.hoteladmin.service.ClientServiceImpl;
-import com.senla.training.hoteladmin.service.HotelServiceServiceImpl;
-import com.senla.training.hoteladmin.service.RoomServiceImpl;
-import com.senla.training.hoteladmin.service.writer.ClientWriterImpl;
-import com.senla.training.hoteladmin.service.writer.HotelServiceWriterImpl;
-import com.senla.training.hoteladmin.service.writer.RoomWriterImpl;
-import com.senla.training.hoteladmin.util.UserInteraction;
-import com.senla.training.hoteladmin.view.IAction;
+import com.senla.training.hotelAdmin.controller.RoomController;
+import com.senla.training.hotelAdmin.model.room.RoomStatus;
+import com.senla.training.hotelAdmin.util.UserInteraction;
+import com.senla.training.hotelAdmin.view.IAction;
 
 public class ChangeRoomStatusAction implements IAction {
-    private RoomController roomController = RoomController.getInstance(
-            RoomServiceImpl.getInstance(RoomsRepositoryImpl.getInstance(), RoomWriterImpl.getInstance(),
-                    ClientServiceImpl.
-                            getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
-                                    HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
-                                    ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(), ClientWriterImpl.getInstance())));
-
+    private RoomController roomController = RoomController.getInstance();
 
     @Override
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
         System.out.println("Enter id of the room");
-        Integer roomId;
-        try {
-            roomId = userInteraction.getInt();
-            if (roomId < 1) {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
+        Integer id;
+        id = userInteraction.getInt();
+        if (id == null || id < 0) {
             System.out.println("Wrong id");
             return;
         }
 
         RoomStatus roomStatus;
-        try {
-            roomStatus = userInteraction.getRoomStatus();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        roomStatus = userInteraction.getRoomStatus();
+        if (roomStatus == null) {
+            System.out.println("Wrong status");
             return;
         }
-        System.out.println(roomController.setRoomStatus(roomId, roomStatus));
+        System.out.println(roomController.setRoomStatus(id, roomStatus));
     }
 }
 

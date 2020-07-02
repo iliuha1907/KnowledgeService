@@ -1,18 +1,10 @@
-package com.senla.training.hoteladmin.util;
+package com.senla.training.hotelAdmin.util;
 
 public class ClientIdProvider {
     private static Integer nextId = 0;
 
     public static Integer getNextId() {
         return ++nextId;
-    }
-
-    public static void setId(Integer value){
-        nextId = value;
-    }
-
-    public static Integer getId(){
-        return nextId;
     }
 }
 

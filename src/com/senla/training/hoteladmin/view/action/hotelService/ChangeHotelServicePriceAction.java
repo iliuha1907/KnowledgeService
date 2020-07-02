@@ -1,51 +1,35 @@
-package com.senla.training.hoteladmin.view.action.hotelService;
+package com.senla.training.hotelAdmin.view.action.hotelService;
 
-import com.senla.training.hoteladmin.controller.HotelServiceController;
-import com.senla.training.hoteladmin.model.hotelService.HotelServiceType;
-import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
-import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
-import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
-import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
-import com.senla.training.hoteladmin.service.*;
-import com.senla.training.hoteladmin.service.writer.ClientWriterImpl;
-import com.senla.training.hoteladmin.service.writer.HotelServiceWriterImpl;
-import com.senla.training.hoteladmin.util.UserInteraction;
-import com.senla.training.hoteladmin.view.IAction;
+import com.senla.training.hotelAdmin.controller.HotelServiceController;
+import com.senla.training.hotelAdmin.util.UserInteraction;
+import com.senla.training.hotelAdmin.view.IAction;
 
 import java.math.BigDecimal;
 
 public class ChangeHotelServicePriceAction implements IAction {
-    private HotelServiceController hotelServiceController = HotelServiceController.getInstance(
-            HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
-            ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
-                    HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
-                    ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(), ClientWriterImpl.getInstance()));
+    private HotelServiceController hotelServiceController = HotelServiceController.getInstance();
 
     @Override
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        HotelServiceType type;
-        try {
-            type = userInteraction.getServiceType();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        System.out.println("Enter id");
+        Integer id;
+        id = userInteraction.getInt();
+        if (id == null || id < 0) {
+            System.out.println("Wrong id");
             return;
         }
 
         System.out.println("Enter price");
         BigDecimal price;
-        try {
-            price = userInteraction.getBigDecimal();
-            if (price.compareTo(BigDecimal.ZERO) == -1) {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            System.out.println("Wrong passport number");
+        price = userInteraction.getBigDecimal();
+        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
+            System.out.println("Wrong price");
             return;
         }
 
-        System.out.println(hotelServiceController.setServicePrice(type, price));
+        System.out.println(hotelServiceController.setServicePrice(id, price));
     }
 }
 

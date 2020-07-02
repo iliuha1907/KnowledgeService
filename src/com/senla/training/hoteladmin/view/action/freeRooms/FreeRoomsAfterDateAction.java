@@ -1,39 +1,23 @@
-package com.senla.training.hoteladmin.view.action.freeRooms;
+package com.senla.training.hotelAdmin.view.action.freeRooms;
 
-import com.senla.training.hoteladmin.controller.RoomController;
-import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
-import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
-import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
-import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
-import com.senla.training.hoteladmin.service.ArchivServiceImpl;
-import com.senla.training.hoteladmin.service.ClientServiceImpl;
-import com.senla.training.hoteladmin.service.HotelServiceServiceImpl;
-import com.senla.training.hoteladmin.service.RoomServiceImpl;
-import com.senla.training.hoteladmin.service.writer.ClientWriterImpl;
-import com.senla.training.hoteladmin.service.writer.HotelServiceWriterImpl;
-import com.senla.training.hoteladmin.service.writer.RoomWriterImpl;
-import com.senla.training.hoteladmin.util.DateUtil;
-import com.senla.training.hoteladmin.view.IAction;
-import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.hotelAdmin.controller.RoomController;
+import com.senla.training.hotelAdmin.util.DateUtil;
+import com.senla.training.hotelAdmin.view.IAction;
+import com.senla.training.hotelAdmin.util.UserInteraction;
 
 import java.util.Date;
 
 public class FreeRoomsAfterDateAction implements IAction {
-    private RoomController roomController = RoomController.getInstance(
-            RoomServiceImpl.getInstance(RoomsRepositoryImpl.getInstance(), RoomWriterImpl.getInstance(),
-                    ClientServiceImpl.
-                            getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
-                                    HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
-                                    ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(), ClientWriterImpl.getInstance())));
+    private RoomController roomController = RoomController.getInstance();
 
 
     @Override
     public void execute() {
         System.out.println("Enter date");
         Date date;
-        try {
-            date = DateUtil.getDate(UserInteraction.getInstance().getString());
-        } catch (Exception ex) {
+
+        date = DateUtil.getDate(UserInteraction.getInstance().getString());
+        if (date == null) {
             System.out.println("Wrong date");
             return;
         }
