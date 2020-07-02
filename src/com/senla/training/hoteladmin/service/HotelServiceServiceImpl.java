@@ -1,77 +1,62 @@
-package com.senla.training.hoteladmin.service;
+package com.senla.training.hotelAdmin.service;
 
-import com.senla.training.hoteladmin.model.hotelService.HotelService;
-import com.senla.training.hoteladmin.repository.HotelServiceRepository;
-import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.service.writer.HotelServiceWriter;
-import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
-import com.senla.training.hoteladmin.model.hotelService.HotelServiceType;
-import com.senla.training.hoteladmin.util.sort.HotelServiceSorter;
+import com.senla.training.hotelAdmin.exception.BusinessException;
+import com.senla.training.hotelAdmin.model.hotelService.HotelService;
+import com.senla.training.hotelAdmin.model.hotelService.HotelServiceType;
+import com.senla.training.hotelAdmin.repository.HotelServiceRepository;
+import com.senla.training.hotelAdmin.model.client.Client;
+import com.senla.training.hotelAdmin.repository.HotelServiceRepositoryImpl;
+import com.senla.training.hotelAdmin.util.fileCsv.writeRead.HotelServiceWriter;
+import com.senla.training.hotelAdmin.util.sort.HotelServiceSortCriterion;
+import com.senla.training.hotelAdmin.util.sort.HotelServiceSorter;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
+import java.util.Date;
 import java.util.List;
-import java.util.ListIterator;
 
 public class HotelServiceServiceImpl implements HotelServiceService {
-    private static HotelServiceServiceImpl instance;
+    private static HotelServiceService instance;
     private HotelServiceRepository hotelServiceRepository;
-    private HotelServiceWriter hotelServiceWriter;
+    private ClientService clientService;
 
-    private HotelServiceServiceImpl(HotelServiceRepository hotelServiceRepository, HotelServiceWriter hotelServiceWriter) {
-        this.hotelServiceRepository = hotelServiceRepository;
-        this.hotelServiceWriter = hotelServiceWriter;
+    private HotelServiceServiceImpl() {
+        this.hotelServiceRepository = HotelServiceRepositoryImpl.getInstance();
+        this.clientService = ClientServiceImpl.getInstance();
     }
 
-    public static HotelServiceService getInstance(HotelServiceRepository hotelServiceRepository, HotelServiceWriter hotelServiceWriter) {
+    public static HotelServiceService getInstance() {
         if (instance == null) {
-            instance = new HotelServiceServiceImpl(hotelServiceRepository, hotelServiceWriter);
+            instance = new HotelServiceServiceImpl();
             return instance;
         }
         return instance;
     }
 
     @Override
-    public boolean addService(HotelService hotelService) {
-        if (!(hotelService.getDate().compareTo(hotelService.getClient().getArrivalDate()) > -1 &&
-                hotelService.getDate().compareTo(hotelService.getClient().getDepartureDate()) < 1)) {
-            return false;
+    public void addService(BigDecimal price, HotelServiceType type, Integer clientId, Date date) {
+        Client client = clientService.getClientById(clientId);
+        if (client == null) {
+            throw new BusinessException("Error at adding service: no such client");
         }
-        List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
-        hotelServices.add(hotelService);
-        hotelServiceRepository.setHotelServices(hotelServices);
-        return true;
+        if (!((date).compareTo(client.getArrivalDate()) > -1 &&
+                date.compareTo(client.getDepartureDate()) < 1)) {
+            throw new BusinessException("Error at adding service: incompatible dates");
+        }
+        hotelServiceRepository.addHotelService(new HotelService(null, price, type, client, date));
     }
 
     @Override
-    public boolean setServicePrice(HotelServiceType type, BigDecimal price) {
-        boolean exists = false;
-        List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
-        ListIterator<HotelService> iterator = hotelServices.listIterator();
-        while (iterator.hasNext()) {
-            HotelService hotelService = iterator.next();
-            if (hotelService.getType().equals(type)) {
-                hotelService.setPrice(price);
-                exists = true;
-            }
+    public void setServicePrice(Integer id, BigDecimal price) {
+        HotelService hotelService = hotelServiceRepository.getHotelServiceById(id);
+        if (hotelService == null) {
+            throw new BusinessException("Error at modifying service: ino such service");
         }
-        hotelServiceRepository.setHotelServices(hotelServices);
-        return exists;
-    }
-
-    private List<HotelService> getClientServices(List<HotelService> hotelServices, Client client) {
-        LinkedList<HotelService> result = new LinkedList<>();
-        hotelServices.forEach(e -> {
-            if (e.getClient().equals(client)) {
-                result.add(e);
-            }
-        });
-        return result;
+        hotelService.setPrice(price);
     }
 
     @Override
     public List<HotelService> getSortedClientServices(Client client, HotelServiceSortCriterion criterion) {
-        List<HotelService> hotelServices = getClientServices(hotelServiceRepository.getHotelServices(), client);
+        List<HotelService> hotelServices = getClientServices(client);
         if (criterion.equals(HotelServiceSortCriterion.DATE)) {
             HotelServiceSorter.sortByDate(hotelServices);
         } else if (criterion.equals(HotelServiceSortCriterion.PRICE)) {
@@ -92,62 +77,25 @@ public class HotelServiceServiceImpl implements HotelServiceService {
     }
 
     @Override
-    public HotelService getService(Integer clientId) {
-        List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
-        for (HotelService hotelService : hotelServices) {
-            if (hotelService.getClient().getId().equals(clientId)) {
-                return hotelService;
+    public void exportServices() {
+        HotelServiceWriter.writeServices(hotelServiceRepository.getHotelServices());
+    }
+
+    @Override
+    public void importServices() {
+        List<HotelService> hotelServices = HotelServiceWriter.readServices();
+        if (hotelServices == null) {
+            throw new BusinessException("Could not import services");
+        }
+        hotelServices.forEach(hotelService -> {
+            Client existing = clientService.getClientById(hotelService.getClient().getId());
+
+            if (existing == null) {
+                throw new BusinessException("Could not import services: wrong id of a client");
             }
-        }
-        return null;
-    }
-
-    @Override
-    public HotelService getServiceById(Integer id) {
-        List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
-        for (HotelService hotelService : hotelServices) {
-            if (hotelService.getId().equals(id)) {
-                return hotelService;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public boolean removeService(Integer clientId) {
-        List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
-        HotelService hotelService = getService(clientId);
-        if (hotelServices.remove(hotelService)) {
-            hotelServiceRepository.setHotelServices(hotelServices);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean exportServices() {
-        try {
-            hotelServiceWriter.writeServices(hotelServiceRepository.getHotelServices());
-        } catch (Exception ex) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean importServices() {
-        List<HotelService> hotelServices;
-        try {
-            hotelServices = hotelServiceWriter.readServices();
-            hotelServices.forEach(e -> {
-                updateService(e);
-            });
-        } catch (Exception ex) {
-            return false;
-        }
-
-        return true;
+            hotelService.setClient(existing);
+            updateService(hotelService);
+        });
     }
 
     @Override
@@ -158,11 +106,14 @@ public class HotelServiceServiceImpl implements HotelServiceService {
         List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
         int index = hotelServices.indexOf(hotelService);
         if (index == -1) {
-            hotelServices.add(hotelService);
+            hotelServiceRepository.addHotelService(hotelService);
         } else {
             hotelServices.set(index, hotelService);
         }
-        hotelServiceRepository.setHotelServices(hotelServices);
+    }
+
+    private List<HotelService> getClientServices(Client client) {
+        return hotelServiceRepository.getClientHotelServices(client.getId());
     }
 }
 

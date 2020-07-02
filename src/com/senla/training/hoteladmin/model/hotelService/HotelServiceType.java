@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.model.hotelService;
+package com.senla.training.hotelAdmin.model.hotelService;
 
 public enum HotelServiceType {
     SPA,

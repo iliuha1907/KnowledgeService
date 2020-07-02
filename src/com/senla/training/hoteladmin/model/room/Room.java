@@ -1,7 +1,7 @@
-package com.senla.training.hoteladmin.model.room;
+package com.senla.training.hotelAdmin.model.room;
 
-import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.util.DateUtil;
+import com.senla.training.hotelAdmin.model.client.Client;
+import com.senla.training.hotelAdmin.util.DateUtil;
 
 import java.math.BigDecimal;
 
@@ -12,6 +12,9 @@ public class Room {
     private Integer capacity;
     private Integer stars;
     private Client resident;
+
+    public Room() {
+    }
 
     public Room(Integer id, RoomStatus status, BigDecimal price, Integer capacity,
                 Integer stars) {
@@ -65,12 +68,10 @@ public class Room {
 
     @Override
     public boolean equals(Object obj) {
+        if (id == null) {
+            return false;
+        }
         return (obj instanceof Room) && this.id.equals(((Room) obj).getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
     }
 
     @Override
@@ -78,8 +79,8 @@ public class Room {
         String result = String.format("Room with id:%d, status:%s, capacity: %d, stars: %d, price: %.2f",
                 id, status.toString(), capacity, stars, price);
         if (resident != null) {
-            result += ", taken from " + DateUtil.getStr(resident.getArrivalDate()) +
-                    " to " + DateUtil.getStr(resident.getDepartureDate());
+            result += ", taken from " + DateUtil.getString(resident.getArrivalDate()) +
+                    " to " + DateUtil.getString(resident.getDepartureDate());
         }
         return result;
     }

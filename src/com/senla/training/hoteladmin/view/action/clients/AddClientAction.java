@@ -1,24 +1,14 @@
-package com.senla.training.hoteladmin.view.action.clients;
+package com.senla.training.hotelAdmin.view.action.clients;
 
-import com.senla.training.hoteladmin.controller.ClientController;
-import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
-import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
-import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
-import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
-import com.senla.training.hoteladmin.service.*;
-import com.senla.training.hoteladmin.service.writer.ClientWriterImpl;
-import com.senla.training.hoteladmin.service.writer.HotelServiceWriterImpl;
-import com.senla.training.hoteladmin.util.DateUtil;
-import com.senla.training.hoteladmin.view.IAction;
-import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.hotelAdmin.controller.ClientController;
+import com.senla.training.hotelAdmin.util.DateUtil;
+import com.senla.training.hotelAdmin.view.IAction;
+import com.senla.training.hotelAdmin.util.UserInteraction;
 
 import java.util.Date;
 
 public class AddClientAction implements IAction {
-    private ClientController clientController =  ClientController.getInstance(ClientServiceImpl.
-            getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
-                    HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
-                    ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(), ClientWriterImpl.getInstance()));
+    private ClientController clientController = ClientController.getInstance();
 
     @Override
     public void execute() {
@@ -31,21 +21,21 @@ public class AddClientAction implements IAction {
 
         System.out.println("Enter arrival date");
         Date arrival;
-        try {
-            arrival = DateUtil.getDate(userInteraction.getString());
-        } catch (Exception ex) {
+        arrival = DateUtil.getDate(userInteraction.getString());
+        if (arrival == null) {
             System.out.println("Wrong arrival date");
             return;
         }
 
         System.out.println("Enter departure date");
         Date departure;
-        try {
-            departure = DateUtil.getDate(userInteraction.getString());
-        } catch (Exception ex) {
+
+        departure = DateUtil.getDate(userInteraction.getString());
+        if (departure == null) {
             System.out.println("Wrong departure date");
             return;
         }
+
         System.out.println(clientController.addResident(firstName, lastName, arrival, departure));
     }
 }

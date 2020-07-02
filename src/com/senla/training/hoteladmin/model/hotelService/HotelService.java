@@ -1,7 +1,7 @@
-package com.senla.training.hoteladmin.model.hotelService;
+package com.senla.training.hotelAdmin.model.hotelService;
 
-import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.util.DateUtil;
+import com.senla.training.hotelAdmin.model.client.Client;
+import com.senla.training.hotelAdmin.util.DateUtil;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,6 +12,9 @@ public class HotelService {
     private HotelServiceType type;
     private Client client;
     private Date date;
+
+    public HotelService() {
+    }
 
     public HotelService(Integer id, BigDecimal price, HotelServiceType type, Client client, Date date) {
         this.id = id;
@@ -59,18 +62,16 @@ public class HotelService {
 
     @Override
     public boolean equals(Object obj) {
+        if (id == null) {
+            return false;
+        }
         return (obj instanceof HotelService) && this.id.equals(((HotelService) obj).getId());
     }
 
     @Override
-    public int hashCode() {
-        return id;
-    }
-
-    @Override
     public String toString() {
-        return String.format("service %s, id:%d, price: %.2f, date: %s for client %s %s", type,id, price,
-                DateUtil.getStr(date), client.getFirstName(), client.getLastName());
+        return String.format("service %s, id:%d, price: %.2f, date: %s for client %s %s", type, id, price,
+                DateUtil.getString(date), client.getFirstName(), client.getLastName());
     }
 }
 

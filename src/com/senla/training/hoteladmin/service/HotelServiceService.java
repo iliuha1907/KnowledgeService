@@ -1,31 +1,27 @@
-package com.senla.training.hoteladmin.service;
+package com.senla.training.hotelAdmin.service;
 
-import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.model.hotelService.HotelService;
-import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
-import com.senla.training.hoteladmin.model.hotelService.HotelServiceType;
+import com.senla.training.hotelAdmin.model.client.Client;
+import com.senla.training.hotelAdmin.model.hotelService.HotelService;
+import com.senla.training.hotelAdmin.util.sort.HotelServiceSortCriterion;
+import com.senla.training.hotelAdmin.model.hotelService.HotelServiceType;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface HotelServiceService {
-    boolean addService(HotelService hotelService);
 
-    boolean setServicePrice(HotelServiceType type, BigDecimal price);
+    void addService(BigDecimal price, HotelServiceType type, Integer clientId, Date date);
+
+    void setServicePrice(Integer id, BigDecimal price);
 
     List<HotelService> getSortedClientServices(Client client, HotelServiceSortCriterion criterion);
 
     List<HotelService> getServices(HotelServiceSortCriterion criterion);
 
-    HotelService getService(Integer clientId);
+    void exportServices();
 
-    HotelService getServiceById(Integer id);
-
-    boolean removeService(Integer clientId);
-
-    boolean exportServices();
-
-    boolean importServices();
+    void importServices();
 
     void updateService(HotelService hotelService);
 }

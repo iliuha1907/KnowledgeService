@@ -1,17 +1,11 @@
-package com.senla.training.hoteladmin.controller;
+package com.senla.training.hotelAdmin.controller;
 
-import com.senla.training.hoteladmin.repository.ClientsArchiveRepositoryImpl;
-import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
-import com.senla.training.hoteladmin.repository.RoomsRepositoryImpl;
-import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
-import com.senla.training.hoteladmin.service.*;
-import com.senla.training.hoteladmin.model.room.Room;
-import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.service.writer.ClientWriterImpl;
-import com.senla.training.hoteladmin.service.writer.HotelServiceWriterImpl;
-import com.senla.training.hoteladmin.util.RoomIdProvider;
-import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
-import com.senla.training.hoteladmin.util.DateUtil;
+import com.senla.training.hotelAdmin.exception.BusinessException;
+import com.senla.training.hotelAdmin.service.*;
+import com.senla.training.hotelAdmin.model.room.Room;
+import com.senla.training.hotelAdmin.model.room.RoomStatus;
+import com.senla.training.hotelAdmin.util.sort.RoomsSortCriterion;
+import com.senla.training.hotelAdmin.util.DateUtil;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -21,40 +15,38 @@ public class RoomController {
     private static RoomController instance;
     private RoomService roomService;
 
-    private RoomController(RoomService roomService) {
-        this.roomService = roomService;
+    private RoomController() {
+        this.roomService = RoomServiceImpl.getInstance();
     }
 
-    public static RoomController getInstance(RoomService roomService){
-        if(instance == null){
-            instance = new RoomController(roomService);
+    public static RoomController getInstance() {
+        if (instance == null) {
+            instance = new RoomController();
         }
         return instance;
     }
 
-    public String addRoom( RoomStatus status, BigDecimal price, Integer capacity,
+    public String addRoom(RoomStatus status, BigDecimal price, Integer capacity,
                           Integer stars) {
-        Room room = new Room(RoomIdProvider.getNextId(), status, price, capacity, stars);
-        while (roomService.getRoom(room.getId()) != null) {
-            room.setId(RoomIdProvider.getNextId());
-        }
-        roomService.addRoom(room);
+        roomService.addRoom(status, price, capacity, stars);
         return "Successfully added room";
     }
 
     public String setRoomStatus(int roomNumber, RoomStatus status) {
-        if (roomService.setRoomStatus(roomNumber, status)) {
+        try {
+            roomService.setRoomStatus(roomNumber, status);
             return "Successfully modified status";
-        } else {
-            return "Error at modifying status: no such room!";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 
     public String setRoomPrice(int roomNumber, BigDecimal price) {
-        if (roomService.setRoomPrice(roomNumber, price)) {
+        try {
+            roomService.setRoomPrice(roomNumber, price);
             return "Successfully modified price";
-        } else {
-            return "Error at modifying price: no such room!";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 
@@ -62,8 +54,8 @@ public class RoomController {
         List<Room> rooms = roomService.getSortedRooms(criterion);
         String title = "Rooms sorted by " + criterion.toString() + "\n";
         StringBuilder result = new StringBuilder(title);
-        rooms.forEach(e -> {
-            result.append(e).append("\n");
+        rooms.forEach(room -> {
+            result.append(room).append("\n");
         });
         return result.toString();
     }
@@ -72,28 +64,28 @@ public class RoomController {
         List<Room> rooms = roomService.getSortedFreeRooms(criterion);
         String title = "Free rooms sorted by " + criterion.toString() + "\n";
         StringBuilder result = new StringBuilder(title);
-        rooms.forEach(e -> {
-            result.append(e).append("\n");
+        rooms.forEach(room -> {
+            result.append(room).append("\n");
         });
         return result.toString();
     }
 
     public String getFreeRoomsAfterDate(Date date) {
         List<Room> rooms = roomService.getFreeRoomsAfterDate(date);
-        String title = "Rooms, free after " + DateUtil.getStr(date) + "\n";
+        String title = "Rooms, free after " + DateUtil.getString(date) + "\n";
         StringBuilder result = new StringBuilder(title);
-        rooms.forEach(e -> {
-            result.append(e).append("\n");
+        rooms.forEach(room -> {
+            result.append(room).append("\n");
         });
         return result.toString();
     }
 
     public String getPriceRoom(int roomNumber) {
-        BigDecimal price = roomService.getPriceRoom(roomNumber);
-        if (price == null) {
-            return "Error at getting price of the room: no such room";
-        } else {
+        try {
+            BigDecimal price = roomService.getPriceRoom(roomNumber);
             return "Price: " + price.toString();
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 
@@ -110,23 +102,21 @@ public class RoomController {
         return "Number of free rooms: " + roomService.getNumberOfFreeRooms();
     }
 
-    public String exportRooms(){
-        if(roomService.exportRooms()){
+    public String exportRooms() {
+        try {
+            roomService.exportRooms();
             return "Successfully exported rooms";
-        }
-        else {
-            return "Could not export rooms";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 
-    public String importRooms(){
-        if(roomService.importRooms(ClientServiceImpl.getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepositoryImpl.getInstance()),
-                HotelServiceServiceImpl.getInstance(HotelServiceRepositoryImpl.getInstance(), HotelServiceWriterImpl.getInstance()),
-                ClientsRepositoryImpl.getInstance(), RoomsRepositoryImpl.getInstance(), ClientWriterImpl.getInstance()))){
+    public String importRooms() {
+        try {
+            roomService.importRooms(ClientServiceImpl.getInstance());
             return "Successfully imported rooms";
-        }
-        else {
-            return "Could not import rooms";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 }

@@ -1,7 +1,7 @@
-package com.senla.training.hoteladmin.model.client;
+package com.senla.training.hotelAdmin.model.client;
 
-import com.senla.training.hoteladmin.model.room.Room;
-import com.senla.training.hoteladmin.util.DateUtil;
+import com.senla.training.hotelAdmin.model.room.Room;
+import com.senla.training.hotelAdmin.util.DateUtil;
 
 import java.util.Date;
 
@@ -12,6 +12,9 @@ public class Client {
     private Date arrivalDate;
     private Date departureDate;
     private Room room;
+
+    public Client() {
+    }
 
     public Client(Integer id, String firstName, String lastName) {
         this.id = id;
@@ -30,14 +33,6 @@ public class Client {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public void setArrivalDate(Date arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
-
-    public void setDepartureDate(Date departureDate) {
-        this.departureDate = departureDate;
     }
 
     public void setRoom(Room room) {
@@ -70,19 +65,17 @@ public class Client {
 
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof Client) && (this.id.equals (((Client) obj).getId()));
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
+        if (id == null) {
+            return false;
+        }
+        return (obj instanceof Client) && (this.id.equals(((Client) obj).getId()));
     }
 
     @Override
     public String toString() {
         return String.format("Client %s %s, id:%d, arrival date:%s, departure date: %s, " +
-                        "\nroom:%s ", firstName, lastName,id, DateUtil.getStr(arrivalDate),
-                DateUtil.getStr(departureDate), room.toString());
+                        "\nroom:%s ", firstName, lastName, id, DateUtil.getString(arrivalDate),
+                DateUtil.getString(departureDate), room.toString());
     }
 }
 

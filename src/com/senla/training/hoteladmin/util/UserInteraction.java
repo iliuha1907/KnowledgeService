@@ -1,7 +1,7 @@
-package com.senla.training.hoteladmin.util;
+package com.senla.training.hotelAdmin.util;
 
-import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.model.hotelService.HotelServiceType;
+import com.senla.training.hotelAdmin.model.room.RoomStatus;
+import com.senla.training.hotelAdmin.model.hotelService.HotelServiceType;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -22,45 +22,55 @@ public class UserInteraction {
     }
 
     public Integer getInt() {
-        Integer choice = Integer.parseInt(input.nextLine());
-        return choice;
+        try {
+            return Integer.parseInt(input.nextLine());
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public BigDecimal getBigDecimal() {
-        BigDecimal choice = new BigDecimal(input.nextLine());
-        return choice;
+        try {
+            return new BigDecimal(input.nextLine());
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public String getString() {
-        String choice = input.nextLine();
-        return choice;
+        return input.nextLine();
     }
 
     public RoomStatus getRoomStatus() {
         System.out.println("Enter 1 to repaired, 2 to served");
-        Integer choice = Integer.parseInt(input.nextLine());
-        if(choice == 1){
-            return RoomStatus.REPAIRED;
+        Integer choice = getInt();
+        if (choice == null) {
+            return null;
         }
-        else if(choice == 2){
+        if (choice == 1) {
+            return RoomStatus.REPAIRED;
+        } else if (choice == 2) {
             return RoomStatus.SERVED;
         }
-        throw new IllegalArgumentException("Unknown command");
+        return null;
     }
 
     public HotelServiceType getServiceType() {
         System.out.println("Enter 1 to spa, 2 to massage, 3 to sauna");
-        Integer choice = Integer.parseInt(input.nextLine());
-        if(choice == 1){
+        Integer choice = getInt();
+        if (choice == null) {
+            return null;
+        }
+        if (choice.equals(1)) {
             return HotelServiceType.SPA;
         }
-        else if(choice == 2){
+        if (choice.equals(2)) {
             return HotelServiceType.MASSAGE;
         }
-        else if(choice == 3){
+        if (choice.equals(3)) {
             return HotelServiceType.SAUNA;
         }
-        throw new IllegalArgumentException("Unknown command");
+        return null;
     }
 
     public void stopWorking() {
