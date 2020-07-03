@@ -7,6 +7,8 @@ import com.senla.training.hotelAdmin.repository.HotelServiceRepository;
 import com.senla.training.hotelAdmin.model.client.Client;
 import com.senla.training.hotelAdmin.repository.HotelServiceRepositoryImpl;
 import com.senla.training.hotelAdmin.util.fileCsv.writeRead.HotelServiceWriter;
+import com.senla.training.hotelAdmin.util.serializator.Deserializator;
+import com.senla.training.hotelAdmin.util.serializator.Serializator;
 import com.senla.training.hotelAdmin.util.sort.HotelServiceSortCriterion;
 import com.senla.training.hotelAdmin.util.sort.HotelServiceSorter;
 
@@ -30,6 +32,11 @@ public class HotelServiceServiceImpl implements HotelServiceService {
             return instance;
         }
         return instance;
+    }
+
+    @Override
+    public void setServices(List<HotelService> hotelServices) {
+        hotelServiceRepository.setHotelServices(hotelServices);
     }
 
     @Override
@@ -110,6 +117,23 @@ public class HotelServiceServiceImpl implements HotelServiceService {
         } else {
             hotelServices.set(index, hotelService);
         }
+    }
+
+    @Override
+    public void serializeServices() {
+        Serializator.serializeServices(hotelServiceRepository.getHotelServices());
+    }
+
+    @Override
+    public void deserializeServices() {
+        List<HotelService> hotelServices = Deserializator.deserializeServices();
+        if (hotelServices == null) {
+            throw new BusinessException("Error at deserialization of services");
+        }
+        hotelServices.forEach(hotelService -> {
+            hotelService.setClient(clientService.getClientById(hotelService.getClient().getId()));
+        });
+        setServices(hotelServices);
     }
 
     private List<HotelService> getClientServices(Client client) {

@@ -24,7 +24,6 @@ public class RoomsRepositoryImpl implements RoomsRepository {
         return instance;
     }
 
-    //будет использоваться в 7, поэтому уже не убирал после отправки
     @Override
     public void setRooms(List<Room> rooms) {
         this.rooms = rooms;

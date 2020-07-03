@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface HotelServiceService {
 
+    void setServices(List<HotelService> hotelServices);
+
     void addService(BigDecimal price, HotelServiceType type, Integer clientId, Date date);
 
     void setServicePrice(Integer id, BigDecimal price);
@@ -24,5 +26,9 @@ public interface HotelServiceService {
     void importServices();
 
     void updateService(HotelService hotelService);
+
+    void serializeServices();
+
+    void deserializeServices();
 }
 

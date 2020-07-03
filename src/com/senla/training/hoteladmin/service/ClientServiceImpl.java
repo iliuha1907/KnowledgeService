@@ -5,6 +5,9 @@ import com.senla.training.hotelAdmin.model.client.Client;
 import com.senla.training.hotelAdmin.model.room.Room;
 import com.senla.training.hotelAdmin.repository.*;
 import com.senla.training.hotelAdmin.util.fileCsv.writeRead.ClientWriter;
+import com.senla.training.hotelAdmin.util.fileProperties.PropertyDataProvider;
+import com.senla.training.hotelAdmin.util.serializator.Deserializator;
+import com.senla.training.hotelAdmin.util.serializator.Serializator;
 import com.senla.training.hotelAdmin.util.sort.ClientsSortCriterion;
 import com.senla.training.hotelAdmin.util.sort.ClientsSorter;
 
@@ -13,7 +16,6 @@ import java.util.List;
 
 public class ClientServiceImpl implements ClientService {
     private static ClientService instance;
-    private static final Integer LAST_RESIDENTS = 3;
     private HotelServiceRepository hotelServiceRepository;
     private ClientsRepository clientsRepository;
     private RoomsRepository roomsRepository;
@@ -30,6 +32,16 @@ public class ClientServiceImpl implements ClientService {
             return instance;
         }
         return instance;
+    }
+
+    @Override
+    public void setClients(List<Client> clients) {
+        clientsRepository.setClients(clients);
+    }
+
+    @Override
+    public void setLastResidents(List<Client> residents) {
+        clientsRepository.setMovedClients(residents);
     }
 
     @Override
@@ -85,8 +97,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> getLastThreeResidents(Integer roomId) {
-        return clientsRepository.getLastRoomClients(roomId, LAST_RESIDENTS);
+    public List<Client> getLastResidents(Integer roomId) {
+        return clientsRepository.getLastRoomClients(roomId, PropertyDataProvider.getNumberOfRecords());
     }
 
     @Override
@@ -122,6 +134,20 @@ public class ClientServiceImpl implements ClientService {
         } else {
             clients.set(index, client);
         }
+    }
+
+    @Override
+    public void serializeMovedClients() {
+        Serializator.serializeMovedClients(clientsRepository.getMovedClients());
+    }
+
+    @Override
+    public void deserializeMovedClients() {
+        List<Client> clients = Deserializator.deserializeMovedClients();
+        if (clients == null) {
+            throw new BusinessException("Error at deserialization clients");
+        }
+        setLastResidents(clients);
     }
 }
 

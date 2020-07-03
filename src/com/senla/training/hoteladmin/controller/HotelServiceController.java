@@ -8,6 +8,8 @@ import com.senla.training.hotelAdmin.service.ClientService;
 import com.senla.training.hotelAdmin.service.ClientServiceImpl;
 import com.senla.training.hotelAdmin.service.HotelServiceService;
 import com.senla.training.hotelAdmin.service.HotelServiceServiceImpl;
+import com.senla.training.hotelAdmin.util.serializator.Deserializator;
+import com.senla.training.hotelAdmin.util.serializator.Serializator;
 import com.senla.training.hotelAdmin.util.sort.HotelServiceSortCriterion;
 
 import java.math.BigDecimal;
@@ -85,6 +87,26 @@ public class HotelServiceController {
             hotelServiceService.importServices();
             return "Successfully imported services";
         } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String  deserializeHotelServices(){
+        try {
+            hotelServiceService.deserializeServices();
+            return  "Successful deserialization of services";
+        }
+        catch (BusinessException ex){
+            return ex.getMessage();
+        }
+    }
+
+    public String serializeHotelServices(){
+        try {
+            hotelServiceService.serializeServices();
+            return  "Successful serialization of services";
+        }
+        catch (BusinessException ex){
             return ex.getMessage();
         }
     }

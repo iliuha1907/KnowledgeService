@@ -5,6 +5,9 @@ import com.senla.training.hotelAdmin.model.hotelService.HotelService;
 import java.util.List;
 
 public interface HotelServiceRepository {
+
+    void setHotelServices(List<HotelService> hotelServices);
+
     void addHotelService(HotelService hotelService);
 
     void removeClientHotelServices(Integer clientId);
