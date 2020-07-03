@@ -8,8 +8,6 @@ import com.senla.training.hotelAdmin.service.ClientService;
 import com.senla.training.hotelAdmin.service.ClientServiceImpl;
 import com.senla.training.hotelAdmin.service.HotelServiceService;
 import com.senla.training.hotelAdmin.service.HotelServiceServiceImpl;
-import com.senla.training.hotelAdmin.util.serializator.Deserializator;
-import com.senla.training.hotelAdmin.util.serializator.Serializator;
 import com.senla.training.hotelAdmin.util.sort.HotelServiceSortCriterion;
 
 import java.math.BigDecimal;
