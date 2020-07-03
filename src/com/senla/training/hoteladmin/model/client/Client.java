@@ -1,38 +1,42 @@
-package com.senla.training.hoteladmin.model.client;
+package com.senla.training.hotelAdmin.model.client;
 
-import com.senla.training.hoteladmin.model.room.Room;
-import com.senla.training.hoteladmin.util.DateUtil;
+import com.senla.training.hotelAdmin.model.room.Room;
+import com.senla.training.hotelAdmin.util.DateUtil;
 
 import java.util.Date;
 
 public class Client {
-    private Integer passportNumber;
+    private Integer id;
     private String firstName;
     private String lastName;
     private Date arrivalDate;
     private Date departureDate;
     private Room room;
 
-    public Client(int passportNumber, String firstName, String lastName) {
-        this.passportNumber = passportNumber;
+    public Client() {
+    }
+
+    public Client(Integer id, String firstName, String lastName) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public void setArrivalDate(Date arrivalDate) {
+    public Client(Integer id, String firstName, String lastName,
+                  Date arrivalDate, Date departureDate) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
-        this.departureDate = departureDate;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setRoom(Room room) {
         this.room = room;
-    }
-
-    public Integer getPassportNumber() {
-        return passportNumber;
     }
 
     public String getFirstName() {
@@ -55,21 +59,23 @@ public class Client {
         return room;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return (obj instanceof Client) && (this.passportNumber == ((Client) obj).getPassportNumber());
+    public Integer getId() {
+        return id;
     }
 
     @Override
-    public int hashCode() {
-        return passportNumber;
+    public boolean equals(Object obj) {
+        if (id == null) {
+            return false;
+        }
+        return (obj instanceof Client) && (this.id.equals(((Client) obj).getId()));
     }
 
     @Override
     public String toString() {
-        return String.format("Client %s %s, number of passport: %d, arrival date:%s, departure date: %s, " +
-                        "\nroom:%s ", firstName, lastName, passportNumber, DateUtil.getStr(arrivalDate),
-                DateUtil.getStr(departureDate), room.toString());
+        return String.format("Client %s %s, id:%d, arrival date:%s, departure date: %s, " +
+                        "\nroom:%s ", firstName, lastName, id, DateUtil.getString(arrivalDate),
+                DateUtil.getString(departureDate), room.toString());
     }
 }
 

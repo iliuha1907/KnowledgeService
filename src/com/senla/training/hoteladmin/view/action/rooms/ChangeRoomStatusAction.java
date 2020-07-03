@@ -1,37 +1,32 @@
-package com.senla.training.hoteladmin.view.action.rooms;
+package com.senla.training.hotelAdmin.view.action.rooms;
 
-import com.senla.training.hoteladmin.controller.RoomController;
-import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
-import com.senla.training.hoteladmin.service.RoomServiceImpl;
-import com.senla.training.hoteladmin.util.UserInteraction;
-import com.senla.training.hoteladmin.view.IAction;
+import com.senla.training.hotelAdmin.controller.RoomController;
+import com.senla.training.hotelAdmin.model.room.RoomStatus;
+import com.senla.training.hotelAdmin.util.UserInteraction;
+import com.senla.training.hotelAdmin.view.IAction;
 
 public class ChangeRoomStatusAction implements IAction {
-    private RoomController roomController = new RoomController(
-            RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()));
+    private RoomController roomController = RoomController.getInstance();
 
     @Override
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        System.out.println("Enter number of the room");
-        Integer roomNumber;
-        try {
-            roomNumber = userInteraction.getInt();
-        } catch (Exception ex) {
-            System.out.println("Wrong number");
+        System.out.println("Enter id of the room");
+        Integer id;
+        id = userInteraction.getInt();
+        if (id == null || id < 0) {
+            System.out.println("Wrong id");
             return;
         }
 
         RoomStatus roomStatus;
-        try {
-            roomStatus = userInteraction.getRoomStatus();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        roomStatus = userInteraction.getRoomStatus();
+        if (roomStatus == null) {
+            System.out.println("Wrong status");
             return;
         }
-        System.out.println(roomController.setRoomStatus(roomNumber, roomStatus));
+        System.out.println(roomController.setRoomStatus(id, roomStatus));
     }
 }
 

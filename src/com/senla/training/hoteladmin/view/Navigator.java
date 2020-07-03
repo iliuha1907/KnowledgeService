@@ -1,32 +1,41 @@
-package com.senla.training.hoteladmin.view;
+package com.senla.training.hotelAdmin.view;
 
 public class Navigator {
+    private static Navigator instance;
     private Menu currentMenu;
 
-    public Navigator(Menu currentMenu) {
+    private Navigator(Menu currentMenu) {
         this.currentMenu = currentMenu;
+    }
+
+    public static Navigator getInstance(Menu currentMenu) {
+        if (instance == null) {
+            instance = new Navigator(currentMenu);
+        }
+        return instance;
+    }
+
+    public Menu getCurrentMenu() {
+        return currentMenu;
     }
 
     public void printMenu() {
         System.out.println(currentMenu);
     }
 
-    public boolean navigate(Integer index) {
-        if (index == currentMenu.getMenuItems().length) {
-            return false;
-        }
+    public void navigate(Integer index) {
+        Integer size = currentMenu.getMenuItems().size();
 
         if (index < 0 ||
-                index > currentMenu.getMenuItems().length - 1) {
-            return true;
+                index > size - 1) {
+            return;
         }
 
-        if (currentMenu.getMenuItems()[index].getNextMenu() == null) {
-            currentMenu.getMenuItems()[index].doAction();
+        if (currentMenu.getMenuItems().get(index).getNextMenu() == null) {
+            currentMenu.getMenuItems().get(index).doAction();
         } else {
-            currentMenu = currentMenu.getMenuItems()[index].getNextMenu();
+            currentMenu = currentMenu.getMenuItems().get(index).getNextMenu();
         }
-        return true;
     }
 }
 

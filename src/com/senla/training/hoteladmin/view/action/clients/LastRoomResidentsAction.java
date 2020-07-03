@@ -1,35 +1,25 @@
-package com.senla.training.hoteladmin.view.action.clients;
+package com.senla.training.hotelAdmin.view.action.clients;
 
-import com.senla.training.hoteladmin.controller.ClientController;
-import com.senla.training.hoteladmin.repo.ClientsArchiveRepoImpl;
-import com.senla.training.hoteladmin.repo.ClientsRepoImpl;
-import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
-import com.senla.training.hoteladmin.service.ArchivServiceImpl;
-import com.senla.training.hoteladmin.service.ClientServiceImpl;
-import com.senla.training.hoteladmin.view.IAction;
-import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.hotelAdmin.controller.ClientController;
+import com.senla.training.hotelAdmin.view.IAction;
+import com.senla.training.hotelAdmin.util.UserInteraction;
 
 public class LastRoomResidentsAction implements IAction {
-    private ClientController clientController = new ClientController(ClientServiceImpl.
-            getInstance(ArchivServiceImpl.getInstance(ClientsArchiveRepoImpl.getInstance()),
-                    ClientsRepoImpl.getInstance(), RoomsRepoImpl.getInstance()));
+    private ClientController clientController = ClientController.getInstance();
 
     @Override
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        System.out.println("Enter number of the room");
-        Integer roomNumber;
-        try {
-            roomNumber = userInteraction.getInt();
-            if (roomNumber < 1) {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            System.out.println("Wrong number");
+        System.out.println("Enter id of the room");
+        Integer roomId;
+
+        roomId = userInteraction.getInt();
+        if (roomId == null || roomId < 1) {
+            System.out.println("Wrong id");
             return;
         }
-        System.out.println(clientController.getLast3Residents(roomNumber));
+        System.out.println(clientController.getLastThreeResidents(roomId));
     }
 }
 

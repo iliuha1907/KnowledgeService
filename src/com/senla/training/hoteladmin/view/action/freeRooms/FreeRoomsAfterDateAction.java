@@ -1,25 +1,23 @@
-package com.senla.training.hoteladmin.view.action.freeRooms;
+package com.senla.training.hotelAdmin.view.action.freeRooms;
 
-import com.senla.training.hoteladmin.controller.RoomController;
-import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
-import com.senla.training.hoteladmin.service.RoomServiceImpl;
-import com.senla.training.hoteladmin.util.DateUtil;
-import com.senla.training.hoteladmin.view.IAction;
-import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.hotelAdmin.controller.RoomController;
+import com.senla.training.hotelAdmin.util.DateUtil;
+import com.senla.training.hotelAdmin.view.IAction;
+import com.senla.training.hotelAdmin.util.UserInteraction;
 
 import java.util.Date;
 
 public class FreeRoomsAfterDateAction implements IAction {
-    private RoomController roomController = new RoomController(
-            RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()));
+    private RoomController roomController = RoomController.getInstance();
+
 
     @Override
     public void execute() {
         System.out.println("Enter date");
         Date date;
-        try {
-            date = DateUtil.getDate(UserInteraction.getInstance().getString());
-        } catch (Exception ex) {
+
+        date = DateUtil.getDate(UserInteraction.getInstance().getString());
+        if (date == null) {
             System.out.println("Wrong date");
             return;
         }

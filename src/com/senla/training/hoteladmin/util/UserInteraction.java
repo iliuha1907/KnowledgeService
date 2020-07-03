@@ -1,7 +1,7 @@
-package com.senla.training.hoteladmin.util;
+package com.senla.training.hotelAdmin.util;
 
-import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.model.svc.ServiceType;
+import com.senla.training.hotelAdmin.model.room.RoomStatus;
+import com.senla.training.hotelAdmin.model.hotelService.HotelServiceType;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -22,49 +22,55 @@ public class UserInteraction {
     }
 
     public Integer getInt() {
-        Integer choice;
-        choice = Integer.parseInt(input.nextLine());
-        return choice;
+        try {
+            return Integer.parseInt(input.nextLine());
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public BigDecimal getBigDecimal() {
-        BigDecimal choice;
-        choice = new BigDecimal(input.nextLine());
-        return choice;
+        try {
+            return new BigDecimal(input.nextLine());
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public String getString() {
-        String choice;
-        choice = input.nextLine();
-        return choice;
+        return input.nextLine();
     }
 
     public RoomStatus getRoomStatus() {
         System.out.println("Enter 1 to repaired, 2 to served");
-        Integer choice = Integer.parseInt(input.nextLine());
-        switch (choice) {
-            case 1:
-                return RoomStatus.REPAIRED;
-            case 2:
-                return RoomStatus.SERVED;
-            default:
-                throw new IllegalArgumentException("Unknown command");
+        Integer choice = getInt();
+        if (choice == null) {
+            return null;
         }
+        if (choice == 1) {
+            return RoomStatus.REPAIRED;
+        } else if (choice == 2) {
+            return RoomStatus.SERVED;
+        }
+        return null;
     }
 
-    public ServiceType getServiceType() {
+    public HotelServiceType getServiceType() {
         System.out.println("Enter 1 to spa, 2 to massage, 3 to sauna");
-        Integer choice = Integer.parseInt(input.nextLine());
-        switch (choice) {
-            case 1:
-                return ServiceType.SPA;
-            case 2:
-                return ServiceType.MASSAGE;
-            case 3:
-                return ServiceType.SAUNA;
-            default:
-                throw new IllegalArgumentException("Unknown command");
+        Integer choice = getInt();
+        if (choice == null) {
+            return null;
         }
+        if (choice.equals(1)) {
+            return HotelServiceType.SPA;
+        }
+        if (choice.equals(2)) {
+            return HotelServiceType.MASSAGE;
+        }
+        if (choice.equals(3)) {
+            return HotelServiceType.SAUNA;
+        }
+        return null;
     }
 
     public void stopWorking() {

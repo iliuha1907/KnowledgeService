@@ -1,19 +1,20 @@
-package com.senla.training.hoteladmin.service;
+package com.senla.training.hotelAdmin.service;
 
-import com.senla.training.hoteladmin.model.room.Room;
-import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.model.room.RoomsSortCriterion;
+import com.senla.training.hotelAdmin.model.room.Room;
+import com.senla.training.hotelAdmin.model.room.RoomStatus;
+import com.senla.training.hotelAdmin.util.sort.RoomsSortCriterion;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 public interface RoomService {
-    boolean addRoom(Room room);
+    void addRoom(RoomStatus status, BigDecimal price, Integer capacity,
+                 Integer stars);
 
-    boolean setRoomStatus(Integer roomNumber, RoomStatus status);
+    void setRoomStatus(Integer roomNumber, RoomStatus status);
 
-    boolean setRoomPrice(Integer roomNumber, BigDecimal price);
+    void setRoomPrice(Integer roomNumber, BigDecimal price);
 
     List<Room> getSortedRooms(RoomsSortCriterion criterion);
 
@@ -23,9 +24,15 @@ public interface RoomService {
 
     BigDecimal getPriceRoom(Integer roomNumber);
 
-    Room getRoom(Integer roomNumber);
+    Room getRoom(Integer roomId);
 
     Integer getNumberOfFreeRooms();
+
+    void exportRooms();
+
+    void importRooms(ClientService clientService);
+
+    void updateRoom(Room rooms);
 
 }
 

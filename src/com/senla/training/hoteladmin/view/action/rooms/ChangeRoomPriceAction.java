@@ -1,42 +1,34 @@
-package com.senla.training.hoteladmin.view.action.rooms;
+package com.senla.training.hotelAdmin.view.action.rooms;
 
-import com.senla.training.hoteladmin.controller.RoomController;
-import com.senla.training.hoteladmin.repo.RoomsRepoImpl;
-import com.senla.training.hoteladmin.service.RoomServiceImpl;
-import com.senla.training.hoteladmin.util.UserInteraction;
-import com.senla.training.hoteladmin.view.IAction;
+import com.senla.training.hotelAdmin.controller.RoomController;
+import com.senla.training.hotelAdmin.util.UserInteraction;
+import com.senla.training.hotelAdmin.view.IAction;
 
 import java.math.BigDecimal;
 
 public class ChangeRoomPriceAction implements IAction {
-    private RoomController roomController = new RoomController(
-            RoomServiceImpl.getInstance(RoomsRepoImpl.getInstance()));
+    private RoomController roomController = RoomController.getInstance();
 
     @Override
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        System.out.println("Enter number of the room");
-        Integer roomNumber;
-        try {
-            roomNumber = userInteraction.getInt();
-        } catch (Exception ex) {
-            System.out.println("Wrong number");
+        System.out.println("Enter id of the room");
+        Integer id;
+        id = userInteraction.getInt();
+        if (id == null || id < 0) {
+            System.out.println("Wrong id");
             return;
         }
 
         System.out.println("Enter price");
         BigDecimal price;
-        try {
-            price = userInteraction.getBigDecimal();
-            if (price.compareTo(BigDecimal.ZERO) == -1) {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
+        price = userInteraction.getBigDecimal();
+        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
             System.out.println("Wrong price");
             return;
         }
-        System.out.println(roomController.setRoomPrice(roomNumber, price));
+        System.out.println(roomController.setRoomPrice(id, price));
     }
 }
 

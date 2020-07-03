@@ -1,120 +1,127 @@
-package com.senla.training.hoteladmin.service;
+package com.senla.training.hotelAdmin.service;
 
-import com.senla.training.hoteladmin.repo.*;
-import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.model.client.ClientsSortCriterion;
-import com.senla.training.hoteladmin.model.room.Room;
-import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.util.sort.ClientsSorter;
+import com.senla.training.hotelAdmin.exception.BusinessException;
+import com.senla.training.hotelAdmin.model.client.Client;
+import com.senla.training.hotelAdmin.model.room.Room;
+import com.senla.training.hotelAdmin.repository.*;
+import com.senla.training.hotelAdmin.util.fileCsv.writeRead.ClientWriter;
+import com.senla.training.hotelAdmin.util.sort.ClientsSortCriterion;
+import com.senla.training.hotelAdmin.util.sort.ClientsSorter;
 
 import java.util.Date;
 import java.util.List;
-import java.util.ListIterator;
 
 public class ClientServiceImpl implements ClientService {
-    private static ClientServiceImpl instance;
-    private ArchivService archivService;
-    private ClientsRepo clientsRepo;
-    private RoomsRepo roomsRepo;
+    private static ClientService instance;
+    private static final Integer LAST_RESIDENTS = 3;
+    private HotelServiceRepository hotelServiceRepository;
+    private ClientsRepository clientsRepository;
+    private RoomsRepository roomsRepository;
 
-    private ClientServiceImpl(ArchivService archivService, ClientsRepo clientsRepo,
-                             RoomsRepo roomsRepo){
-        this.archivService = archivService;
-        this.clientsRepo = clientsRepo;
-        this.roomsRepo = roomsRepo;
+    private ClientServiceImpl() {
+        this.hotelServiceRepository = HotelServiceRepositoryImpl.getInstance();
+        this.clientsRepository = ClientsRepositoryImpl.getInstance();
+        this.roomsRepository = RoomsRepositoryImpl.getInstance();
     }
 
-    public static ClientServiceImpl getInstance(ArchivService archivService, ClientsRepo clientsRepo,
-                                                RoomsRepo roomsRepo) {
-        if(instance == null){
-            instance = new ClientServiceImpl(archivService,clientsRepo,roomsRepo);
+    public static ClientService getInstance() {
+        if (instance == null) {
+            instance = new ClientServiceImpl();
             return instance;
         }
         return instance;
     }
 
-    public boolean addResident(Client resident, Date arrival, Date departure) {
-        List<Client> residents = clientsRepo.getClients();
-        List<Room> rooms = roomsRepo.getRooms();
-        boolean hasPlace = false;
-        ListIterator iterator = rooms.listIterator();
-        while (iterator.hasNext()){
-            Room room = (Room)iterator.next();
-            if (room.getResident() == null && room.getStatus() != RoomStatus.REPAIRED) {
-                hasPlace = true;
-                resident.setArrivalDate(arrival);
-                resident.setDepartureDate(departure);
-                resident.setRoom(room);
-                room.setResident(resident);
-                roomsRepo.setRooms(rooms);
-                residents.add(resident);
-                clientsRepo.setClients(residents);
-                break;
-            }
+    @Override
+    public void addResident(String firstName, String lastName, Date arrival, Date departure) {
+        Room room = roomsRepository.getFirstFreeRoom();
+        if (room == null) {
+            throw new BusinessException("Error at adding clients: no more free rooms!");
         }
 
-        if (!hasPlace) {
-            return false;
-        }
-        return true;
+        Client client = new Client(null, firstName, lastName, arrival, departure);
+        clientsRepository.addClient(client);
+        client.setRoom(room);
+        room.setResident(client);
     }
 
-    public boolean removeResident(Client resident) {
-        List<Room> rooms = roomsRepo.getRooms();
-        List<Client> residents = clientsRepo.getClients();
-        if(!residents.remove(resident)){
-            return false;
-        }
+    @Override
+    public void removeResident(Client resident) {
+        clientsRepository.removeClient(resident);
 
-        ListIterator iterator = rooms.listIterator();
-        while (iterator.hasNext()){
-            Room room = (Room)iterator.next();
-            if(room.getResident() == null){
-                continue;
-            }
-            if (room.getResident().equals(resident)) {
-                room.setResident(null);
-                break;
-            }
-        }
+        Room room = roomsRepository.getClientRoom(resident.getId());
+        room.setResident(null);
 
-        roomsRepo.setRooms(rooms);
-        clientsRepo.setClients(residents);
-        archivService.addClient(resident);
-        return true;
+        clientsRepository.addMovedClient(resident);
+
+        hotelServiceRepository.removeClientHotelServices(resident.getId());
     }
 
+    @Override
+    public void removeResidentById(Integer id) {
+        Client client = getClientById(id);
+        removeResident(client);
+    }
+
+    @Override
     public List<Client> getSortedClients(ClientsSortCriterion criterion) {
-        List<Client> clients = clientsRepo.getClients();
-        switch (criterion) {
-            case ALPHABET:
-                ClientsSorter.sortByAlphabet(clients);
-                break;
-            case DEPARTURE_DATE:
-                ClientsSorter.sortByDeparture(clients);
-                break;
+        List<Client> clients = clientsRepository.getClients();
+        if (criterion.equals(ClientsSortCriterion.ALPHABET)) {
+            ClientsSorter.sortByAlphabet(clients);
+        } else if (criterion.equals(ClientsSortCriterion.DEPARTURE_DATE)) {
+            ClientsSorter.sortByDeparture(clients);
         }
         return clients;
     }
 
+    @Override
     public Integer getNumberOfResidents() {
-        return clientsRepo.getClients().size();
+        return clientsRepository.getClients().size();
     }
 
     @Override
-    public Client getClientByPass(Integer passNummber) {
-        List<Client> clients = clientsRepo.getClients();
-        for (Client client:clients){
-            if(client.getPassportNumber().equals(passNummber)){
-                return client;
-            }
+    public Client getClientById(Integer id) {
+        return clientsRepository.getClientById(id);
+    }
+
+    @Override
+    public List<Client> getLastThreeResidents(Integer roomId) {
+        return clientsRepository.getLastRoomClients(roomId, LAST_RESIDENTS);
+    }
+
+    @Override
+    public void exportClients() {
+        ClientWriter.writeClients(clientsRepository.getClients());
+    }
+
+    @Override
+    public void importClients() {
+        List<Client> clients = ClientWriter.readClients();
+        if (clients == null) {
+            throw new BusinessException("Could not read clients");
         }
-        return null;
+        clients.forEach(client -> {
+            Room existing = roomsRepository.getRoom(client.getRoom().getId());
+            if (existing == null || existing.getResident() != null) {
+                throw new BusinessException("Could not read clients, incorrect id of a room");
+            }
+            existing.setResident(client);
+            client.setRoom(existing);
+            updateClient(client);
+        });
     }
 
-    @Override
-    public List<Client> getLast3Residents(Integer roomNumber) {
-        return archivService.getLast3Residents(roomNumber);
+    public void updateClient(Client client) {
+        if (client == null) {
+            return;
+        }
+        List<Client> clients = clientsRepository.getClients();
+        int index = clients.indexOf(client);
+        if (index == -1) {
+            clientsRepository.addClient(client);
+        } else {
+            clients.set(index, client);
+        }
     }
 }
 

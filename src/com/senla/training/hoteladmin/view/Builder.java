@@ -1,12 +1,133 @@
-package com.senla.training.hoteladmin.view;
+package com.senla.training.hotelAdmin.view;
 
-import com.senla.training.hoteladmin.view.action.clients.*;
-import com.senla.training.hoteladmin.view.action.freeRooms.*;
-import com.senla.training.hoteladmin.view.action.rooms.*;
-import com.senla.training.hoteladmin.view.action.svc.*;
+import com.senla.training.hotelAdmin.controller.ClientController;
+import com.senla.training.hotelAdmin.controller.HotelServiceController;
+import com.senla.training.hotelAdmin.controller.RoomController;
+import com.senla.training.hotelAdmin.util.sort.ClientsSortCriterion;
+import com.senla.training.hotelAdmin.util.sort.RoomsSortCriterion;
+import com.senla.training.hotelAdmin.view.action.clients.*;
+import com.senla.training.hotelAdmin.view.action.freeRooms.*;
+import com.senla.training.hotelAdmin.view.action.rooms.*;
+import com.senla.training.hotelAdmin.view.action.hotelService.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Builder {
+    private static Builder instance;
     private Menu rootMenu;
+    private ClientController clientController;
+    private HotelServiceController hotelServiceController;
+    private RoomController roomController;
+
+    private Builder() {
+        clientController = ClientController.getInstance();
+        hotelServiceController = HotelServiceController.getInstance();
+        roomController = RoomController.getInstance();
+    }
+
+    public static Builder getInstance() {
+        if (instance == null) {
+            instance = new Builder();
+        }
+        return instance;
+    }
+
+    private void buildRoomsMenu(Menu roomMenu, Menu freeRoomMenu) {
+        List<MenuItem> itemsRoom = new ArrayList<>();
+        IAction detailsRoom = new RoomDetailsAction();
+        IAction addRoom = new AddRoomAction();
+        IAction changePriceRoom = new ChangeRoomPriceAction();
+        IAction changeStatusRoom = new ChangeRoomStatusAction();
+        itemsRoom.add(new MenuItem("Main menu", rootMenu));
+        itemsRoom.add(new MenuItem("Display rooms, sorted by price", () ->
+                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.PRICE))));
+
+        itemsRoom.add(new MenuItem("Display rooms, sorted by capacity", () ->
+                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.CAPACITY))));
+        itemsRoom.add(new MenuItem("Display rooms, sorted by stars", () ->
+                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.STARS))));
+        itemsRoom.add(new MenuItem("Display price of a room", () ->
+                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.PRICE))));
+
+        itemsRoom.add(new MenuItem("Display details of a room", detailsRoom));
+        itemsRoom.add(new MenuItem("Add room", addRoom));
+        itemsRoom.add(new MenuItem("Change price of a room", changePriceRoom));
+        itemsRoom.add(new MenuItem("Change status of a room", changeStatusRoom));
+        itemsRoom.add(new MenuItem("Free rooms menu", freeRoomMenu));
+        roomMenu.setMenuItems(itemsRoom);
+    }
+
+    private void buildFreeRoomsMenu(Menu freeRoomMenu, Menu roomMenu) {
+        List<MenuItem> itemsFreeRoom = new ArrayList<>();
+        IAction freeRoomsDate = new FreeRoomsAfterDateAction();
+        itemsFreeRoom.add(new MenuItem("Main menu", rootMenu));
+        itemsFreeRoom.add(new MenuItem("Display rooms, sorted by price", () ->
+                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.PRICE))));
+        itemsFreeRoom.add(new MenuItem("Display rooms, sorted by capacity", () ->
+                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.CAPACITY))));
+        itemsFreeRoom.add(new MenuItem("Display rooms, sorted by stars", () ->
+                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.STARS))));
+        itemsFreeRoom.add(new MenuItem("Display number of free rooms", () ->
+                System.out.println(roomController.getNumberOfFreeRooms())));
+        itemsFreeRoom.add(new MenuItem("Display free rooms after date", freeRoomsDate));
+        itemsFreeRoom.add(new MenuItem("Rooms menu", roomMenu));
+        freeRoomMenu.setMenuItems(itemsFreeRoom);
+    }
+
+    private void buildClientsMenu(Menu clientMenu) {
+        List<MenuItem> itemsClients = new ArrayList<>();
+        IAction lastClients = new LastRoomResidentsAction();
+        IAction addClient = new AddClientAction();
+        IAction removeClient = new RemoveClientAction();
+        itemsClients.add(new MenuItem("Main menu", rootMenu));
+        itemsClients.add(new MenuItem("Display clients, sorted by departure date", () ->
+                System.out.println(clientController.getSortedClients(ClientsSortCriterion.DEPARTURE_DATE))));
+        itemsClients.add(new MenuItem("Display clients, sorted by alphabet",
+                () -> System.out.println(clientController.getSortedClients(ClientsSortCriterion.ALPHABET))));
+        itemsClients.add(new MenuItem("Display last residents of a room", lastClients));
+        itemsClients.add(new MenuItem("Display number of residents", () ->
+                System.out.println(clientController.getNumberOfResidents())));
+        itemsClients.add(new MenuItem("Add resident", addClient));
+        itemsClients.add(new MenuItem("Remove resident", removeClient));
+        clientMenu.setMenuItems(itemsClients);
+    }
+
+    private void buildServiceMenu(Menu svcMenu) {
+        List<MenuItem> itemsSVC = new ArrayList<>();
+        IAction servicesDate = new ClientHotelServicesDateAction();
+        IAction servicesPrice = new ClientHotelServicesPriceAction();
+        IAction addService = new AddHotelServiceAction();
+        IAction changeServicePrice = new ChangeHotelServicePriceAction();
+        itemsSVC.add(new MenuItem("Main menu", rootMenu));
+        itemsSVC.add(new MenuItem("Display services of a client, sorted by date", servicesDate));
+        itemsSVC.add(new MenuItem("Display services of a client, sorted by price", servicesPrice));
+        itemsSVC.add(new MenuItem("Display services", () ->
+                System.out.println(hotelServiceController.getServices())));
+        itemsSVC.add(new MenuItem("Change price of a service", changeServicePrice));
+        itemsSVC.add(new MenuItem("Add service", addService));
+        svcMenu.setMenuItems(itemsSVC);
+    }
+
+    private void buildRootMenu(Menu roomMenu, Menu clientMenu, Menu svcMenu) {
+        List<MenuItem> itemsMain = new ArrayList<>();
+        itemsMain.add(new MenuItem("Room menu", roomMenu));
+        itemsMain.add(new MenuItem("Client menu", clientMenu));
+        itemsMain.add(new MenuItem("Services menu", svcMenu));
+        itemsMain.add(new MenuItem("Export services", () ->
+                System.out.println(hotelServiceController.exportServices())));
+        itemsMain.add(new MenuItem("Export clients", () ->
+                System.out.println(clientController.exportClients())));
+        itemsMain.add(new MenuItem("Export rooms", () ->
+                System.out.println(roomController.exportRooms())));
+        itemsMain.add(new MenuItem("Import services", () ->
+                System.out.println(hotelServiceController.importServices())));
+        itemsMain.add(new MenuItem("Import clients", () ->
+                System.out.println(clientController.importClients())));
+        itemsMain.add(new MenuItem("Import rooms", () ->
+                System.out.println(roomController.importRooms())));
+        rootMenu.setMenuItems(itemsMain);
+    }
 
     public void buildMenu() {
         rootMenu = new Menu();
@@ -20,81 +141,11 @@ public class Builder {
         Menu svcMenu = new Menu();
         svcMenu.setName("Services menu");
 
-        MenuItem[] itemsMain = new MenuItem[3];
-        itemsMain[0] = new MenuItem("Room menu", null, roomMenu);
-        itemsMain[1] = new MenuItem("Client menu", null, clientMenu);
-        itemsMain[2] = new MenuItem("Services menu", null, svcMenu);
-        rootMenu.setMenuItems(itemsMain);
-
-        MenuItem[] itemsRoom = new MenuItem[10];
-        IAction roomsPrice = new RoomsPriceAction();
-        IAction roomsCapacity = new RoomsCapacityAction();
-        IAction roomsStars = new RoomsStarsAction();
-        IAction priceRoom = new PriceForRoomAction();
-        IAction detailsRoom = new RoomDetailsAction();
-        IAction addRoom = new AddRoomAction();
-        IAction changePriceRoom = new ChangeRoomPriceAction();
-        IAction changeStatusRoom = new ChangeRoomStatusAction();
-        itemsRoom[0] = new MenuItem("Main menu", null, rootMenu);
-        itemsRoom[1] = new MenuItem("Display rooms, sorted by price", roomsPrice, null);
-        itemsRoom[2] = new MenuItem("Display rooms, sorted by capacity", roomsCapacity, null);
-        itemsRoom[3] = new MenuItem("Display rooms, sorted by stars", roomsStars, null);
-        itemsRoom[4] = new MenuItem("Display price of a room", priceRoom, null);
-        itemsRoom[5] = new MenuItem("Display details of a room", detailsRoom, null);
-        itemsRoom[6] = new MenuItem("Add room", addRoom, null);
-        itemsRoom[7] = new MenuItem("Change price of a room", changePriceRoom, null);
-        itemsRoom[8] = new MenuItem("Change status of a room", changeStatusRoom, null);
-        itemsRoom[9] = new MenuItem("Free rooms menu", null, freeRoomMenu);
-
-        MenuItem[] itemsFreeRoom = new MenuItem[7];
-        IAction freeRoomsPrice = new FreeRoomsPriceAction();
-        IAction freeRoomsCapacity = new FreeRoomsCapacityAction();
-        IAction freeRoomsStars = new FreeRoomsStarsAction();
-        IAction freeRoomsCount = new FreeRoomsCountAction();
-        IAction freeRoomsDate = new FreeRoomsAfterDateAction();
-        itemsFreeRoom[0] = new MenuItem("Main menu", null, rootMenu);
-        itemsFreeRoom[1] = new MenuItem("Display rooms, sorted by price", freeRoomsPrice, null);
-        itemsFreeRoom[2] = new MenuItem("Display rooms, sorted by capacity", freeRoomsCapacity, null);
-        itemsFreeRoom[3] = new MenuItem("Display rooms, sorted by stars", freeRoomsStars, null);
-        itemsFreeRoom[4] = new MenuItem("Display number of free rooms", freeRoomsCount, null);
-        itemsFreeRoom[5] = new MenuItem("Display free rooms after date", freeRoomsDate, null);
-        itemsFreeRoom[6] = new MenuItem("Rooms menu", null, roomMenu);
-
-        MenuItem[] itemsClients = new MenuItem[7];
-        IAction clientsDate = new ClientsDateAction();
-        IAction clientsAlpha = new ClientsAlphabetAction();
-        IAction clientsCount = new ClientsCountAction();
-        IAction lastClients = new LastRoomResidentsAction();
-        IAction addClient = new AddClientAction();
-        IAction removeClient = new RemoveClientAction();
-        itemsClients[0] = new MenuItem("Main menu", null, rootMenu);
-        itemsClients[1] = new MenuItem("Display clients, sorted by departure date",
-                clientsDate, null);
-        itemsClients[2] = new MenuItem("Display clients, sorted by alphabet",
-                clientsAlpha, null);
-        itemsClients[3] = new MenuItem("Display last 3 residents of a room", lastClients, null);
-        itemsClients[4] = new MenuItem("Display number of residents", clientsCount, null);
-        itemsClients[5] = new MenuItem("Add resident", addClient, null);
-        itemsClients[6] = new MenuItem("Remove resident", removeClient, null);
-
-        MenuItem[] itemsSVC = new MenuItem[6];
-        IAction servicesDate = new ClientServicesDateAction();
-        IAction servicesPrice = new ClientServicesPriceAction();
-        IAction servicesAll = new ServicesAction();
-        IAction addService = new AddServiceAction();
-        IAction changeServicePrice = new ChangeServicePriceAction();
-        itemsSVC[0] = new MenuItem("Main menu", null, rootMenu);
-        itemsSVC[1] = new MenuItem("Display services of a client, sorted by date", servicesDate, null);
-        itemsSVC[2] = new MenuItem("Display services of a client, sorted by price", servicesPrice, null);
-        itemsSVC[3] = new MenuItem("Display services", servicesAll, null);
-        itemsSVC[4] = new MenuItem("Change price of a service", changeServicePrice, null);
-        itemsSVC[5] = new MenuItem("Add service", addService, null);
-
-        rootMenu.setMenuItems(itemsMain);
-        roomMenu.setMenuItems(itemsRoom);
-        freeRoomMenu.setMenuItems(itemsFreeRoom);
-        clientMenu.setMenuItems(itemsClients);
-        svcMenu.setMenuItems(itemsSVC);
+        buildRootMenu(roomMenu, clientMenu, svcMenu);
+        buildRoomsMenu(roomMenu, freeRoomMenu);
+        buildFreeRoomsMenu(freeRoomMenu, roomMenu);
+        buildClientsMenu(clientMenu);
+        buildServiceMenu(svcMenu);
     }
 
     public Menu getRootMenu() {

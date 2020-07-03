@@ -1,30 +1,39 @@
-package com.senla.training.hoteladmin.view;
+package com.senla.training.hotelAdmin.view;
 
-import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.hotelAdmin.util.UserInteraction;
 
 public class MenuController {
+    private static MenuController instance;
     private Builder builder;
     private Navigator navigator;
 
-    public MenuController(Builder builder) {
+    private MenuController(Builder builder) {
         this.builder = builder;
-        builder.buildMenu();
-        navigator = new Navigator(builder.getRootMenu());
+    }
+
+    public static MenuController getInstance(Builder builder) {
+        if (instance == null) {
+            instance = new MenuController(builder);
+        }
+        return instance;
     }
 
     public void run() {
+        builder.buildMenu();
+        navigator = Navigator.getInstance(builder.getRootMenu());
         UserInteraction userInteraction = UserInteraction.getInstance();
-        while (true) {
+        boolean stop = false;
+        while (!stop) {
             navigator.printMenu();
-            Integer choice;
-            try {
-                choice = userInteraction.getInt() - 1;
-            } catch (Exception ex) {
+            Integer choice = userInteraction.getInt() - 1;
+            if (choice == null) {
                 System.out.println("Wrong input");
                 continue;
             }
-            if (!navigator.navigate(choice)) {
-                break;
+            if (choice.equals(navigator.getCurrentMenu().getMenuItems().size())) {
+                stop = true;
+            } else {
+                navigator.navigate(choice);
             }
         }
         userInteraction.stopWorking();

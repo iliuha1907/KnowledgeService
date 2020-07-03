@@ -1,23 +1,21 @@
-package com.senla.training.hoteladmin.util;
+package com.senla.training.hotelAdmin.util;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtil {
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     public static Date getDate(String data) {
-        DateFormat inputFormatter = new SimpleDateFormat("dd.MM.yyyy");
         try {
-            return inputFormatter.parse(data);
+            return simpleDateFormat.parse(data);
         } catch (Exception ex) {
-            throw new RuntimeException("Invalid data");
+            return null;
         }
 
     }
 
-    public static String getStr(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    public static String getString(Date date) {
         return simpleDateFormat.format(date);
     }
 }

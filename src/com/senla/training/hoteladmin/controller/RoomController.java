@@ -1,81 +1,91 @@
-package com.senla.training.hoteladmin.controller;
+package com.senla.training.hotelAdmin.controller;
 
-import com.senla.training.hoteladmin.service.RoomService;
-import com.senla.training.hoteladmin.model.room.Room;
-import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.model.room.RoomsSortCriterion;
-import com.senla.training.hoteladmin.util.DateUtil;
+import com.senla.training.hotelAdmin.exception.BusinessException;
+import com.senla.training.hotelAdmin.service.*;
+import com.senla.training.hotelAdmin.model.room.Room;
+import com.senla.training.hotelAdmin.model.room.RoomStatus;
+import com.senla.training.hotelAdmin.util.sort.RoomsSortCriterion;
+import com.senla.training.hotelAdmin.util.DateUtil;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 public class RoomController {
+    private static RoomController instance;
     private RoomService roomService;
 
-    public RoomController(RoomService roomService) {
-        this.roomService = roomService;
+    private RoomController() {
+        this.roomService = RoomServiceImpl.getInstance();
     }
 
-    public String addRoom(Integer number, RoomStatus status, BigDecimal price, Integer capacity,
-                          Integer stars) {
-        Room room = new Room(number, status, price, capacity, stars);
-        if (roomService.addRoom(room)) {
-            return "Successfully added room";
-        } else {
-            return "Error at adding room: number of the room already exists!";
+    public static RoomController getInstance() {
+        if (instance == null) {
+            instance = new RoomController();
         }
+        return instance;
+    }
+
+    public String addRoom(RoomStatus status, BigDecimal price, Integer capacity,
+                          Integer stars) {
+        roomService.addRoom(status, price, capacity, stars);
+        return "Successfully added room";
     }
 
     public String setRoomStatus(int roomNumber, RoomStatus status) {
-        if (roomService.setRoomStatus(roomNumber, status)) {
+        try {
+            roomService.setRoomStatus(roomNumber, status);
             return "Successfully modified status";
-        } else {
-            return "Error at modifying status: no such room!";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 
     public String setRoomPrice(int roomNumber, BigDecimal price) {
-        if (roomService.setRoomPrice(roomNumber, price)) {
+        try {
+            roomService.setRoomPrice(roomNumber, price);
             return "Successfully modified price";
-        } else {
-            return "Error at modifying price: no such room!";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 
     public String getSortedRooms(RoomsSortCriterion criterion) {
         List<Room> rooms = roomService.getSortedRooms(criterion);
-        StringBuilder result = new StringBuilder("Rooms sorted by " + criterion.toString() + "\n");
-        rooms.forEach(e -> {
-            result.append(e + "\n");
+        String title = "Rooms sorted by " + criterion.toString() + "\n";
+        StringBuilder result = new StringBuilder(title);
+        rooms.forEach(room -> {
+            result.append(room).append("\n");
         });
         return result.toString();
     }
 
     public String getSortedFreeRooms(RoomsSortCriterion criterion) {
         List<Room> rooms = roomService.getSortedFreeRooms(criterion);
-        StringBuilder result = new StringBuilder("Free rooms sorted by " + criterion.toString() + "\n");
-        rooms.forEach(e -> {
-            result.append(e + "\n");
+        String title = "Free rooms sorted by " + criterion.toString() + "\n";
+        StringBuilder result = new StringBuilder(title);
+        rooms.forEach(room -> {
+            result.append(room).append("\n");
         });
         return result.toString();
     }
 
     public String getFreeRoomsAfterDate(Date date) {
         List<Room> rooms = roomService.getFreeRoomsAfterDate(date);
-        StringBuilder result = new StringBuilder("Rooms, free after " + DateUtil.getStr(date) + "\n");
-        rooms.forEach(e -> {
-            result.append(e + "\n");
+        String title = "Rooms, free after " + DateUtil.getString(date) + "\n";
+        StringBuilder result = new StringBuilder(title);
+        rooms.forEach(room -> {
+            result.append(room).append("\n");
         });
         return result.toString();
     }
 
     public String getPriceRoom(int roomNumber) {
-        BigDecimal price = roomService.getPriceRoom(roomNumber);
-        if (price == null) {
-            return "Error at getting price of the room: no such room";
-        } else {
+        try {
+            BigDecimal price = roomService.getPriceRoom(roomNumber);
             return "Price: " + price.toString();
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 
@@ -90,6 +100,24 @@ public class RoomController {
 
     public String getNumberOfFreeRooms() {
         return "Number of free rooms: " + roomService.getNumberOfFreeRooms();
+    }
+
+    public String exportRooms() {
+        try {
+            roomService.exportRooms();
+            return "Successfully exported rooms";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String importRooms() {
+        try {
+            roomService.importRooms(ClientServiceImpl.getInstance());
+            return "Successfully imported rooms";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
     }
 }
 
