@@ -22,6 +22,11 @@ public class HotelServiceRepositoryImpl implements HotelServiceRepository {
     }
 
     @Override
+    public void setHotelServices(List<HotelService> hotelServices) {
+        this.hotelServices = hotelServices;
+    }
+
+    @Override
     public void addHotelService(HotelService hotelService) {
         hotelService.setId(HotelServiceIdProvider.getNextId());
         hotelServices.add(hotelService);

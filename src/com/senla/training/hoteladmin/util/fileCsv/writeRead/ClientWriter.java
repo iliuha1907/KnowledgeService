@@ -3,14 +3,15 @@ package com.senla.training.hotelAdmin.util.fileCsv.writeRead;
 import com.senla.training.hotelAdmin.exception.BusinessException;
 import com.senla.training.hotelAdmin.model.client.Client;
 import com.senla.training.hotelAdmin.util.fileCsv.parsing.ClientParser;
+import com.senla.training.hotelAdmin.util.fileProperties.PropertyDataProvider;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientWriter {
-    private final static String FILE_NAME = "Files/clients.csv";
-    private final static String SEPARATOR = ";";
+    private final static String FILE_NAME = PropertyDataProvider.getClientsCsv();
+    private final static String SEPARATOR = PropertyDataProvider.getSeparator();
 
     public static void writeClients(List<Client> clients) {
         try (FileWriter fileWriter = new FileWriter(new File(FILE_NAME))) {

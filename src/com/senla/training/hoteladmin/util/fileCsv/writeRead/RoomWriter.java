@@ -2,14 +2,15 @@ package com.senla.training.hotelAdmin.util.fileCsv.writeRead;
 
 import com.senla.training.hotelAdmin.model.room.Room;
 import com.senla.training.hotelAdmin.util.fileCsv.parsing.RoomParser;
+import com.senla.training.hotelAdmin.util.fileProperties.PropertyDataProvider;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RoomWriter {
-    private final static String FILE_NAME = "Files/rooms.csv";
-    private final static String SEPARATOR = ";";
+    private final static String FILE_NAME = PropertyDataProvider.getRoomsCsv();
+    private final static String SEPARATOR = PropertyDataProvider.getSeparator();
 
     public static boolean writeRooms(List<Room> rooms) {
         try (FileWriter fileWriter = new FileWriter(new File(FILE_NAME))) {

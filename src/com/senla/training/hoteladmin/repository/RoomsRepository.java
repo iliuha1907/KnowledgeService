@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface RoomsRepository {
+
     void setRooms(List<Room> rooms);
 
     void addRoom(Room room);

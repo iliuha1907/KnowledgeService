@@ -119,5 +119,24 @@ public class RoomController {
             return ex.getMessage();
         }
     }
+
+    public String deserializeRoomsClients() {
+        try {
+            roomService.deserializeRooms();
+            return "Successful deserialization of rooms";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String serializeRoomsClients() {
+        try {
+            roomService.serializeRooms();
+            return "Successful serialization of rooms";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
 }
 

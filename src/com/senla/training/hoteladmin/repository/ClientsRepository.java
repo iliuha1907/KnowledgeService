@@ -5,7 +5,14 @@ import com.senla.training.hotelAdmin.model.client.Client;
 import java.util.List;
 
 public interface ClientsRepository {
+
+    void setClients(List<Client> clients);
+
+    void setMovedClients(List<Client> clients);
+
     List<Client> getClients();
+
+    List<Client> getMovedClients();
 
     List<Client> getLastRoomClients(Integer roomId, Integer count);
 

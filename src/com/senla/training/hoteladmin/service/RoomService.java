@@ -9,6 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface RoomService {
+
+    void setRooms(List<Room> rooms);
+
     void addRoom(RoomStatus status, BigDecimal price, Integer capacity,
                  Integer stars);
 
@@ -33,6 +36,10 @@ public interface RoomService {
     void importRooms(ClientService clientService);
 
     void updateRoom(Room rooms);
+
+    void deserializeRooms();
+
+    void serializeRooms();
 
 }
 

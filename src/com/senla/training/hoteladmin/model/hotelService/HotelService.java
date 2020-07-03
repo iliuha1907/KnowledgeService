@@ -3,10 +3,11 @@ package com.senla.training.hotelAdmin.model.hotelService;
 import com.senla.training.hotelAdmin.model.client.Client;
 import com.senla.training.hotelAdmin.util.DateUtil;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class HotelService {
+public class HotelService implements Serializable {
     private Integer id;
     private BigDecimal price;
     private HotelServiceType type;

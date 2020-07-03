@@ -25,18 +25,38 @@ public class ClientsRepositoryImpl implements ClientsRepository {
     }
 
     @Override
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    @Override
+    public void setMovedClients(List<Client> clients) {
+        this.movedClients = clients;
+    }
+
+    @Override
     public List<Client> getClients() {
         return clients;
     }
 
     @Override
+    public List<Client> getMovedClients() {
+        return movedClients;
+    }
+
+    @Override
     public List<Client> getLastRoomClients(Integer roomId, Integer count) {
         List<Client> resultClients = new ArrayList<>();
-        movedClients.forEach(client -> {
+        Integer times = count;
+        for(Client client:movedClients){
             if (client.getRoom().getId().equals(roomId)) {
+                if(times == 0){
+                    break;
+                }
                 resultClients.add(client);
+                times--;
             }
-        });
+        }
         return resultClients;
     }
 

@@ -1,14 +1,23 @@
 package com.senla.training.hotelAdmin.view;
 
+import com.senla.training.hotelAdmin.controller.ClientController;
+import com.senla.training.hotelAdmin.controller.HotelServiceController;
+import com.senla.training.hotelAdmin.controller.RoomController;
 import com.senla.training.hotelAdmin.util.UserInteraction;
 
 public class MenuController {
     private static MenuController instance;
     private Builder builder;
     private Navigator navigator;
+    private RoomController roomController;
+    private ClientController clientController;
+    private HotelServiceController hotelServiceController;
 
     private MenuController(Builder builder) {
         this.builder = builder;
+        roomController = RoomController.getInstance();
+        clientController = ClientController.getInstance();
+        hotelServiceController = HotelServiceController.getInstance();
     }
 
     public static MenuController getInstance(Builder builder) {
@@ -19,6 +28,10 @@ public class MenuController {
     }
 
     public void run() {
+        System.out.println(roomController.deserializeRoomsClients());
+        System.out.println(hotelServiceController.deserializeHotelServices());
+        System.out.println(clientController.deserializeLastResidents());
+
         builder.buildMenu();
         navigator = Navigator.getInstance(builder.getRootMenu());
         UserInteraction userInteraction = UserInteraction.getInstance();
@@ -37,6 +50,10 @@ public class MenuController {
             }
         }
         userInteraction.stopWorking();
+
+        System.out.println(roomController.serializeRoomsClients());
+        System.out.println(clientController.serializeLastResidents());
+        System.out.println(hotelServiceController.serializeHotelServices());
     }
 }
 

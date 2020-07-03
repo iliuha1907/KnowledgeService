@@ -57,8 +57,8 @@ public class ClientController {
         return "Number of residents: " + clientService.getNumberOfResidents();
     }
 
-    public String getLastThreeResidents(int roomNumber) {
-        List<Client> clients = clientService.getLastThreeResidents(roomNumber);
+    public String getLastResidents(int roomNumber) {
+        List<Client> clients = clientService.getLastResidents(roomNumber);
         String title = "Last residents of room " + roomNumber + "\n";
         StringBuilder result = new StringBuilder(title);
         clients.forEach(client -> {
@@ -82,6 +82,24 @@ public class ClientController {
             return "Successfully imported clients";
         } catch (BusinessException ex) {
             return "Could not import clients";
+        }
+    }
+
+    public String deserializeLastResidents() {
+        try {
+            clientService.deserializeMovedClients();
+            return "Successful deserialization of last residents";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String serializeLastResidents() {
+        try {
+            clientService.serializeMovedClients();
+            return "Successful serialization of last residents";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 

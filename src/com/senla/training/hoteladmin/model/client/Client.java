@@ -3,9 +3,10 @@ package com.senla.training.hotelAdmin.model.client;
 import com.senla.training.hotelAdmin.model.room.Room;
 import com.senla.training.hotelAdmin.util.DateUtil;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Client {
+public class Client implements Serializable {
     private Integer id;
     private String firstName;
     private String lastName;

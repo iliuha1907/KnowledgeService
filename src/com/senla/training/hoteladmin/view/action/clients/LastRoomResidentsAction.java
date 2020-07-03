@@ -19,7 +19,7 @@ public class LastRoomResidentsAction implements IAction {
             System.out.println("Wrong id");
             return;
         }
-        System.out.println(clientController.getLastThreeResidents(roomId));
+        System.out.println(clientController.getLastResidents(roomId));
     }
 }
 
