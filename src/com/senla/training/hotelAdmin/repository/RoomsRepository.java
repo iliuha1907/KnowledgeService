@@ -1,6 +1,6 @@
-package com.senla.training.hotelAdmin.repository;
+package com.senla.training.hoteladmin.repository;
 
-import com.senla.training.hotelAdmin.model.room.Room;
+import com.senla.training.hoteladmin.model.room.Room;
 
 import java.util.Date;
 import java.util.List;

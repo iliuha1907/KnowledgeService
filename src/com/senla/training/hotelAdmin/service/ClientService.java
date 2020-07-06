@@ -1,7 +1,7 @@
-package com.senla.training.hotelAdmin.service;
+package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hotelAdmin.model.client.Client;
-import com.senla.training.hotelAdmin.util.sort.ClientsSortCriterion;
+import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 
 import java.util.Date;
 import java.util.List;
@@ -35,5 +35,9 @@ public interface ClientService {
     void serializeMovedClients();
 
     void deserializeMovedClients();
+
+    void serializeId();
+
+    void deserializeId();
 }
 

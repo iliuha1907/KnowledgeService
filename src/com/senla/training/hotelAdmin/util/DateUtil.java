@@ -1,4 +1,4 @@
-package com.senla.training.hotelAdmin.util;
+package com.senla.training.hoteladmin.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

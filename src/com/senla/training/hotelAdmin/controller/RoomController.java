@@ -1,11 +1,11 @@
-package com.senla.training.hotelAdmin.controller;
+package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hotelAdmin.exception.BusinessException;
-import com.senla.training.hotelAdmin.service.*;
-import com.senla.training.hotelAdmin.model.room.Room;
-import com.senla.training.hotelAdmin.model.room.RoomStatus;
-import com.senla.training.hotelAdmin.util.sort.RoomsSortCriterion;
-import com.senla.training.hotelAdmin.util.DateUtil;
+import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.service.*;
+import com.senla.training.hoteladmin.model.room.Room;
+import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
+import com.senla.training.hoteladmin.util.DateUtil;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -133,6 +133,24 @@ public class RoomController {
         try {
             roomService.serializeRooms();
             return "Successful serialization of rooms";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String deserializeRoomsId() {
+        try {
+            roomService.deserializeId();
+            return "Successful deserialization of rooms id";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String serializeRoomsId() {
+        try {
+            roomService.serializeId();
+            return "Successful serialization of rooms id";
         } catch (BusinessException ex) {
             return ex.getMessage();
         }

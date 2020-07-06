@@ -1,4 +1,4 @@
-package com.senla.training.hotelAdmin.view;
+package com.senla.training.hoteladmin.view;
 
 public interface IAction {
     void execute();

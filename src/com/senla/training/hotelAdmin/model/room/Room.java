@@ -1,12 +1,13 @@
-package com.senla.training.hotelAdmin.model.room;
+package com.senla.training.hoteladmin.model.room;
 
-import com.senla.training.hotelAdmin.model.client.Client;
-import com.senla.training.hotelAdmin.util.DateUtil;
+import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.util.DateUtil;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class Room implements Serializable {
+    private static final long SerialVersionUID = 1l;
     private Integer id;
     private RoomStatus status;
     private BigDecimal price;
@@ -15,6 +16,15 @@ public class Room implements Serializable {
     private Client resident;
 
     public Room() {
+    }
+
+    public Room(RoomStatus status, BigDecimal price, Integer capacity,
+                Integer stars) {
+        this.status = status;
+        this.price = price;
+        this.capacity = capacity;
+        this.stars = stars;
+        resident = null;
     }
 
     public Room(Integer id, RoomStatus status, BigDecimal price, Integer capacity,

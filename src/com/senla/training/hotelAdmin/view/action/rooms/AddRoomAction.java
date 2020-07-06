@@ -1,9 +1,9 @@
-package com.senla.training.hotelAdmin.view.action.rooms;
+package com.senla.training.hoteladmin.view.action.rooms;
 
-import com.senla.training.hotelAdmin.controller.RoomController;
-import com.senla.training.hotelAdmin.model.room.RoomStatus;
-import com.senla.training.hotelAdmin.util.UserInteraction;
-import com.senla.training.hotelAdmin.view.IAction;
+import com.senla.training.hoteladmin.controller.RoomController;
+import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.hoteladmin.view.IAction;
 
 import java.math.BigDecimal;
 
@@ -14,35 +14,23 @@ public class AddRoomAction implements IAction {
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        RoomStatus roomStatus;
-        roomStatus = userInteraction.getRoomStatus();
+        RoomStatus roomStatus = userInteraction.getRoomStatus();
         if (roomStatus == null) {
-            System.out.println("Wrong status");
             return;
         }
 
-
-        System.out.println("Enter price");
-        BigDecimal price;
-        price = userInteraction.getBigDecimal();
-        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
-            System.out.println("Wrong price");
+        BigDecimal price = userInteraction.getPositiveBigDecimalWithMessage("Enter price");
+        if (price == null) {
             return;
         }
 
-        System.out.println("Enter capacity");
-        Integer capacity;
-        capacity = userInteraction.getInt();
-        if (capacity == null || capacity < 1) {
-            System.out.println("Wrong capacity");
+        Integer capacity = userInteraction.getNaturalIntWithMessage("Enter capacity");
+        if (capacity == null) {
             return;
         }
 
-        System.out.println("Enter stars");
-        Integer stars;
-        stars = userInteraction.getInt();
-        if (stars == null || stars < 0) {
-            System.out.println("Wrong stars");
+        Integer stars = userInteraction.getNaturalIntWithMessage("Enter stars");
+        if (stars == null) {
             return;
         }
 

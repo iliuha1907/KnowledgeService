@@ -1,4 +1,6 @@
-package com.senla.training.hotelAdmin.view;
+package com.senla.training.hoteladmin.view;
+
+import java.util.List;
 
 public class Navigator {
     private static Navigator instance;
@@ -24,17 +26,19 @@ public class Navigator {
     }
 
     public void navigate(Integer index) {
-        Integer size = currentMenu.getMenuItems().size();
+        List<MenuItem> menuItems = currentMenu.getMenuItems();
+        int size = menuItems.size();
 
         if (index < 0 ||
                 index > size - 1) {
             return;
         }
 
-        if (currentMenu.getMenuItems().get(index).getNextMenu() == null) {
-            currentMenu.getMenuItems().get(index).doAction();
+        MenuItem menuItem = menuItems.get(index);
+        if (menuItem.getNextMenu() == null) {
+            menuItem.doAction();
         } else {
-            currentMenu = currentMenu.getMenuItems().get(index).getNextMenu();
+            currentMenu = menuItem.getNextMenu();
         }
     }
 }

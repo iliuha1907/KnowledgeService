@@ -1,10 +1,9 @@
-package com.senla.training.hotelAdmin.view.action.hotelService;
+package com.senla.training.hoteladmin.view.action.hotelservice;
 
-import com.senla.training.hotelAdmin.controller.HotelServiceController;
-import com.senla.training.hotelAdmin.model.hotelService.HotelServiceType;
-import com.senla.training.hotelAdmin.util.DateUtil;
-import com.senla.training.hotelAdmin.util.UserInteraction;
-import com.senla.training.hotelAdmin.view.IAction;
+import com.senla.training.hoteladmin.controller.HotelServiceController;
+import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
+import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.hoteladmin.view.IAction;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,36 +14,27 @@ public class AddHotelServiceAction implements IAction {
     @Override
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
-        System.out.println("Enter id of the client");
-        Integer id;
-        id = userInteraction.getInt();
-        if (id == null || id < 0) {
-            System.out.println("Wrong id");
+
+        Integer id = userInteraction.getNaturalIntWithMessage("Enter id of the client");
+        if (id == null) {
             return;
         }
 
-        System.out.println("Enter price");
-        BigDecimal price;
-        price = userInteraction.getBigDecimal();
-        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
-            System.out.println("Wrong price");
+        BigDecimal price = userInteraction.getPositiveBigDecimalWithMessage("Enter price");
+        if (price == null) {
             return;
         }
 
-        HotelServiceType type;
-        type = userInteraction.getServiceType();
+        HotelServiceType type = userInteraction.getServiceType();
         if (type == null) {
-            System.out.println("Wrong type");
             return;
         }
 
-        System.out.println("Enter date");
-        Date date;
-        date = DateUtil.getDate(userInteraction.getString());
+        Date date = UserInteraction.getInstance().getDateWithMessage("Enter date");
         if (date == null) {
-            System.out.println("Wrong date");
             return;
         }
+
         System.out.println(hotelServiceController.addService(price, type, id, date));
     }
 }

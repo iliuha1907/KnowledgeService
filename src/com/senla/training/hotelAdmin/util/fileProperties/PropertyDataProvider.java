@@ -1,4 +1,4 @@
-package com.senla.training.hotelAdmin.util.fileProperties;
+package com.senla.training.hoteladmin.util.fileproperties;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -6,111 +6,129 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyDataProvider {
-    private static final String FILE_NAME = "resources/app.properties";
-    private static final String NUMBER_OF_RECORDS = "numberOfRecords";
-    private static final String CHANGE_STATUS = "changeStatus";
-    private static final String MOVED_CLIENTS = "movedClientsFile";
-    private static final String ROOM_CLIENTS = "roomClientsFile";
-    private static final String SERVICES_FILE = "servicesFile";
-    private static final String CLIENTS_CSV = "clientsCsvFile";
-    private static final String ROOMS_CSV = "roomsCsv";
-    private static final String SERVICES_CSV = "servicesCsv";
-    private static final String SEPARATOR = "separator";
 
     public static Integer getNumberOfRecords() {
-        try (InputStream input = new FileInputStream(FILE_NAME)) {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            try {
-                Integer number = Integer.parseInt(prop.getProperty(NUMBER_OF_RECORDS));
-                return number;
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-
+            return Integer.parseInt((String) prop.getOrDefault(PropertyNamesProvider.NUMBER_OF_RECORDS,
+                    DefaultPropertyValuesProvider.DEFAULT_NUMBER_RESIDENTS));
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            return DefaultPropertyValuesProvider.DEFAULT_NUMBER_RESIDENTS;
         }
     }
 
     public static boolean isChangeableStatus() {
-        try (InputStream input = new FileInputStream(FILE_NAME)) {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            boolean isChangeAble = Boolean.parseBoolean(prop.getProperty(CHANGE_STATUS));
-            return isChangeAble;
+            return Boolean.parseBoolean((String) prop.getOrDefault(PropertyNamesProvider.CHANGE_STATUS,
+                    DefaultPropertyValuesProvider.DEFAULT_IS_CHANGEABLE));
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            return DefaultPropertyValuesProvider.DEFAULT_IS_CHANGEABLE;
         }
     }
 
     public static String getMovedClientsFile() {
-        try (InputStream input = new FileInputStream(FILE_NAME)) {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(MOVED_CLIENTS);
+            return (String) prop.getOrDefault(PropertyNamesProvider.MOVED_CLIENTS,
+                    DefaultPropertyValuesProvider.DEFAULT_MOVED_CLIENTS);
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            return DefaultPropertyValuesProvider.DEFAULT_MOVED_CLIENTS;
         }
     }
 
     public static String getRoomClientsFile() {
-        try (InputStream input = new FileInputStream(FILE_NAME)) {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(ROOM_CLIENTS);
+            return (String) prop.getOrDefault(PropertyNamesProvider.ROOM_CLIENTS,
+                    DefaultPropertyValuesProvider.DEFAULT_ROOM_CLIENTS);
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            return DefaultPropertyValuesProvider.DEFAULT_ROOM_CLIENTS;
         }
     }
 
     public static String getServicesFile() {
-        try (InputStream input = new FileInputStream(FILE_NAME)) {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(SERVICES_FILE);
+            return (String) prop.getOrDefault(PropertyNamesProvider.SERVICES_FILE,
+                    DefaultPropertyValuesProvider.DEFAULT_SERVICES_FILE);
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            return DefaultPropertyValuesProvider.DEFAULT_SERVICES_FILE;
         }
     }
 
     public static String getClientsCsv() {
-        try (InputStream input = new FileInputStream(FILE_NAME)) {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(CLIENTS_CSV);
+            return prop.getProperty(PropertyNamesProvider.CLIENTS_CSV);
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            return DefaultPropertyValuesProvider.DEFAULT_CLIENTS_CSV;
         }
     }
 
     public static String getRoomsCsv() {
-        try (InputStream input = new FileInputStream(FILE_NAME)) {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(ROOMS_CSV);
+            return prop.getProperty(PropertyNamesProvider.ROOMS_CSV);
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            return DefaultPropertyValuesProvider.DEFAULT_ROOMS_CSV;
         }
     }
 
     public static String getServicesCsv() {
-        try (InputStream input = new FileInputStream(FILE_NAME)) {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(SERVICES_CSV);
+            return prop.getProperty(PropertyNamesProvider.SERVICES_CSV);
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            return DefaultPropertyValuesProvider.DEFAULT_SERVICES_CSV;
         }
     }
 
     public static String getSeparator() {
-        try (InputStream input = new FileInputStream(FILE_NAME)) {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(SEPARATOR);
+            return prop.getProperty(PropertyNamesProvider.SEPARATOR);
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            return DefaultPropertyValuesProvider.DEFAULT_SEPARATOR;
+        }
+    }
+
+    public static String getClientIdFile() {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
+            Properties prop = new Properties();
+            prop.load(input);
+            return prop.getProperty(PropertyNamesProvider.CLIENTS_ID);
+        } catch (IOException ex) {
+            return DefaultPropertyValuesProvider.DEFAULT_CLIENTS_ID;
+        }
+    }
+
+    public static String getRoomIdFile() {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
+            Properties prop = new Properties();
+            prop.load(input);
+            return prop.getProperty(PropertyNamesProvider.ROOMS_ID);
+        } catch (IOException ex) {
+            return DefaultPropertyValuesProvider.DEFAULT_ROOMS_ID;
+        }
+    }
+
+    public static String getHotelServiceIdFile() {
+        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
+            Properties prop = new Properties();
+            prop.load(input);
+            return prop.getProperty(PropertyNamesProvider.SERVICES_ID);
+        } catch (IOException ex) {
+            return DefaultPropertyValuesProvider.DEFAULT_SERVICES_ID;
         }
     }
 }

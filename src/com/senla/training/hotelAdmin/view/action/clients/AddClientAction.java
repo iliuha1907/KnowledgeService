@@ -1,9 +1,8 @@
-package com.senla.training.hotelAdmin.view.action.clients;
+package com.senla.training.hoteladmin.view.action.clients;
 
-import com.senla.training.hotelAdmin.controller.ClientController;
-import com.senla.training.hotelAdmin.util.DateUtil;
-import com.senla.training.hotelAdmin.view.IAction;
-import com.senla.training.hotelAdmin.util.UserInteraction;
+import com.senla.training.hoteladmin.controller.ClientController;
+import com.senla.training.hoteladmin.view.IAction;
+import com.senla.training.hoteladmin.util.UserInteraction;
 
 import java.util.Date;
 
@@ -14,25 +13,16 @@ public class AddClientAction implements IAction {
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        System.out.println("Enter first name");
-        String firstName = userInteraction.getString();
-        System.out.println("Enter last name");
-        String lastName = userInteraction.getString();
+        String firstName = userInteraction.getStringWithMessage("Enter first name");
+        String lastName = userInteraction.getStringWithMessage("Enter last name");
 
-        System.out.println("Enter arrival date");
-        Date arrival;
-        arrival = DateUtil.getDate(userInteraction.getString());
+        Date arrival = userInteraction.getDateWithMessage("Enter arrival date");
         if (arrival == null) {
-            System.out.println("Wrong arrival date");
             return;
         }
 
-        System.out.println("Enter departure date");
-        Date departure;
-
-        departure = DateUtil.getDate(userInteraction.getString());
+        Date departure = userInteraction.getDateWithMessage("Enter departure date");
         if (departure == null) {
-            System.out.println("Wrong departure date");
             return;
         }
 

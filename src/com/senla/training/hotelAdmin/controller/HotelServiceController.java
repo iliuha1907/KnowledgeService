@@ -1,14 +1,14 @@
-package com.senla.training.hotelAdmin.controller;
+package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hotelAdmin.exception.BusinessException;
-import com.senla.training.hotelAdmin.model.client.Client;
-import com.senla.training.hotelAdmin.model.hotelService.HotelService;
-import com.senla.training.hotelAdmin.model.hotelService.HotelServiceType;
-import com.senla.training.hotelAdmin.service.ClientService;
-import com.senla.training.hotelAdmin.service.ClientServiceImpl;
-import com.senla.training.hotelAdmin.service.HotelServiceService;
-import com.senla.training.hotelAdmin.service.HotelServiceServiceImpl;
-import com.senla.training.hotelAdmin.util.sort.HotelServiceSortCriterion;
+import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.model.hotelservice.HotelService;
+import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
+import com.senla.training.hoteladmin.service.ClientService;
+import com.senla.training.hoteladmin.service.ClientServiceImpl;
+import com.senla.training.hoteladmin.service.HotelServiceService;
+import com.senla.training.hoteladmin.service.HotelServiceServiceImpl;
+import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -105,6 +105,24 @@ public class HotelServiceController {
             return  "Successful serialization of services";
         }
         catch (BusinessException ex){
+            return ex.getMessage();
+        }
+    }
+
+    public String deserializeServicesId() {
+        try {
+            hotelServiceService.deserializeId();
+            return "Successful deserialization of services id";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String serializeServicesId() {
+        try {
+            hotelServiceService.serializeId();
+            return "Successful serialization of services id";
+        } catch (BusinessException ex) {
             return ex.getMessage();
         }
     }

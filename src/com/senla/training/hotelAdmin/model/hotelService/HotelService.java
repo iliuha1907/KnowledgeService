@@ -1,13 +1,14 @@
-package com.senla.training.hotelAdmin.model.hotelService;
+package com.senla.training.hoteladmin.model.hotelservice;
 
-import com.senla.training.hotelAdmin.model.client.Client;
-import com.senla.training.hotelAdmin.util.DateUtil;
+import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.util.DateUtil;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class HotelService implements Serializable {
+    private static final long SerialVersionUID = 1l;
     private Integer id;
     private BigDecimal price;
     private HotelServiceType type;
@@ -15,6 +16,13 @@ public class HotelService implements Serializable {
     private Date date;
 
     public HotelService() {
+    }
+
+    public HotelService(BigDecimal price, HotelServiceType type, Client client, Date date) {
+        this.price = price;
+        this.type = type;
+        this.client = client;
+        this.date = date;
     }
 
     public HotelService(Integer id, BigDecimal price, HotelServiceType type, Client client, Date date) {

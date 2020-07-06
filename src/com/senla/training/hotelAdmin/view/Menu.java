@@ -1,4 +1,4 @@
-package com.senla.training.hotelAdmin.view;
+package com.senla.training.hoteladmin.view;
 
 import java.util.List;
 

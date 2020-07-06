@@ -1,10 +1,10 @@
-package com.senla.training.hotelAdmin.controller;
+package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hotelAdmin.exception.BusinessException;
-import com.senla.training.hotelAdmin.model.client.Client;
-import com.senla.training.hotelAdmin.service.ClientService;
-import com.senla.training.hotelAdmin.service.ClientServiceImpl;
-import com.senla.training.hotelAdmin.util.sort.ClientsSortCriterion;
+import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.service.ClientService;
+import com.senla.training.hoteladmin.service.ClientServiceImpl;
+import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 
 import java.util.Date;
 import java.util.List;
@@ -81,7 +81,7 @@ public class ClientController {
             clientService.importClients();
             return "Successfully imported clients";
         } catch (BusinessException ex) {
-            return "Could not import clients";
+            return ex.getMessage();
         }
     }
 
@@ -98,6 +98,24 @@ public class ClientController {
         try {
             clientService.serializeMovedClients();
             return "Successful serialization of last residents";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String deserializeClientsId() {
+        try {
+            clientService.deserializeId();
+            return "Successful deserialization of client id";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String serializeClientId() {
+        try {
+            clientService.serializeId();
+            return "Successful serialization of client id";
         } catch (BusinessException ex) {
             return ex.getMessage();
         }

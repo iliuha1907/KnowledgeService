@@ -1,9 +1,13 @@
-package com.senla.training.hotelAdmin.util.serializator;
+package com.senla.training.hoteladmin.util.serializator;
 
-import com.senla.training.hotelAdmin.model.client.Client;
-import com.senla.training.hotelAdmin.model.hotelService.HotelService;
-import com.senla.training.hotelAdmin.model.room.Room;
-import com.senla.training.hotelAdmin.util.fileProperties.PropertyDataProvider;
+import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.model.hotelservice.HotelService;
+import com.senla.training.hoteladmin.model.room.Room;
+import com.senla.training.hoteladmin.util.id.ClientIdProvider;
+import com.senla.training.hoteladmin.util.id.HotelServiceIdProvider;
+import com.senla.training.hoteladmin.util.id.RoomIdProvider;
+import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
@@ -14,38 +18,64 @@ public class Deserializator {
     private static final String FILE_NAME_ROOMS_CLIENTS = PropertyDataProvider.getRoomClientsFile();
     private static final String FILE_NAME_SERVICES = PropertyDataProvider.getServicesFile();
     private static final String FILE_NAME_MOVED_CLIENTS = PropertyDataProvider.getMovedClientsFile();
+    private static final String FILE_NAME_ROOMS_ID = PropertyDataProvider.getRoomIdFile();
+    private static final String FILE_NAME_CLIENTS_ID = PropertyDataProvider.getClientIdFile();
+    private static final String FILE_NAME_SERVICES_ID = PropertyDataProvider.getHotelServiceIdFile();
 
-
+    @SuppressWarnings("unchecked")
     public static List<Room> deserializeRoomClients() {
-        try (FileInputStream fileInputStream = new FileInputStream(FILE_NAME_ROOMS_CLIENTS)) {
-            try (ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-                List<Room> rooms = (List<Room>) objectInputStream.readObject();
-                return rooms;
-            }
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(
+                new FileInputStream(FILE_NAME_ROOMS_CLIENTS))) {
+            return (List<Room>) objectInputStream.readObject();
         } catch (Exception ex) {
-            return null;
+            throw new BusinessException("Error at deserialization of rooms and clients");
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static List<Client> deserializeMovedClients() {
-        try (FileInputStream fileInputStream = new FileInputStream(FILE_NAME_MOVED_CLIENTS)) {
-            try (ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-                List<Client> clients = (List<Client>) objectInputStream.readObject();
-                return clients;
-            }
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(
+                new FileInputStream(FILE_NAME_MOVED_CLIENTS))) {
+            return (List<Client>) objectInputStream.readObject();
         } catch (Exception ex) {
-            return null;
+            throw new BusinessException("Error at deserialization of moved clients");
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static List<HotelService> deserializeServices() {
-        try (FileInputStream fileInputStream = new FileInputStream(FILE_NAME_SERVICES)) {
-            try (ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-                List<HotelService> hotelServices = (List<HotelService>) objectInputStream.readObject();
-                return hotelServices;
-            }
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(
+                new FileInputStream(FILE_NAME_SERVICES))) {
+            return (List<HotelService>) objectInputStream.readObject();
         } catch (Exception ex) {
-            return null;
+            throw new BusinessException("Error at deserialization of hotel services");
+        }
+    }
+
+    public static Integer deserializeClientId() {
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(
+                new FileInputStream(FILE_NAME_CLIENTS_ID))) {
+            return (Integer) objectInputStream.readObject();
+        } catch (Exception ex) {
+            throw new BusinessException("Error at deserialization of client id");
+        }
+    }
+
+    public static Integer deserializeRoomId() {
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(
+                new FileInputStream(FILE_NAME_ROOMS_ID))) {
+            return (Integer) objectInputStream.readObject();
+        } catch (Exception ex) {
+            throw new BusinessException("Error at deserialization of room id");
+        }
+    }
+
+    public static Integer deserializeHotelServiceId() {
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(
+                new FileInputStream(FILE_NAME_SERVICES_ID))) {
+            return (Integer) objectInputStream.readObject();
+        } catch (Exception ex) {
+            throw new BusinessException("Error at deserialization of hotel services id");
         }
     }
 }

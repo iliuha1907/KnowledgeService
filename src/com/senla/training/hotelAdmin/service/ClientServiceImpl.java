@@ -1,15 +1,16 @@
-package com.senla.training.hotelAdmin.service;
+package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hotelAdmin.exception.BusinessException;
-import com.senla.training.hotelAdmin.model.client.Client;
-import com.senla.training.hotelAdmin.model.room.Room;
-import com.senla.training.hotelAdmin.repository.*;
-import com.senla.training.hotelAdmin.util.fileCsv.writeRead.ClientWriter;
-import com.senla.training.hotelAdmin.util.fileProperties.PropertyDataProvider;
-import com.senla.training.hotelAdmin.util.serializator.Deserializator;
-import com.senla.training.hotelAdmin.util.serializator.Serializator;
-import com.senla.training.hotelAdmin.util.sort.ClientsSortCriterion;
-import com.senla.training.hotelAdmin.util.sort.ClientsSorter;
+import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.model.room.Room;
+import com.senla.training.hoteladmin.repository.*;
+import com.senla.training.hoteladmin.util.id.ClientIdProvider;
+import com.senla.training.hoteladmin.util.filecsv.writeread.ClientReaderWriter;
+import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
+import com.senla.training.hoteladmin.util.serializator.Deserializator;
+import com.senla.training.hoteladmin.util.serializator.Serializator;
+import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
+import com.senla.training.hoteladmin.util.sort.ClientsSorter;
 
 import java.util.Date;
 import java.util.List;
@@ -51,7 +52,7 @@ public class ClientServiceImpl implements ClientService {
             throw new BusinessException("Error at adding clients: no more free rooms!");
         }
 
-        Client client = new Client(null, firstName, lastName, arrival, departure);
+        Client client = new Client(firstName, lastName, arrival, departure);
         clientsRepository.addClient(client);
         client.setRoom(room);
         room.setResident(client);
@@ -103,15 +104,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void exportClients() {
-        ClientWriter.writeClients(clientsRepository.getClients());
+        ClientReaderWriter.writeClients(clientsRepository.getClients());
     }
 
     @Override
     public void importClients() {
-        List<Client> clients = ClientWriter.readClients();
-        if (clients == null) {
-            throw new BusinessException("Could not read clients");
-        }
+        List<Client> clients = ClientReaderWriter.readClients();
         clients.forEach(client -> {
             Room existing = roomsRepository.getRoom(client.getRoom().getId());
             if (existing == null || existing.getResident() != null) {
@@ -144,10 +142,18 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void deserializeMovedClients() {
         List<Client> clients = Deserializator.deserializeMovedClients();
-        if (clients == null) {
-            throw new BusinessException("Error at deserialization clients");
-        }
         setLastResidents(clients);
+    }
+
+    @Override
+    public void serializeId() {
+        Serializator.serializeClientId(ClientIdProvider.getCurrentId());
+    }
+
+    @Override
+    public void deserializeId() {
+        Integer id = Deserializator.deserializeClientId();
+        ClientIdProvider.setCurrentId(id);
     }
 }
 

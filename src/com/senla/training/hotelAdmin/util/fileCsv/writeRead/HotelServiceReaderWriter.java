@@ -1,26 +1,25 @@
-package com.senla.training.hotelAdmin.util.fileCsv.writeRead;
+package com.senla.training.hoteladmin.util.filecsv.writeread;
 
-import com.senla.training.hotelAdmin.model.hotelService.HotelService;
-import com.senla.training.hotelAdmin.util.fileCsv.parsing.HotelServiceParser;
-import com.senla.training.hotelAdmin.util.fileProperties.PropertyDataProvider;
+import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.model.hotelservice.HotelService;
+import com.senla.training.hoteladmin.util.filecsv.parsing.HotelServiceConverter;
+import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HotelServiceWriter {
+public class HotelServiceReaderWriter {
     private static final String FILE_NAME = PropertyDataProvider.getServicesCsv();
     private static final String SEPARATOR = PropertyDataProvider.getSeparator();
 
-    public static boolean writeServices(List<HotelService> hotelServices) {
+    public static void writeServices(List<HotelService> hotelServices) {
         try (FileWriter fileWriter = new FileWriter(new File(FILE_NAME))) {
             for (HotelService hotelService : hotelServices) {
-                fileWriter.write(HotelServiceParser.getStringFromService(hotelService, SEPARATOR));
-                fileWriter.write(hotelService.getClient().getId() + SEPARATOR + "\n");
+                fileWriter.write(HotelServiceConverter.getStringFromService(hotelService, SEPARATOR) + "\n");
             }
-            return true;
         } catch (Exception ex) {
-            return false;
+            throw new BusinessException(ex.getMessage());
         }
     }
 
@@ -29,11 +28,11 @@ public class HotelServiceWriter {
             List<HotelService> hotelServices = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
-                hotelServices.add(HotelServiceParser.parseService(line, SEPARATOR));
+                hotelServices.add(HotelServiceConverter.parseService(line, SEPARATOR));
             }
             return hotelServices;
         } catch (Exception ex) {
-            return null;
+            throw new BusinessException("Could not read services");
         }
     }
 }

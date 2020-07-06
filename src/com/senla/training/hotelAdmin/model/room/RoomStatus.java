@@ -1,4 +1,4 @@
-package com.senla.training.hotelAdmin.model.room;
+package com.senla.training.hoteladmin.model.room;
 
 public enum RoomStatus {
     SERVED,

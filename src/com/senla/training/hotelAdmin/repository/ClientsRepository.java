@@ -1,6 +1,6 @@
-package com.senla.training.hotelAdmin.repository;
+package com.senla.training.hoteladmin.repository;
 
-import com.senla.training.hotelAdmin.model.client.Client;
+import com.senla.training.hoteladmin.model.client.Client;
 
 import java.util.List;
 

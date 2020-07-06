@@ -1,8 +1,8 @@
-package com.senla.training.hotelAdmin.view.action.hotelService;
+package com.senla.training.hoteladmin.view.action.hotelservice;
 
-import com.senla.training.hotelAdmin.controller.HotelServiceController;
-import com.senla.training.hotelAdmin.util.UserInteraction;
-import com.senla.training.hotelAdmin.view.IAction;
+import com.senla.training.hoteladmin.controller.HotelServiceController;
+import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.hoteladmin.view.IAction;
 
 import java.math.BigDecimal;
 
@@ -13,19 +13,13 @@ public class ChangeHotelServicePriceAction implements IAction {
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        System.out.println("Enter id");
-        Integer id;
-        id = userInteraction.getInt();
-        if (id == null || id < 0) {
-            System.out.println("Wrong id");
+        Integer id = userInteraction.getNaturalIntWithMessage("Enter id");
+        if (id == null) {
             return;
         }
 
-        System.out.println("Enter price");
-        BigDecimal price;
-        price = userInteraction.getBigDecimal();
-        if (price == null || price.compareTo(BigDecimal.ZERO) < 0) {
-            System.out.println("Wrong price");
+        BigDecimal price = userInteraction.getPositiveBigDecimalWithMessage("Enter price");
+        if (price == null) {
             return;
         }
 
