@@ -20,9 +20,6 @@ public class ClientConverter {
 
     }
 
-    //оставил все же без литералов, так как если измениться структура файла или еще что-то,
-    //то придется вручную их везде менять, а счетчик к этому не чувствителен
-    //ну и сам индекс нам пока не требуется
     public static Client parseClient(String data, String separator) {
         String[] fields = data.split(separator);
         Integer clientId = Integer.parseInt(fields[LiteralNumberProvider.ZERO]);
