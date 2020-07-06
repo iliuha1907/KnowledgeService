@@ -9,3 +9,4 @@ public class LiteralNumberProvider {
     public static final Integer FIVE = 5;
     public static final Integer SIX = 6;
 }
+
