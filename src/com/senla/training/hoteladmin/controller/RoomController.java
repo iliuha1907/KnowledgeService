@@ -155,6 +155,5 @@ public class RoomController {
             return ex.getMessage();
         }
     }
-
 }
 

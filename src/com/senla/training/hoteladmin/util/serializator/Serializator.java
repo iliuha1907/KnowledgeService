@@ -1,6 +1,5 @@
 package com.senla.training.hoteladmin.util.serializator;
 
-
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;

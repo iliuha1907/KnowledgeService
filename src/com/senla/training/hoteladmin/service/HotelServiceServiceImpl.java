@@ -48,7 +48,7 @@ public class HotelServiceServiceImpl implements HotelServiceService {
         if (client == null) {
             throw new BusinessException("Error at adding service: no such client");
         }
-        if(!(date.after(client.getArrivalDate()) && date.before(client.getDepartureDate()))){
+        if (!(date.after(client.getArrivalDate()) && date.before(client.getDepartureDate()))) {
             throw new BusinessException("Error at adding service: incompatible dates");
         }
         hotelServiceRepository.addHotelService(new HotelService(price, type, client, date));
@@ -139,7 +139,7 @@ public class HotelServiceServiceImpl implements HotelServiceService {
 
     @Override
     public void deserializeId() {
-        Integer id =  Deserializator.deserializeHotelServiceId();
+        Integer id = Deserializator.deserializeHotelServiceId();
         HotelServiceIdProvider.setCurrentId(id);
     }
 

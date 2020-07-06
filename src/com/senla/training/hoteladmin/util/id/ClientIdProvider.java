@@ -12,11 +12,11 @@ public class ClientIdProvider implements Externalizable {
         return ++nextId;
     }
 
-    public static void setCurrentId(Integer id){
+    public static void setCurrentId(Integer id) {
         nextId = id;
     }
 
-    public static Integer getCurrentId(){
+    public static Integer getCurrentId() {
         return nextId;
     }
 

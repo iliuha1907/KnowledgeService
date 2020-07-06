@@ -81,12 +81,10 @@ public class ClientsRepositoryImpl implements ClientsRepository {
     @Override
     public Client getClientById(Integer id) {
         try {
-            return clients.stream().filter(client ->client.getId().equals(id)).findFirst().get();
-        }
-        catch (Exception ex){
+            return clients.stream().filter(client -> client.getId().equals(id)).findFirst().get();
+        } catch (Exception ex) {
             return null;
         }
     }
-
 }
 

@@ -4,9 +4,6 @@ import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.room.Room;
-import com.senla.training.hoteladmin.util.id.ClientIdProvider;
-import com.senla.training.hoteladmin.util.id.HotelServiceIdProvider;
-import com.senla.training.hoteladmin.util.id.RoomIdProvider;
 import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
 
 import java.io.FileInputStream;

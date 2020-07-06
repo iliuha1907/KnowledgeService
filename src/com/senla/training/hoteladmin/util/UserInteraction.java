@@ -34,7 +34,7 @@ public class UserInteraction {
         System.out.println(messsage);
         try {
             Integer number = Integer.parseInt(input.nextLine());
-            if(number < 1){
+            if (number < 1) {
                 System.out.println("Wrong input");
                 return null;
             }
@@ -57,7 +57,7 @@ public class UserInteraction {
         System.out.println(message);
         try {
             BigDecimal number = new BigDecimal(input.nextLine());
-            if(number.compareTo(BigDecimal.ZERO) < 0){
+            if (number.compareTo(BigDecimal.ZERO) < 0) {
                 System.out.println("Wrong input");
                 return null;
             }
@@ -113,7 +113,7 @@ public class UserInteraction {
         return null;
     }
 
-    public Date getDateWithMessage(String message){
+    public Date getDateWithMessage(String message) {
         System.out.println(message);
         Date date = DateUtil.getDate(getString());
         if (date == null) {

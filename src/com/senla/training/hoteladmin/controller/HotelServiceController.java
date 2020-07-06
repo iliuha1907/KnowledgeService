@@ -89,22 +89,20 @@ public class HotelServiceController {
         }
     }
 
-    public String  deserializeHotelServices(){
+    public String deserializeHotelServices() {
         try {
             hotelServiceService.deserializeServices();
-            return  "Successful deserialization of services";
-        }
-        catch (BusinessException ex){
+            return "Successful deserialization of services";
+        } catch (BusinessException ex) {
             return ex.getMessage();
         }
     }
 
-    public String serializeHotelServices(){
+    public String serializeHotelServices() {
         try {
             hotelServiceService.serializeServices();
-            return  "Successful serialization of services";
-        }
-        catch (BusinessException ex){
+            return "Successful serialization of services";
+        } catch (BusinessException ex) {
             return ex.getMessage();
         }
     }
