@@ -1,11 +1,6 @@
 package com.senla.training.hoteladmin.util.id;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-
-public class RoomIdProvider implements Externalizable {
+public class RoomIdProvider {
     private static Integer nextId = 0;
 
     public static Integer getNextId() {
@@ -18,17 +13,6 @@ public class RoomIdProvider implements Externalizable {
 
     public static Integer getCurrentId() {
         return nextId;
-    }
-
-    @Override
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeObject(nextId);
-
-    }
-
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        nextId = (Integer) in.readObject();
     }
 }
 
