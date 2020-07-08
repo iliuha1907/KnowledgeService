@@ -1,7 +1,7 @@
-package com.senla.training.hotelAdmin.runner;
+package com.senla.training.hoteladmin.runner;
 
-import com.senla.training.hotelAdmin.view.Builder;
-import com.senla.training.hotelAdmin.view.MenuController;
+import com.senla.training.hoteladmin.view.Builder;
+import com.senla.training.hoteladmin.view.MenuController;
 
 public class Main {
 

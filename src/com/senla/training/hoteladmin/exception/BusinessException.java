@@ -1,4 +1,4 @@
-package com.senla.training.hotelAdmin.exception;
+package com.senla.training.hoteladmin.exception;
 
 public class BusinessException extends RuntimeException {
 

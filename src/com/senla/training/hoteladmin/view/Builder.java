@@ -1,14 +1,14 @@
-package com.senla.training.hotelAdmin.view;
+package com.senla.training.hoteladmin.view;
 
-import com.senla.training.hotelAdmin.controller.ClientController;
-import com.senla.training.hotelAdmin.controller.HotelServiceController;
-import com.senla.training.hotelAdmin.controller.RoomController;
-import com.senla.training.hotelAdmin.util.sort.ClientsSortCriterion;
-import com.senla.training.hotelAdmin.util.sort.RoomsSortCriterion;
-import com.senla.training.hotelAdmin.view.action.clients.*;
-import com.senla.training.hotelAdmin.view.action.freeRooms.*;
-import com.senla.training.hotelAdmin.view.action.rooms.*;
-import com.senla.training.hotelAdmin.view.action.hotelService.*;
+import com.senla.training.hoteladmin.controller.ClientController;
+import com.senla.training.hoteladmin.controller.HotelServiceController;
+import com.senla.training.hoteladmin.controller.RoomController;
+import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
+import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
+import com.senla.training.hoteladmin.view.action.clients.*;
+import com.senla.training.hoteladmin.view.action.freerooms.*;
+import com.senla.training.hoteladmin.view.action.rooms.*;
+import com.senla.training.hoteladmin.view.action.hotelservice.*;
 
 import java.util.ArrayList;
 import java.util.List;

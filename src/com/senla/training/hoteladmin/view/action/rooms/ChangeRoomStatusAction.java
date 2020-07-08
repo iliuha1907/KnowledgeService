@@ -1,9 +1,9 @@
-package com.senla.training.hotelAdmin.view.action.rooms;
+package com.senla.training.hoteladmin.view.action.rooms;
 
-import com.senla.training.hotelAdmin.controller.RoomController;
-import com.senla.training.hotelAdmin.model.room.RoomStatus;
-import com.senla.training.hotelAdmin.util.UserInteraction;
-import com.senla.training.hotelAdmin.view.IAction;
+import com.senla.training.hoteladmin.controller.RoomController;
+import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.hoteladmin.view.IAction;
 
 public class ChangeRoomStatusAction implements IAction {
     private RoomController roomController = RoomController.getInstance();
@@ -12,20 +12,16 @@ public class ChangeRoomStatusAction implements IAction {
     public void execute() {
         UserInteraction userInteraction = UserInteraction.getInstance();
 
-        System.out.println("Enter id of the room");
-        Integer id;
-        id = userInteraction.getInt();
-        if (id == null || id < 0) {
-            System.out.println("Wrong id");
+        Integer id = userInteraction.getNaturalIntWithMessage("Enter id of the room");
+        if (id == null) {
             return;
         }
 
-        RoomStatus roomStatus;
-        roomStatus = userInteraction.getRoomStatus();
+        RoomStatus roomStatus = userInteraction.getRoomStatus();
         if (roomStatus == null) {
-            System.out.println("Wrong status");
             return;
         }
+
         System.out.println(roomController.setRoomStatus(id, roomStatus));
     }
 }

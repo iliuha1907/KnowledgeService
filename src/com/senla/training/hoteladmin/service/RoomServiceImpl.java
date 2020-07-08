@@ -1,26 +1,31 @@
-package com.senla.training.hotelAdmin.service;
+package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hotelAdmin.exception.BusinessException;
-import com.senla.training.hotelAdmin.model.client.Client;
-import com.senla.training.hotelAdmin.repository.*;
-import com.senla.training.hotelAdmin.model.room.Room;
-import com.senla.training.hotelAdmin.model.room.RoomStatus;
-import com.senla.training.hotelAdmin.util.fileCsv.writeRead.RoomWriter;
-import com.senla.training.hotelAdmin.util.sort.RoomsSortCriterion;
-import com.senla.training.hotelAdmin.util.sort.RoomsSorter;
+import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.repository.*;
+import com.senla.training.hoteladmin.model.room.Room;
+import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.util.filecsv.writeread.RoomReaderWriter;
+import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
+import com.senla.training.hoteladmin.util.id.RoomIdProvider;
+import com.senla.training.hoteladmin.util.serializator.Deserializator;
+import com.senla.training.hoteladmin.util.serializator.Serializator;
+import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
+import com.senla.training.hoteladmin.util.sort.RoomsSorter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class RoomServiceImpl implements RoomService {
     private static RoomService instance;
     private RoomsRepository roomsRepository;
-    private ClientService clientService;
+    private ClientsRepository clientsRepository;
 
     private RoomServiceImpl() {
         this.roomsRepository = RoomsRepositoryImpl.getInstance();
-        this.clientService = ClientServiceImpl.getInstance();
+        this.clientsRepository = ClientsRepositoryImpl.getInstance();
     }
 
     public static RoomService getInstance() {
@@ -32,13 +37,21 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public void setRooms(List<Room> rooms) {
+        roomsRepository.setRooms(rooms);
+    }
+
+    @Override
     public void addRoom(RoomStatus status, BigDecimal price, Integer capacity, Integer stars) {
-        Room room = new Room(null, status, price, capacity, stars);
+        Room room = new Room(status, price, capacity, stars);
         roomsRepository.addRoom(room);
     }
 
     @Override
     public void setRoomStatus(Integer roomId, RoomStatus status) {
+        if (!PropertyDataProvider.isChangeableStatus()) {
+            throw new BusinessException("Error at modifying room: no permission!");
+        }
         Room room = roomsRepository.getRoom(roomId);
         if (room == null) {
             throw new BusinessException("Error at modifying room: no such room!");
@@ -107,16 +120,13 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void exportRooms() {
-        RoomWriter.writeRooms(roomsRepository.getRooms());
+        RoomReaderWriter.writeRooms(roomsRepository.getRooms());
 
     }
 
     @Override
     public void importRooms(ClientService clientService) {
-        List<Room> rooms = RoomWriter.readRooms();
-        if (rooms == null) {
-            throw new BusinessException("Could not import rooms!");
-        }
+        List<Room> rooms = RoomReaderWriter.readRooms();
         rooms.forEach(room -> {
             if (room.getResident() == null) {
                 updateRoom(room);
@@ -145,15 +155,48 @@ public class RoomServiceImpl implements RoomService {
         } else {
             if (rooms.get(index).getResident() != null) {
                 if (!rooms.get(index).getResident().equals(room.getResident())) {
-                    clientService.removeResident(rooms.get(index).getResident());
+                    clientsRepository.removeClient(rooms.get(index).getResident());
                 }
             }
             rooms.set(index, room);
         }
     }
 
+    @Override
+    public void deserializeRooms() {
+        List<Room> rooms = Deserializator.deserializeRoomClients();
+        setRooms(rooms);
+        clientsRepository.setClients(getClientsFromRooms(rooms));
+    }
+
+    @Override
+    public void serializeRooms() {
+        Serializator.serializeRoomsClients(roomsRepository.getRooms());
+    }
+
+    @Override
+    public void serializeId() {
+        Serializator.serializeRoomId(RoomIdProvider.getCurrentId());
+    }
+
+    @Override
+    public void deserializeId() {
+        Integer id = Deserializator.deserializeRoomId();
+        RoomIdProvider.setCurrentId(id);
+    }
+
     private List<Room> getFreeRooms() {
         return roomsRepository.getFreeRooms();
+    }
+
+    private List<Client> getClientsFromRooms(List<Room> rooms) {
+        List<Client> clients = new ArrayList<>();
+        rooms.forEach(room -> {
+            if (room.getResident() != null) {
+                clients.add(room.getResident());
+            }
+        });
+        return clients;
     }
 }
 

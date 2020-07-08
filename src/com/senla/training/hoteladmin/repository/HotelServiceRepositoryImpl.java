@@ -1,13 +1,14 @@
-package com.senla.training.hotelAdmin.repository;
+package com.senla.training.hoteladmin.repository;
 
-import com.senla.training.hotelAdmin.model.hotelService.HotelService;
-import com.senla.training.hotelAdmin.util.HotelServiceIdProvider;
+import com.senla.training.hoteladmin.model.hotelservice.HotelService;
+import com.senla.training.hoteladmin.util.id.HotelServiceIdProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HotelServiceRepositoryImpl implements HotelServiceRepository {
-    private static HotelServiceRepositoryImpl instance;
+    private static HotelServiceRepository instance;
     private List<HotelService> hotelServices;
 
     private HotelServiceRepositoryImpl() {
@@ -19,6 +20,11 @@ public class HotelServiceRepositoryImpl implements HotelServiceRepository {
             instance = new HotelServiceRepositoryImpl();
         }
         return instance;
+    }
+
+    @Override
+    public void setHotelServices(List<HotelService> hotelServices) {
+        this.hotelServices = hotelServices;
     }
 
     @Override
@@ -39,22 +45,22 @@ public class HotelServiceRepositoryImpl implements HotelServiceRepository {
 
     @Override
     public HotelService getHotelServiceById(Integer id) {
-        for (HotelService hotelService : hotelServices) {
-            if (hotelService.getId().equals(id)) {
-                return hotelService;
-            }
+        try {
+            return hotelServices.stream().filter(hotelService -> hotelService.getId().
+                    equals(id)).findFirst().get();
+        } catch (Exception ex) {
+            return null;
         }
-        return null;
     }
 
     @Override
     public HotelService getHotelServiceByClientId(Integer clientId) {
-        for (HotelService hotelService : hotelServices) {
-            if (hotelService.getClient().getId().equals(clientId)) {
-                return hotelService;
-            }
+        try {
+            return hotelServices.stream().filter(hotelService -> hotelService.getClient().getId().
+                    equals(clientId)).findFirst().get();
+        } catch (Exception ex) {
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -64,12 +70,8 @@ public class HotelServiceRepositoryImpl implements HotelServiceRepository {
 
     @Override
     public List<HotelService> getClientHotelServices(Integer clientId) {
-        List<HotelService> resultHotelServices = new ArrayList<>();
-        hotelServices.forEach(hotelService -> {
-            if (hotelService.getClient().getId().equals(clientId)) ;
-            resultHotelServices.add(hotelService);
-        });
-        return resultHotelServices;
+        return hotelServices.stream().filter(hotelService -> hotelService.getClient().getId().equals(clientId)).
+                collect(Collectors.toList());
     }
 }
 

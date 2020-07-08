@@ -1,14 +1,14 @@
-package com.senla.training.hotelAdmin.repository;
+package com.senla.training.hoteladmin.repository;
 
-import com.senla.training.hotelAdmin.exception.BusinessException;
-import com.senla.training.hotelAdmin.model.client.Client;
-import com.senla.training.hotelAdmin.util.ClientIdProvider;
+import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.util.id.ClientIdProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientsRepositoryImpl implements ClientsRepository {
-    private static ClientsRepositoryImpl instance;
+    private static ClientsRepository instance;
     private List<Client> clients;
     private List<Client> movedClients;
 
@@ -25,18 +25,38 @@ public class ClientsRepositoryImpl implements ClientsRepository {
     }
 
     @Override
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    @Override
+    public void setMovedClients(List<Client> clients) {
+        this.movedClients = clients;
+    }
+
+    @Override
     public List<Client> getClients() {
         return clients;
     }
 
     @Override
+    public List<Client> getMovedClients() {
+        return movedClients;
+    }
+
+    @Override
     public List<Client> getLastRoomClients(Integer roomId, Integer count) {
         List<Client> resultClients = new ArrayList<>();
-        movedClients.forEach(client -> {
+        Integer times = count;
+        for (Client client : movedClients) {
             if (client.getRoom().getId().equals(roomId)) {
+                if (times == 0) {
+                    break;
+                }
                 resultClients.add(client);
+                times--;
             }
-        });
+        }
         return resultClients;
     }
 
@@ -60,13 +80,11 @@ public class ClientsRepositoryImpl implements ClientsRepository {
 
     @Override
     public Client getClientById(Integer id) {
-        for (Client client : clients) {
-            if (client.getId().equals(id)) {
-                return client;
-            }
+        try {
+            return clients.stream().filter(client -> client.getId().equals(id)).findFirst().get();
+        } catch (Exception ex) {
+            return null;
         }
-        return null;
     }
-
 }
 

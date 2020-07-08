@@ -1,4 +1,4 @@
-package com.senla.training.hotelAdmin.util.sort;
+package com.senla.training.hoteladmin.util.sort;
 
 public enum HotelServiceSortCriterion {
     PRICE,

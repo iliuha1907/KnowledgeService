@@ -1,11 +1,13 @@
-package com.senla.training.hotelAdmin.model.client;
+package com.senla.training.hoteladmin.model.client;
 
-import com.senla.training.hotelAdmin.model.room.Room;
-import com.senla.training.hotelAdmin.util.DateUtil;
+import com.senla.training.hoteladmin.model.room.Room;
+import com.senla.training.hoteladmin.util.DateUtil;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Client {
+public class Client implements Serializable {
+    private static final long SerialVersionUID = 1l;
     private Integer id;
     private String firstName;
     private String lastName;
@@ -16,10 +18,23 @@ public class Client {
     public Client() {
     }
 
+    public Client(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public Client(Integer id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Client(String firstName, String lastName,
+                  Date arrivalDate, Date departureDate) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
     }
 
     public Client(Integer id, String firstName, String lastName,

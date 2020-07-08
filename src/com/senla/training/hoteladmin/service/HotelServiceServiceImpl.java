@@ -1,14 +1,19 @@
-package com.senla.training.hotelAdmin.service;
+package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hotelAdmin.exception.BusinessException;
-import com.senla.training.hotelAdmin.model.hotelService.HotelService;
-import com.senla.training.hotelAdmin.model.hotelService.HotelServiceType;
-import com.senla.training.hotelAdmin.repository.HotelServiceRepository;
-import com.senla.training.hotelAdmin.model.client.Client;
-import com.senla.training.hotelAdmin.repository.HotelServiceRepositoryImpl;
-import com.senla.training.hotelAdmin.util.fileCsv.writeRead.HotelServiceWriter;
-import com.senla.training.hotelAdmin.util.sort.HotelServiceSortCriterion;
-import com.senla.training.hotelAdmin.util.sort.HotelServiceSorter;
+import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.model.hotelservice.HotelService;
+import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
+import com.senla.training.hoteladmin.repository.ClientsRepository;
+import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
+import com.senla.training.hoteladmin.repository.HotelServiceRepository;
+import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
+import com.senla.training.hoteladmin.util.filecsv.writeread.HotelServiceReaderWriter;
+import com.senla.training.hoteladmin.util.id.HotelServiceIdProvider;
+import com.senla.training.hoteladmin.util.serializator.Deserializator;
+import com.senla.training.hoteladmin.util.serializator.Serializator;
+import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
+import com.senla.training.hoteladmin.util.sort.HotelServiceSorter;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,11 +22,11 @@ import java.util.List;
 public class HotelServiceServiceImpl implements HotelServiceService {
     private static HotelServiceService instance;
     private HotelServiceRepository hotelServiceRepository;
-    private ClientService clientService;
+    private ClientsRepository clientsRepository;
 
     private HotelServiceServiceImpl() {
         this.hotelServiceRepository = HotelServiceRepositoryImpl.getInstance();
-        this.clientService = ClientServiceImpl.getInstance();
+        this.clientsRepository = ClientsRepositoryImpl.getInstance();
     }
 
     public static HotelServiceService getInstance() {
@@ -33,16 +38,20 @@ public class HotelServiceServiceImpl implements HotelServiceService {
     }
 
     @Override
+    public void setServices(List<HotelService> hotelServices) {
+        hotelServiceRepository.setHotelServices(hotelServices);
+    }
+
+    @Override
     public void addService(BigDecimal price, HotelServiceType type, Integer clientId, Date date) {
-        Client client = clientService.getClientById(clientId);
+        Client client = clientsRepository.getClientById(clientId);
         if (client == null) {
             throw new BusinessException("Error at adding service: no such client");
         }
-        if (!((date).compareTo(client.getArrivalDate()) > -1 &&
-                date.compareTo(client.getDepartureDate()) < 1)) {
+        if (!(date.after(client.getArrivalDate()) && date.before(client.getDepartureDate()))) {
             throw new BusinessException("Error at adding service: incompatible dates");
         }
-        hotelServiceRepository.addHotelService(new HotelService(null, price, type, client, date));
+        hotelServiceRepository.addHotelService(new HotelService(price, type, client, date));
     }
 
     @Override
@@ -78,17 +87,14 @@ public class HotelServiceServiceImpl implements HotelServiceService {
 
     @Override
     public void exportServices() {
-        HotelServiceWriter.writeServices(hotelServiceRepository.getHotelServices());
+        HotelServiceReaderWriter.writeServices(hotelServiceRepository.getHotelServices());
     }
 
     @Override
     public void importServices() {
-        List<HotelService> hotelServices = HotelServiceWriter.readServices();
-        if (hotelServices == null) {
-            throw new BusinessException("Could not import services");
-        }
+        List<HotelService> hotelServices = HotelServiceReaderWriter.readServices();
         hotelServices.forEach(hotelService -> {
-            Client existing = clientService.getClientById(hotelService.getClient().getId());
+            Client existing = clientsRepository.getClientById(hotelService.getClient().getId());
 
             if (existing == null) {
                 throw new BusinessException("Could not import services: wrong id of a client");
@@ -110,6 +116,31 @@ public class HotelServiceServiceImpl implements HotelServiceService {
         } else {
             hotelServices.set(index, hotelService);
         }
+    }
+
+    @Override
+    public void serializeServices() {
+        Serializator.serializeServices(hotelServiceRepository.getHotelServices());
+    }
+
+    @Override
+    public void deserializeServices() {
+        List<HotelService> hotelServices = Deserializator.deserializeServices();
+        hotelServices.forEach(hotelService -> {
+            hotelService.setClient(clientsRepository.getClientById(hotelService.getClient().getId()));
+        });
+        setServices(hotelServices);
+    }
+
+    @Override
+    public void serializeId() {
+        Serializator.serializeHotelServiceId(HotelServiceIdProvider.getCurrentId());
+    }
+
+    @Override
+    public void deserializeId() {
+        Integer id = Deserializator.deserializeHotelServiceId();
+        HotelServiceIdProvider.setCurrentId(id);
     }
 
     private List<HotelService> getClientServices(Client client) {

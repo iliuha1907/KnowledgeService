@@ -1,9 +1,10 @@
-package com.senla.training.hotelAdmin.util;
+package com.senla.training.hoteladmin.util;
 
-import com.senla.training.hotelAdmin.model.room.RoomStatus;
-import com.senla.training.hotelAdmin.model.hotelService.HotelServiceType;
+import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Scanner;
 
 public class UserInteraction {
@@ -29,6 +30,21 @@ public class UserInteraction {
         }
     }
 
+    public Integer getNaturalIntWithMessage(String messsage) {
+        System.out.println(messsage);
+        try {
+            Integer number = Integer.parseInt(input.nextLine());
+            if (number < 1) {
+                System.out.println("Wrong input");
+                return null;
+            }
+            return number;
+        } catch (Exception ex) {
+            System.out.println("Wrong input");
+            return null;
+        }
+    }
+
     public BigDecimal getBigDecimal() {
         try {
             return new BigDecimal(input.nextLine());
@@ -37,7 +53,27 @@ public class UserInteraction {
         }
     }
 
+    public BigDecimal getPositiveBigDecimalWithMessage(String message) {
+        System.out.println(message);
+        try {
+            BigDecimal number = new BigDecimal(input.nextLine());
+            if (number.compareTo(BigDecimal.ZERO) < 0) {
+                System.out.println("Wrong input");
+                return null;
+            }
+            return number;
+        } catch (Exception ex) {
+            System.out.println("Wrong input");
+            return null;
+        }
+    }
+
     public String getString() {
+        return input.nextLine();
+    }
+
+    public String getStringWithMessage(String message) {
+        System.out.println(message);
         return input.nextLine();
     }
 
@@ -45,6 +81,7 @@ public class UserInteraction {
         System.out.println("Enter 1 to repaired, 2 to served");
         Integer choice = getInt();
         if (choice == null) {
+            System.out.println("Wrong input");
             return null;
         }
         if (choice == 1) {
@@ -52,6 +89,7 @@ public class UserInteraction {
         } else if (choice == 2) {
             return RoomStatus.SERVED;
         }
+        System.out.println("Wrong input");
         return null;
     }
 
@@ -59,6 +97,7 @@ public class UserInteraction {
         System.out.println("Enter 1 to spa, 2 to massage, 3 to sauna");
         Integer choice = getInt();
         if (choice == null) {
+            System.out.println("Wrong input");
             return null;
         }
         if (choice.equals(1)) {
@@ -70,7 +109,18 @@ public class UserInteraction {
         if (choice.equals(3)) {
             return HotelServiceType.SAUNA;
         }
+        System.out.println("Wrong input");
         return null;
+    }
+
+    public Date getDateWithMessage(String message) {
+        System.out.println(message);
+        Date date = DateUtil.getDate(getString());
+        if (date == null) {
+            System.out.println("Wrong input");
+            return null;
+        }
+        return date;
     }
 
     public void stopWorking() {
