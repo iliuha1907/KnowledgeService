@@ -11,8 +11,8 @@ public class Main {
         UserInteraction.startWorking();
         DiInitializer diInitializer = new DiInitializer();
         ParamConfigurator.init(diInitializer);
-        DiInitializer.init();
-        MenuController menuController = DiInitializer.getMenuController();
+        diInitializer.init();
+        MenuController menuController = diInitializer.getMenuController();
         menuController.run();
         UserInteraction.stopWorking();
     }

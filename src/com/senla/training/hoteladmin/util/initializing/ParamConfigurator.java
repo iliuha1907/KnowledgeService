@@ -55,9 +55,11 @@ public class ParamConfigurator {
                     setFieldWithValidation(field, element, value);
                 } else {
                     String className = PropertyDataProvider.getString(name, configName);
+                    field.setAccessible(true);
                     if (className == null) {
                         className = field.getType().getSimpleName();
                     }
+                    //здесь boolean, чтобы не было лишних проверок, если поле уже было проставлено
                     boolean isInited = initRepository(className, field, element);
                     if (!isInited) {
                         isInited = initService(className, field, element);
@@ -186,7 +188,6 @@ public class ParamConfigurator {
         if (!field.getType().isInstance(value)) {
             throw new IncorrectWorkException("Could not initialize classes: incompatible types");
         }
-        field.setAccessible(true);
         try {
             field.set(object, value);
         } catch (IllegalAccessException ex) {

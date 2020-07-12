@@ -19,35 +19,35 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DiInitializer {
-    private static final String PACKAGE_NAME = "com/senla/training/hoteladmin";
-    private static final String BASE_PROPERTIES_FILE = "resources/app.properties";
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.roomsRepository")
-    private static RoomsRepository roomsRepository;
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.clientsRepository")
-    private static ClientsRepository clientsRepository;
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.hotelServiceRepository")
-    private static HotelServiceRepository hotelServiceRepository;
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.roomsService")
-    private static RoomService roomService;
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.clientsService")
-    private static ClientService clientService;
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.hotelServiceService")
-    private static HotelServiceService hotelServiceService;
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.roomsController")
-    private static RoomController roomController;
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.clientsController")
-    private static ClientController clientController;
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.hotelServiceController")
-    private static HotelServiceController hotelServiceController;
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.menuController")
-    private static MenuController menuController;
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.builder")
-    private static Builder builder;
-    @ConfigProperty(configName = BASE_PROPERTIES_FILE, propertyName = "diInitializer.navigator")
-    private static Navigator navigator;
+    private final String packageName = "com/senla/training/hoteladmin";
+    private final String basePropertiesFile = "resources/app.properties";
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.roomsRepository")
+    private RoomsRepository roomsRepository;
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.clientsRepository")
+    private ClientsRepository clientsRepository;
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.hotelServiceRepository")
+    private HotelServiceRepository hotelServiceRepository;
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.roomsService")
+    private RoomService roomService;
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.clientsService")
+    private ClientService clientService;
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.hotelServiceService")
+    private HotelServiceService hotelServiceService;
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.roomsController")
+    private RoomController roomController;
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.clientsController")
+    private ClientController clientController;
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.hotelServiceController")
+    private HotelServiceController hotelServiceController;
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.menuController")
+    private MenuController menuController;
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.builder")
+    private Builder builder;
+    @ConfigProperty(configName = basePropertiesFile, propertyName = "diInitializer.navigator")
+    private Navigator navigator;
 
-    public static void init() {
-        List<Class<?>> classes = PackageScanner.find(PACKAGE_NAME);
+    public void init() {
+        List<Class<?>> classes = PackageScanner.find(packageName);
         classes = classes.stream()
                 .filter(element -> element.isAnnotationPresent(NeedDiClass.class))
                 .collect(Collectors.toList());
@@ -57,11 +57,11 @@ public class DiInitializer {
         }
     }
 
-    public static MenuController getMenuController() {
+    public MenuController getMenuController() {
         return menuController;
     }
 
-    private static Object getInstance(Class<?> element) {
+    private Object getInstance(Class<?> element) {
         Object instance;
         instance = createRepositoryInstance(element);
         if (instance == null) {
@@ -79,12 +79,10 @@ public class DiInitializer {
         return instance;
     }
 
-    private static void initFields(Object element) {
+    private void initFields(Object element) {
         for (Field field : element.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(ConfigProperty.class)) {
                 field.setAccessible(true);
-                Object instance = getInstance(field.getType());
-                initFields(instance);
                 boolean isInited = initFieldRepository(field, element);
                 if (!isInited) {
                     isInited = initFieldService(field, element);
@@ -99,7 +97,7 @@ public class DiInitializer {
         }
     }
 
-    private static boolean initFieldRepository(Field field, Object element) {
+    private boolean initFieldRepository(Field field, Object element) {
         if (ClientsRepository.class.isAssignableFrom(field.getType())) {
             try {
                 field.set(element, clientsRepository);
@@ -127,7 +125,7 @@ public class DiInitializer {
         return false;
     }
 
-    private static boolean initFieldService(Field field, Object element) {
+    private boolean initFieldService(Field field, Object element) {
         if (ClientService.class.isAssignableFrom(field.getType())) {
             try {
                 field.set(element, clientService);
@@ -155,7 +153,7 @@ public class DiInitializer {
         return false;
     }
 
-    private static boolean initFieldController(Field field, Object element) {
+    private boolean initFieldController(Field field, Object element) {
         if (ClientController.class.isAssignableFrom(field.getType())) {
             try {
                 field.set(element, clientController);
@@ -183,7 +181,7 @@ public class DiInitializer {
         return false;
     }
 
-    private static boolean initFieldView(Field field, Object element) {
+    private boolean initFieldView(Field field, Object element) {
         if (MenuController.class.isAssignableFrom(field.getType())) {
             try {
                 field.set(element, menuController);
@@ -211,7 +209,7 @@ public class DiInitializer {
         return false;
     }
 
-    private static Object createRepositoryInstance(Class<?> element) {
+    private Object createRepositoryInstance(Class<?> element) {
         if (ClientsRepository.class.isAssignableFrom(element)) {
             return clientsRepository;
         }
@@ -224,7 +222,7 @@ public class DiInitializer {
         return null;
     }
 
-    private static Object createServiceInstance(Class<?> element) {
+    private Object createServiceInstance(Class<?> element) {
         if (ClientService.class.isAssignableFrom(element)) {
             return clientService;
         }
@@ -237,7 +235,7 @@ public class DiInitializer {
         return null;
     }
 
-    private static Object createControllerInstance(Class<?> element) {
+    private Object createControllerInstance(Class<?> element) {
         if (ClientController.class.isAssignableFrom(element)) {
             return clientController;
         }
@@ -250,7 +248,7 @@ public class DiInitializer {
         return null;
     }
 
-    private static Object createViewInstance(Class<?> element) {
+    private Object createViewInstance(Class<?> element) {
         if (MenuController.class.isAssignableFrom(element)) {
             return menuController;
         }
