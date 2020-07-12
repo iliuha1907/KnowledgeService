@@ -1,6 +1,6 @@
-package com.senla.training.hoteladmin.util.id;
+package com.senla.training.hoteladmin.util.idspread;
 
-public class RoomIdProvider {
+public class ClientIdProvider {
     private static Integer nextId = 0;
 
     public static Integer getNextId() {

@@ -1,5 +1,7 @@
 package com.senla.training.hoteladmin.service;
 
+import com.senla.training.hoteladmin.annotation.ConfigProperty;
+import com.senla.training.hoteladmin.annotation.NeedDiClass;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.repository.*;
@@ -7,7 +9,7 @@ import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.filecsv.writeread.RoomReaderWriter;
 import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
-import com.senla.training.hoteladmin.util.id.RoomIdProvider;
+import com.senla.training.hoteladmin.util.idspread.RoomIdProvider;
 import com.senla.training.hoteladmin.util.serializator.Deserializator;
 import com.senla.training.hoteladmin.util.serializator.Serializator;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
@@ -18,22 +20,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@NeedDiClass
 public class RoomServiceImpl implements RoomService {
-    private static RoomService instance;
+    @ConfigProperty
     private RoomsRepository roomsRepository;
+    @ConfigProperty
     private ClientsRepository clientsRepository;
 
-    private RoomServiceImpl() {
-        this.roomsRepository = RoomsRepositoryImpl.getInstance();
-        this.clientsRepository = ClientsRepositoryImpl.getInstance();
-    }
-
-    public static RoomService getInstance() {
-        if (instance == null) {
-            instance = new RoomServiceImpl();
-            return instance;
-        }
-        return instance;
+    public RoomServiceImpl() {
     }
 
     @Override
@@ -121,19 +115,18 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void exportRooms() {
         RoomReaderWriter.writeRooms(roomsRepository.getRooms());
-
     }
 
     @Override
-    public void importRooms(ClientService clientService) {
+    public void importRooms() {
         List<Room> rooms = RoomReaderWriter.readRooms();
         rooms.forEach(room -> {
             if (room.getResident() == null) {
                 updateRoom(room);
             } else {
-                Client existing = clientService.getClientById(room.getResident().getId());
+                Client existing = clientsRepository.getClientById(room.getResident().getId());
                 if (existing == null) {
-                    throw new BusinessException("Could not import rooms: wrong id of a client!");
+                    throw new BusinessException("Could not import rooms: wrong idspread of a client!");
                 }
                 existing.getRoom().setResident(null);
                 room.setResident(existing);

@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.util.serializator;
 
-import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.room.Room;
@@ -25,7 +25,7 @@ public class Serializator {
             objectOutputStream.writeObject(rooms);
 
         } catch (Exception ex) {
-            throw new BusinessException("Error at serialization of rooms and clients");
+            throw new IncorrectWorkException("Error at serialization of rooms and clients");
         }
 
     }
@@ -35,7 +35,7 @@ public class Serializator {
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(services);
         } catch (Exception ex) {
-            throw new BusinessException("Error at serialization of rooms and clients");
+            throw new IncorrectWorkException("Error at serialization of rooms and clients");
         }
     }
 
@@ -44,7 +44,7 @@ public class Serializator {
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(clients);
         } catch (Exception ex) {
-            throw new BusinessException("Error at serialization of rooms and clients");
+            throw new IncorrectWorkException("Error at serialization of rooms and clients");
         }
     }
 
@@ -53,7 +53,7 @@ public class Serializator {
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(id);
         } catch (Exception ex) {
-            throw new BusinessException("Error at serialization of ClientId");
+            throw new IncorrectWorkException("Error at serialization of ClientId");
         }
     }
 
@@ -62,7 +62,7 @@ public class Serializator {
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(id);
         } catch (Exception ex) {
-            throw new BusinessException("Error at serialization of RoomId");
+            throw new IncorrectWorkException("Error at serialization of RoomId");
         }
     }
 
@@ -71,7 +71,8 @@ public class Serializator {
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(id);
         } catch (Exception ex) {
-            throw new BusinessException("Error at serialization of HotelServiceId");
+            throw new IncorrectWorkException("Error at serialization of HotelServiceId");
         }
     }
 }
+

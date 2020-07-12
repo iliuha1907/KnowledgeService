@@ -1,30 +1,26 @@
 package com.senla.training.hoteladmin.view;
 
+import com.senla.training.hoteladmin.annotation.ConfigProperty;
+import com.senla.training.hoteladmin.annotation.NeedDiClass;
 import com.senla.training.hoteladmin.controller.ClientController;
 import com.senla.training.hoteladmin.controller.HotelServiceController;
 import com.senla.training.hoteladmin.controller.RoomController;
 import com.senla.training.hoteladmin.util.UserInteraction;
 
+@NeedDiClass
 public class MenuController {
-    private static MenuController instance;
+    @ConfigProperty
     private Builder builder;
+    @ConfigProperty
     private Navigator navigator;
+    @ConfigProperty
     private RoomController roomController;
+    @ConfigProperty
     private ClientController clientController;
+    @ConfigProperty
     private HotelServiceController hotelServiceController;
 
-    private MenuController(Builder builder) {
-        this.builder = builder;
-        roomController = RoomController.getInstance();
-        clientController = ClientController.getInstance();
-        hotelServiceController = HotelServiceController.getInstance();
-    }
-
-    public static MenuController getInstance(Builder builder) {
-        if (instance == null) {
-            instance = new MenuController(builder);
-        }
-        return instance;
+    public MenuController() {
     }
 
     public void run() {
@@ -36,12 +32,11 @@ public class MenuController {
         System.out.println(clientController.deserializeClientsId());
 
         builder.buildMenu();
-        navigator = Navigator.getInstance(builder.getRootMenu());
-        UserInteraction userInteraction = UserInteraction.getInstance();
+        navigator.setCurrentMenu(builder.getRootMenu());
         boolean stop = false;
         while (!stop) {
             navigator.printMenu();
-            Integer choice = userInteraction.getInt();
+            Integer choice = UserInteraction.getInt();
             if (choice == null) {
                 System.out.println("Wrong input");
                 continue;
@@ -53,7 +48,7 @@ public class MenuController {
                 navigator.navigate(choice);
             }
         }
-        userInteraction.stopWorking();
+
 
         System.out.println(roomController.serializeRoomsClients());
         System.out.println(clientController.serializeLastResidents());

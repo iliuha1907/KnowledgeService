@@ -1,27 +1,21 @@
 package com.senla.training.hoteladmin.repository;
 
+import com.senla.training.hoteladmin.annotation.NeedDiClass;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.util.id.RoomIdProvider;
+import com.senla.training.hoteladmin.util.idspread.RoomIdProvider;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@NeedDiClass
 public class RoomsRepositoryImpl implements RoomsRepository {
-    private static RoomsRepository instance;
     private List<Room> rooms;
 
-    private RoomsRepositoryImpl() {
+    public RoomsRepositoryImpl() {
         rooms = new ArrayList<>();
-    }
-
-    public static RoomsRepository getInstance() {
-        if (instance == null) {
-            instance = new RoomsRepositoryImpl();
-        }
-        return instance;
     }
 
     @Override
@@ -37,20 +31,25 @@ public class RoomsRepositoryImpl implements RoomsRepository {
 
     @Override
     public List<Room> getFreeRoomsAfterDate(Date date) {
-        return rooms.stream().filter(room -> room.getResident() == null
-                || room.getResident().getDepartureDate().before(date)).collect(Collectors.toList());
+        return rooms.stream()
+                .filter(room -> room.getResident() == null || room.getResident().getDepartureDate().before(date))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Room> getFreeRooms() {
-        return rooms.stream().filter(room -> room.getResident() == null
-                || room.getStatus().equals(RoomStatus.SERVED)).collect(Collectors.toList());
+        return rooms.stream()
+                .filter(room -> room.getResident() == null || room.getStatus().equals(RoomStatus.SERVED))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Room getRoom(Integer roomId) {
         try {
-            return rooms.stream().filter(room -> room.getId().equals(roomId)).findFirst().get();
+            return rooms.stream()
+                    .filter(room -> room.getId().equals(roomId))
+                    .findFirst()
+                    .get();
         } catch (Exception ex) {
             return null;
         }
@@ -59,8 +58,10 @@ public class RoomsRepositoryImpl implements RoomsRepository {
     @Override
     public Room getFirstFreeRoom() {
         try {
-            return rooms.stream().filter(room -> room.getResident() == null && room.getStatus().
-                    equals(RoomStatus.SERVED)).findFirst().get();
+            return rooms.stream()
+                    .filter(room -> room.getResident() == null && room.getStatus().equals(RoomStatus.SERVED))
+                    .findFirst()
+                    .get();
         } catch (Exception ex) {
             return null;
         }
@@ -69,8 +70,10 @@ public class RoomsRepositoryImpl implements RoomsRepository {
     @Override
     public Room getClientRoom(Integer clientId) {
         try {
-            return rooms.stream().filter(room -> room.getResident() != null && room.getResident().getId().
-                    equals(clientId)).findFirst().get();
+            return rooms.stream()
+                    .filter(room -> room.getResident() != null && room.getResident().getId().equals(clientId))
+                    .findFirst()
+                    .get();
         } catch (Exception ex) {
             return null;
         }

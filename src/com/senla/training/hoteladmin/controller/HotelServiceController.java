@@ -1,34 +1,28 @@
 package com.senla.training.hoteladmin.controller;
 
+import com.senla.training.hoteladmin.annotation.ConfigProperty;
+import com.senla.training.hoteladmin.annotation.NeedDiClass;
 import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
 import com.senla.training.hoteladmin.service.ClientService;
-import com.senla.training.hoteladmin.service.ClientServiceImpl;
 import com.senla.training.hoteladmin.service.HotelServiceService;
-import com.senla.training.hoteladmin.service.HotelServiceServiceImpl;
 import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+@NeedDiClass
 public class HotelServiceController {
-    private static HotelServiceController instance;
+    @ConfigProperty
     private HotelServiceService hotelServiceService;
+    @ConfigProperty
     private ClientService clientService;
 
-    private HotelServiceController() {
-        this.hotelServiceService = HotelServiceServiceImpl.getInstance();
-        this.clientService = ClientServiceImpl.getInstance();
-    }
-
-    public static HotelServiceController getInstance() {
-        if (instance == null) {
-            instance = new HotelServiceController();
-        }
-        return instance;
+    public HotelServiceController() {
     }
 
     public String addService(BigDecimal price, HotelServiceType type, Integer clientId, Date date) {
@@ -93,7 +87,7 @@ public class HotelServiceController {
         try {
             hotelServiceService.deserializeServices();
             return "Successful deserialization of services";
-        } catch (BusinessException ex) {
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }
@@ -102,7 +96,7 @@ public class HotelServiceController {
         try {
             hotelServiceService.serializeServices();
             return "Successful serialization of services";
-        } catch (BusinessException ex) {
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }
@@ -110,8 +104,8 @@ public class HotelServiceController {
     public String deserializeServicesId() {
         try {
             hotelServiceService.deserializeId();
-            return "Successful deserialization of services id";
-        } catch (BusinessException ex) {
+            return "Successful deserialization of services idspread";
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }
@@ -119,8 +113,8 @@ public class HotelServiceController {
     public String serializeServicesId() {
         try {
             hotelServiceService.serializeId();
-            return "Successful serialization of services id";
-        } catch (BusinessException ex) {
+            return "Successful serialization of services idspread";
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }

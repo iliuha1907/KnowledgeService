@@ -1,27 +1,22 @@
 package com.senla.training.hoteladmin.controller;
 
+import com.senla.training.hoteladmin.annotation.ConfigProperty;
+import com.senla.training.hoteladmin.annotation.NeedDiClass;
 import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.service.ClientService;
-import com.senla.training.hoteladmin.service.ClientServiceImpl;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 
 import java.util.Date;
 import java.util.List;
 
+@NeedDiClass
 public class ClientController {
-    private static ClientController instance;
+    @ConfigProperty
     private ClientService clientService;
 
-    private ClientController() {
-        this.clientService = ClientServiceImpl.getInstance();
-    }
-
-    public static ClientController getInstance() {
-        if (instance == null) {
-            instance = new ClientController();
-        }
-        return instance;
+    public ClientController() {
     }
 
     public String addResident(String firstName, String lastName,
@@ -89,7 +84,7 @@ public class ClientController {
         try {
             clientService.deserializeMovedClients();
             return "Successful deserialization of last residents";
-        } catch (BusinessException ex) {
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }
@@ -98,7 +93,7 @@ public class ClientController {
         try {
             clientService.serializeMovedClients();
             return "Successful serialization of last residents";
-        } catch (BusinessException ex) {
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }
@@ -106,8 +101,8 @@ public class ClientController {
     public String deserializeClientsId() {
         try {
             clientService.deserializeId();
-            return "Successful deserialization of client id";
-        } catch (BusinessException ex) {
+            return "Successful deserialization of client idspread";
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }
@@ -115,8 +110,8 @@ public class ClientController {
     public String serializeClientId() {
         try {
             clientService.serializeId();
-            return "Successful serialization of client id";
-        } catch (BusinessException ex) {
+            return "Successful serialization of client idspread";
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Client implements Serializable {
-    private static final long SerialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
     private Integer id;
     private String firstName;
     private String lastName;
@@ -88,7 +88,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Client %s %s, id:%d, arrival date:%s, departure date: %s, " +
+        return String.format("Client %s %s, idspread:%d, arrival date:%s, departure date: %s, " +
                         "\nroom:%s ", firstName, lastName, id, DateUtil.getString(arrivalDate),
                 DateUtil.getString(departureDate), room.toString());
     }

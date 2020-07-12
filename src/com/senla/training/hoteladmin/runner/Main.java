@@ -1,13 +1,20 @@
 package com.senla.training.hoteladmin.runner;
 
-import com.senla.training.hoteladmin.view.Builder;
+import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.hoteladmin.util.initializing.DiInitializer;
+import com.senla.training.hoteladmin.util.initializing.ParamConfigurator;
 import com.senla.training.hoteladmin.view.MenuController;
 
 public class Main {
 
     public static void main(String[] args) {
-        MenuController menuController = MenuController.getInstance(Builder.getInstance());
+        UserInteraction.startWorking();
+        DiInitializer diInitializer = new DiInitializer();
+        ParamConfigurator.init(diInitializer);
+        DiInitializer.init();
+        MenuController menuController = DiInitializer.getMenuController();
         menuController.run();
+        UserInteraction.stopWorking();
     }
 }
 

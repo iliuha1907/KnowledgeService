@@ -1,6 +1,9 @@
 package com.senla.training.hoteladmin.controller;
 
+import com.senla.training.hoteladmin.annotation.ConfigProperty;
+import com.senla.training.hoteladmin.annotation.NeedDiClass;
 import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
@@ -11,19 +14,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+@NeedDiClass
 public class RoomController {
-    private static RoomController instance;
+    @ConfigProperty
     private RoomService roomService;
 
-    private RoomController() {
-        this.roomService = RoomServiceImpl.getInstance();
-    }
-
-    public static RoomController getInstance() {
-        if (instance == null) {
-            instance = new RoomController();
-        }
-        return instance;
+    public RoomController() {
     }
 
     public String addRoom(RoomStatus status, BigDecimal price, Integer capacity,
@@ -80,15 +76,6 @@ public class RoomController {
         return result.toString();
     }
 
-    public String getPriceRoom(int roomNumber) {
-        try {
-            BigDecimal price = roomService.getPriceRoom(roomNumber);
-            return "Price: " + price.toString();
-        } catch (BusinessException ex) {
-            return ex.getMessage();
-        }
-    }
-
     public String getRoomInfo(int roomNumber) {
         Room room = roomService.getRoom(roomNumber);
         if (room == null) {
@@ -113,7 +100,7 @@ public class RoomController {
 
     public String importRooms() {
         try {
-            roomService.importRooms(ClientServiceImpl.getInstance());
+            roomService.importRooms();
             return "Successfully imported rooms";
         } catch (BusinessException ex) {
             return ex.getMessage();
@@ -124,7 +111,7 @@ public class RoomController {
         try {
             roomService.deserializeRooms();
             return "Successful deserialization of rooms";
-        } catch (BusinessException ex) {
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }
@@ -133,7 +120,7 @@ public class RoomController {
         try {
             roomService.serializeRooms();
             return "Successful serialization of rooms";
-        } catch (BusinessException ex) {
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }
@@ -141,8 +128,8 @@ public class RoomController {
     public String deserializeRoomsId() {
         try {
             roomService.deserializeId();
-            return "Successful deserialization of rooms id";
-        } catch (BusinessException ex) {
+            return "Successful deserialization of rooms idspread";
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }
@@ -150,8 +137,8 @@ public class RoomController {
     public String serializeRoomsId() {
         try {
             roomService.serializeId();
-            return "Successful serialization of rooms id";
-        } catch (BusinessException ex) {
+            return "Successful serialization of rooms idspread";
+        } catch (IncorrectWorkException ex) {
             return ex.getMessage();
         }
     }

@@ -33,7 +33,7 @@ public interface RoomService {
 
     void exportRooms();
 
-    void importRooms(ClientService clientService);
+    void importRooms();
 
     void updateRoom(Room rooms);
 

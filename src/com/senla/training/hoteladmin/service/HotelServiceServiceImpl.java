@@ -1,15 +1,15 @@
 package com.senla.training.hoteladmin.service;
 
+import com.senla.training.hoteladmin.annotation.ConfigProperty;
+import com.senla.training.hoteladmin.annotation.NeedDiClass;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
 import com.senla.training.hoteladmin.repository.ClientsRepository;
-import com.senla.training.hoteladmin.repository.ClientsRepositoryImpl;
 import com.senla.training.hoteladmin.repository.HotelServiceRepository;
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.repository.HotelServiceRepositoryImpl;
 import com.senla.training.hoteladmin.util.filecsv.writeread.HotelServiceReaderWriter;
-import com.senla.training.hoteladmin.util.id.HotelServiceIdProvider;
+import com.senla.training.hoteladmin.util.idspread.HotelServiceIdProvider;
 import com.senla.training.hoteladmin.util.serializator.Deserializator;
 import com.senla.training.hoteladmin.util.serializator.Serializator;
 import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
@@ -19,22 +19,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+@NeedDiClass
 public class HotelServiceServiceImpl implements HotelServiceService {
-    private static HotelServiceService instance;
+    @ConfigProperty
     private HotelServiceRepository hotelServiceRepository;
+    @ConfigProperty
     private ClientsRepository clientsRepository;
 
-    private HotelServiceServiceImpl() {
-        this.hotelServiceRepository = HotelServiceRepositoryImpl.getInstance();
-        this.clientsRepository = ClientsRepositoryImpl.getInstance();
-    }
-
-    public static HotelServiceService getInstance() {
-        if (instance == null) {
-            instance = new HotelServiceServiceImpl();
-            return instance;
-        }
-        return instance;
+    public HotelServiceServiceImpl() {
     }
 
     @Override
@@ -95,9 +87,8 @@ public class HotelServiceServiceImpl implements HotelServiceService {
         List<HotelService> hotelServices = HotelServiceReaderWriter.readServices();
         hotelServices.forEach(hotelService -> {
             Client existing = clientsRepository.getClientById(hotelService.getClient().getId());
-
             if (existing == null) {
-                throw new BusinessException("Could not import services: wrong id of a client");
+                throw new BusinessException("Could not import services: wrong idspread of a client");
             }
             hotelService.setClient(existing);
             updateService(hotelService);

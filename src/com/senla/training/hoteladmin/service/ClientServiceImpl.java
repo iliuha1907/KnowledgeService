@@ -1,10 +1,12 @@
 package com.senla.training.hoteladmin.service;
 
+import com.senla.training.hoteladmin.annotation.ConfigProperty;
+import com.senla.training.hoteladmin.annotation.NeedDiClass;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.repository.*;
-import com.senla.training.hoteladmin.util.id.ClientIdProvider;
+import com.senla.training.hoteladmin.util.idspread.ClientIdProvider;
 import com.senla.training.hoteladmin.util.filecsv.writeread.ClientReaderWriter;
 import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
 import com.senla.training.hoteladmin.util.serializator.Deserializator;
@@ -15,24 +17,16 @@ import com.senla.training.hoteladmin.util.sort.ClientsSorter;
 import java.util.Date;
 import java.util.List;
 
+@NeedDiClass
 public class ClientServiceImpl implements ClientService {
-    private static ClientService instance;
+    @ConfigProperty
     private HotelServiceRepository hotelServiceRepository;
+    @ConfigProperty
     private ClientsRepository clientsRepository;
+    @ConfigProperty
     private RoomsRepository roomsRepository;
 
-    private ClientServiceImpl() {
-        this.hotelServiceRepository = HotelServiceRepositoryImpl.getInstance();
-        this.clientsRepository = ClientsRepositoryImpl.getInstance();
-        this.roomsRepository = RoomsRepositoryImpl.getInstance();
-    }
-
-    public static ClientService getInstance() {
-        if (instance == null) {
-            instance = new ClientServiceImpl();
-            return instance;
-        }
-        return instance;
+    public ClientServiceImpl() {
     }
 
     @Override
@@ -61,12 +55,9 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void removeResident(Client resident) {
         clientsRepository.removeClient(resident);
-
         Room room = roomsRepository.getClientRoom(resident.getId());
         room.setResident(null);
-
         clientsRepository.addMovedClient(resident);
-
         hotelServiceRepository.removeClientHotelServices(resident.getId());
     }
 
@@ -113,7 +104,7 @@ public class ClientServiceImpl implements ClientService {
         clients.forEach(client -> {
             Room existing = roomsRepository.getRoom(client.getRoom().getId());
             if (existing == null || existing.getResident() != null) {
-                throw new BusinessException("Could not read clients, incorrect id of a room");
+                throw new BusinessException("Could not read clients, incorrect idspread of a room");
             }
             existing.setResident(client);
             client.setRoom(existing);

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class Room implements Serializable {
-    private static final long SerialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
     private Integer id;
     private RoomStatus status;
     private BigDecimal price;
@@ -87,7 +87,7 @@ public class Room implements Serializable {
 
     @Override
     public String toString() {
-        String result = String.format("Room with id:%d, status:%s, capacity: %d, stars: %d, price: %.2f",
+        String result = String.format("Room with idspread:%d, status:%s, capacity: %d, stars: %d, price: %.2f",
                 id, status.toString(), capacity, stars, price);
         if (resident != null) {
             result += ", taken from " + DateUtil.getString(resident.getArrivalDate()) +

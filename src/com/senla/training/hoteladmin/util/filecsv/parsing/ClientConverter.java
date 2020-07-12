@@ -1,10 +1,9 @@
 package com.senla.training.hoteladmin.util.filecsv.parsing;
 
 import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.model.client.ClientFields;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.util.DateUtil;
-import com.senla.training.hoteladmin.util.LiteralNumberProvider;
-
 
 import java.util.Date;
 
@@ -22,13 +21,13 @@ public class ClientConverter {
 
     public static Client parseClient(String data, String separator) {
         String[] fields = data.split(separator);
-        Integer clientId = Integer.parseInt(fields[LiteralNumberProvider.ZERO]);
-        String clientFirstName = fields[LiteralNumberProvider.ONE];
-        String clientLastName = fields[LiteralNumberProvider.TWO];
-        Date clientArrival = DateUtil.getDate(fields[LiteralNumberProvider.THREE]);
-        Date clientDep = DateUtil.getDate(fields[LiteralNumberProvider.FOUR]);
+        Integer clientId = Integer.parseInt(fields[ClientFields.ID.ordinal()]);
+        String clientFirstName = fields[ClientFields.FIRST_NAME.ordinal()];
+        String clientLastName = fields[ClientFields.LAST_NAME.ordinal()];
+        Date clientArrival = DateUtil.getDate(fields[ClientFields.ARRIVAL.ordinal()]);
+        Date clientDep = DateUtil.getDate(fields[ClientFields.DEPARTURE.ordinal()]);
 
-        Integer roomId = Integer.parseInt(fields[LiteralNumberProvider.FIVE]);
+        Integer roomId = Integer.parseInt(fields[ClientFields.ROOM_ID.ordinal()]);
 
         Client client = new Client(clientId, clientFirstName, clientLastName, clientArrival, clientDep);
         Room room = new Room();

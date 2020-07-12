@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.util.serializator;
 
-import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.room.Room;
@@ -25,7 +25,7 @@ public class Deserializator {
                 new FileInputStream(FILE_NAME_ROOMS_CLIENTS))) {
             return (List<Room>) objectInputStream.readObject();
         } catch (Exception ex) {
-            throw new BusinessException("Error at deserialization of rooms and clients");
+            throw new IncorrectWorkException("Error at deserialization of rooms and clients");
         }
     }
 
@@ -35,7 +35,7 @@ public class Deserializator {
                 new FileInputStream(FILE_NAME_MOVED_CLIENTS))) {
             return (List<Client>) objectInputStream.readObject();
         } catch (Exception ex) {
-            throw new BusinessException("Error at deserialization of moved clients");
+            throw new IncorrectWorkException("Error at deserialization of moved clients");
         }
     }
 
@@ -45,7 +45,7 @@ public class Deserializator {
                 new FileInputStream(FILE_NAME_SERVICES))) {
             return (List<HotelService>) objectInputStream.readObject();
         } catch (Exception ex) {
-            throw new BusinessException("Error at deserialization of hotel services");
+            throw new IncorrectWorkException("Error at deserialization of hotel services");
         }
     }
 
@@ -54,7 +54,7 @@ public class Deserializator {
                 new FileInputStream(FILE_NAME_CLIENTS_ID))) {
             return (Integer) objectInputStream.readObject();
         } catch (Exception ex) {
-            throw new BusinessException("Error at deserialization of client id");
+            throw new IncorrectWorkException("Error at deserialization of client idspread");
         }
     }
 
@@ -63,7 +63,7 @@ public class Deserializator {
                 new FileInputStream(FILE_NAME_ROOMS_ID))) {
             return (Integer) objectInputStream.readObject();
         } catch (Exception ex) {
-            throw new BusinessException("Error at deserialization of room id");
+            throw new IncorrectWorkException("Error at deserialization of room idspread");
         }
     }
 
@@ -72,7 +72,7 @@ public class Deserializator {
                 new FileInputStream(FILE_NAME_SERVICES_ID))) {
             return (Integer) objectInputStream.readObject();
         } catch (Exception ex) {
-            throw new BusinessException("Error at deserialization of hotel services id");
+            throw new IncorrectWorkException("Error at deserialization of hotel services idspread");
         }
     }
 }

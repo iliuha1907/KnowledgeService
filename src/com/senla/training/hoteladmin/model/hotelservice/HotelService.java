@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class HotelService implements Serializable {
-    private static final long SerialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
     private Integer id;
     private BigDecimal price;
     private HotelServiceType type;
@@ -79,7 +79,7 @@ public class HotelService implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("service %s, id:%d, price: %.2f, date: %s for client %s %s", type, id, price,
+        return String.format("service %s, idspread:%d, price: %.2f, date: %s for client %s %s", type, id, price,
                 DateUtil.getString(date), client.getFirstName(), client.getLastName());
     }
 }

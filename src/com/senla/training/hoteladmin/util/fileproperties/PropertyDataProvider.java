@@ -11,10 +11,10 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return Integer.parseInt((String) prop.getOrDefault(PropertyNamesProvider.NUMBER_OF_RECORDS,
+            return Integer.parseInt(prop.getProperty(PropertyNamesProvider.NUMBER_OF_RECORDS,
                     DefaultPropertyValuesProvider.DEFAULT_NUMBER_RESIDENTS));
         } catch (IOException ex) {
-            return DefaultPropertyValuesProvider.DEFAULT_NUMBER_RESIDENTS;
+            return Integer.parseInt(DefaultPropertyValuesProvider.DEFAULT_NUMBER_RESIDENTS);
         }
     }
 
@@ -22,10 +22,10 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return Boolean.parseBoolean((String) prop.getOrDefault(PropertyNamesProvider.CHANGE_STATUS,
+            return Boolean.parseBoolean(prop.getProperty(PropertyNamesProvider.CHANGE_STATUS,
                     DefaultPropertyValuesProvider.DEFAULT_IS_CHANGEABLE));
         } catch (IOException ex) {
-            return DefaultPropertyValuesProvider.DEFAULT_IS_CHANGEABLE;
+            return Boolean.parseBoolean(DefaultPropertyValuesProvider.DEFAULT_IS_CHANGEABLE);
         }
     }
 
@@ -33,7 +33,7 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return (String) prop.getOrDefault(PropertyNamesProvider.MOVED_CLIENTS,
+            return prop.getProperty(PropertyNamesProvider.MOVED_CLIENTS,
                     DefaultPropertyValuesProvider.DEFAULT_MOVED_CLIENTS);
         } catch (IOException ex) {
             return DefaultPropertyValuesProvider.DEFAULT_MOVED_CLIENTS;
@@ -44,7 +44,7 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return (String) prop.getOrDefault(PropertyNamesProvider.ROOM_CLIENTS,
+            return prop.getProperty(PropertyNamesProvider.ROOM_CLIENTS,
                     DefaultPropertyValuesProvider.DEFAULT_ROOM_CLIENTS);
         } catch (IOException ex) {
             return DefaultPropertyValuesProvider.DEFAULT_ROOM_CLIENTS;
@@ -55,7 +55,7 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return (String) prop.getOrDefault(PropertyNamesProvider.SERVICES_FILE,
+            return prop.getProperty(PropertyNamesProvider.SERVICES_FILE,
                     DefaultPropertyValuesProvider.DEFAULT_SERVICES_FILE);
         } catch (IOException ex) {
             return DefaultPropertyValuesProvider.DEFAULT_SERVICES_FILE;
@@ -66,7 +66,8 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(PropertyNamesProvider.CLIENTS_CSV);
+            return prop.getProperty(PropertyNamesProvider.CLIENTS_CSV,
+                    DefaultPropertyValuesProvider.DEFAULT_CLIENTS_CSV);
         } catch (IOException ex) {
             return DefaultPropertyValuesProvider.DEFAULT_CLIENTS_CSV;
         }
@@ -76,7 +77,8 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(PropertyNamesProvider.ROOMS_CSV);
+            return prop.getProperty(PropertyNamesProvider.ROOMS_CSV,
+                    DefaultPropertyValuesProvider.DEFAULT_ROOMS_CSV);
         } catch (IOException ex) {
             return DefaultPropertyValuesProvider.DEFAULT_ROOMS_CSV;
         }
@@ -86,7 +88,8 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(PropertyNamesProvider.SERVICES_CSV);
+            return prop.getProperty(PropertyNamesProvider.SERVICES_CSV,
+                    DefaultPropertyValuesProvider.DEFAULT_SERVICES_CSV);
         } catch (IOException ex) {
             return DefaultPropertyValuesProvider.DEFAULT_SERVICES_CSV;
         }
@@ -96,7 +99,8 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(PropertyNamesProvider.SEPARATOR);
+            return prop.getProperty(PropertyNamesProvider.SEPARATOR,
+                    DefaultPropertyValuesProvider.DEFAULT_SEPARATOR);
         } catch (IOException ex) {
             return DefaultPropertyValuesProvider.DEFAULT_SEPARATOR;
         }
@@ -106,7 +110,8 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(PropertyNamesProvider.CLIENTS_ID);
+            return prop.getProperty(PropertyNamesProvider.CLIENTS_ID,
+                    DefaultPropertyValuesProvider.DEFAULT_CLIENTS_ID);
         } catch (IOException ex) {
             return DefaultPropertyValuesProvider.DEFAULT_CLIENTS_ID;
         }
@@ -116,7 +121,8 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(PropertyNamesProvider.ROOMS_ID);
+            return prop.getProperty(PropertyNamesProvider.ROOMS_ID,
+                    DefaultPropertyValuesProvider.DEFAULT_ROOMS_ID);
         } catch (IOException ex) {
             return DefaultPropertyValuesProvider.DEFAULT_ROOMS_ID;
         }
@@ -126,9 +132,30 @@ public class PropertyDataProvider {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(PropertyNamesProvider.SERVICES_ID);
+            return prop.getProperty(PropertyNamesProvider.SERVICES_ID,
+                    DefaultPropertyValuesProvider.DEFAULT_SERVICES_ID);
         } catch (IOException ex) {
             return DefaultPropertyValuesProvider.DEFAULT_SERVICES_ID;
+        }
+    }
+
+    public static String getString(String key, String fileName) {
+        try (InputStream input = new FileInputStream(fileName)) {
+            Properties prop = new Properties();
+            prop.load(input);
+            return prop.getProperty(key);
+        } catch (IOException ex) {
+            return null;
+        }
+    }
+
+    public static Integer getInt(String key, String fileName) {
+        try (InputStream input = new FileInputStream(fileName)) {
+            Properties prop = new Properties();
+            prop.load(input);
+            return Integer.parseInt(prop.getProperty(key));
+        } catch (IOException ex) {
+            return null;
         }
     }
 }
