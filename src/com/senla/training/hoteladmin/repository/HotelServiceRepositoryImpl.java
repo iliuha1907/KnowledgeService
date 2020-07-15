@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.repository;
 
-import com.senla.training.hoteladmin.annotation.NeedDiClass;
+import com.senla.training.injection.annotation.NeedInjectionClass;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.util.idspread.HotelServiceIdProvider;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NeedDiClass
+@NeedInjectionClass
 public class HotelServiceRepositoryImpl implements HotelServiceRepository {
     private List<HotelService> hotelServices;
 

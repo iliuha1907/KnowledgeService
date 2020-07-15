@@ -1,7 +1,7 @@
 package com.senla.training.hoteladmin.repository;
 
 
-import com.senla.training.hoteladmin.annotation.NeedDiClass;
+import com.senla.training.injection.annotation.NeedInjectionClass;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.util.idspread.ClientIdProvider;
@@ -9,7 +9,7 @@ import com.senla.training.hoteladmin.util.idspread.ClientIdProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-@NeedDiClass
+@NeedInjectionClass
 public class ClientsRepositoryImpl implements ClientsRepository {
     private List<Client> clients;
     private List<Client> movedClients;

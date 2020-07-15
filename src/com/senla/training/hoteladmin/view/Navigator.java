@@ -1,10 +1,10 @@
 package com.senla.training.hoteladmin.view;
 
-import com.senla.training.hoteladmin.annotation.NeedDiClass;
+import com.senla.training.injection.annotation.NeedInjectionClass;
 
 import java.util.List;
 
-@NeedDiClass
+@NeedInjectionClass
 public class Navigator {
     private Menu currentMenu;
 

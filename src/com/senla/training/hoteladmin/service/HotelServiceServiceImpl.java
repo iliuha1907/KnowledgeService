@@ -1,7 +1,7 @@
 package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hoteladmin.annotation.ConfigProperty;
-import com.senla.training.hoteladmin.annotation.NeedDiClass;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
@@ -19,11 +19,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-@NeedDiClass
+@NeedInjectionClass
 public class HotelServiceServiceImpl implements HotelServiceService {
-    @ConfigProperty
+    @NeedInjectionField
     private HotelServiceRepository hotelServiceRepository;
-    @ConfigProperty
+    @NeedInjectionField
     private ClientsRepository clientsRepository;
 
     public HotelServiceServiceImpl() {

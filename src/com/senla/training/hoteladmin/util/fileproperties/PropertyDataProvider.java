@@ -7,28 +7,6 @@ import java.util.Properties;
 
 public class PropertyDataProvider {
 
-    public static Integer getNumberOfRecords() {
-        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
-            Properties prop = new Properties();
-            prop.load(input);
-            return Integer.parseInt(prop.getProperty(PropertyNamesProvider.NUMBER_OF_RECORDS,
-                    DefaultPropertyValuesProvider.DEFAULT_NUMBER_RESIDENTS));
-        } catch (IOException ex) {
-            return Integer.parseInt(DefaultPropertyValuesProvider.DEFAULT_NUMBER_RESIDENTS);
-        }
-    }
-
-    public static boolean isChangeableStatus() {
-        try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
-            Properties prop = new Properties();
-            prop.load(input);
-            return Boolean.parseBoolean(prop.getProperty(PropertyNamesProvider.CHANGE_STATUS,
-                    DefaultPropertyValuesProvider.DEFAULT_IS_CHANGEABLE));
-        } catch (IOException ex) {
-            return Boolean.parseBoolean(DefaultPropertyValuesProvider.DEFAULT_IS_CHANGEABLE);
-        }
-    }
-
     public static String getMovedClientsFile() {
         try (InputStream input = new FileInputStream(PropertyNamesProvider.FILE_NAME)) {
             Properties prop = new Properties();
@@ -139,11 +117,11 @@ public class PropertyDataProvider {
         }
     }
 
-    public static String getString(String key, String fileName) {
+    public static Boolean getBoolean(String key, String fileName) {
         try (InputStream input = new FileInputStream(fileName)) {
             Properties prop = new Properties();
             prop.load(input);
-            return prop.getProperty(key);
+            return Boolean.parseBoolean(prop.getProperty(key));
         } catch (IOException ex) {
             return null;
         }

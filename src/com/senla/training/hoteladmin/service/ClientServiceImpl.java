@@ -1,14 +1,14 @@
 package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hoteladmin.annotation.ConfigProperty;
-import com.senla.training.hoteladmin.annotation.NeedDiClass;
+import com.senla.training.injection.annotation.ConfigProperty;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.repository.*;
 import com.senla.training.hoteladmin.util.idspread.ClientIdProvider;
 import com.senla.training.hoteladmin.util.filecsv.writeread.ClientReaderWriter;
-import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
 import com.senla.training.hoteladmin.util.serializator.Deserializator;
 import com.senla.training.hoteladmin.util.serializator.Serializator;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
@@ -17,14 +17,16 @@ import com.senla.training.hoteladmin.util.sort.ClientsSorter;
 import java.util.Date;
 import java.util.List;
 
-@NeedDiClass
+@NeedInjectionClass
 public class ClientServiceImpl implements ClientService {
-    @ConfigProperty
+    @NeedInjectionField
     private HotelServiceRepository hotelServiceRepository;
-    @ConfigProperty
+    @NeedInjectionField
     private ClientsRepository clientsRepository;
-    @ConfigProperty
+    @NeedInjectionField
     private RoomsRepository roomsRepository;
+    @ConfigProperty(propertyName = "clients.numberOfRecords", type = Integer.class)
+    private Integer numberOfResidents;
 
     public ClientServiceImpl() {
     }
@@ -90,7 +92,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<Client> getLastResidents(Integer roomId) {
-        return clientsRepository.getLastRoomClients(roomId, PropertyDataProvider.getNumberOfRecords());
+        return clientsRepository.getLastRoomClients(roomId, numberOfResidents);
     }
 
     @Override

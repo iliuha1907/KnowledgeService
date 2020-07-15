@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.repository;
 
-import com.senla.training.hoteladmin.annotation.NeedDiClass;
+import com.senla.training.injection.annotation.NeedInjectionClass;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.idspread.RoomIdProvider;
@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NeedDiClass
+@NeedInjectionClass
 public class RoomsRepositoryImpl implements RoomsRepository {
     private List<Room> rooms;
 

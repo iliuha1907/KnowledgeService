@@ -1,9 +1,8 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.annotation.ConfigProperty;
-import com.senla.training.hoteladmin.annotation.NeedDiClass;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
-import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import com.senla.training.hoteladmin.service.*;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
@@ -14,9 +13,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-@NeedDiClass
+@NeedInjectionClass
 public class RoomController {
-    @ConfigProperty
+    @NeedInjectionField
     private RoomService roomService;
 
     public RoomController() {
@@ -108,39 +107,23 @@ public class RoomController {
     }
 
     public String deserializeRoomsClients() {
-        try {
-            roomService.deserializeRooms();
-            return "Successful deserialization of rooms";
-        } catch (IncorrectWorkException ex) {
-            return ex.getMessage();
-        }
+        roomService.deserializeRooms();
+        return "Successful deserialization of rooms";
     }
 
     public String serializeRoomsClients() {
-        try {
-            roomService.serializeRooms();
-            return "Successful serialization of rooms";
-        } catch (IncorrectWorkException ex) {
-            return ex.getMessage();
-        }
+        roomService.serializeRooms();
+        return "Successful serialization of rooms";
     }
 
     public String deserializeRoomsId() {
-        try {
-            roomService.deserializeId();
-            return "Successful deserialization of rooms idspread";
-        } catch (IncorrectWorkException ex) {
-            return ex.getMessage();
-        }
+        roomService.deserializeId();
+        return "Successful deserialization of rooms idspread";
     }
 
     public String serializeRoomsId() {
-        try {
-            roomService.serializeId();
-            return "Successful serialization of rooms idspread";
-        } catch (IncorrectWorkException ex) {
-            return ex.getMessage();
-        }
+        roomService.serializeId();
+        return "Successful serialization of rooms idspread";
     }
 }
 

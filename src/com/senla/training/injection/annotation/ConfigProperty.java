@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.annotation;
+package com.senla.training.injection.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,3 +14,4 @@ public @interface ConfigProperty {
 
     Class<?> type() default Object.class;
 }
+

@@ -1,11 +1,13 @@
 package com.senla.training.hoteladmin.service;
 
+import com.senla.training.injection.annotation.InterfaceOfInjection;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 
 import java.util.Date;
 import java.util.List;
 
+@InterfaceOfInjection
 public interface ClientService {
 
     void setClients(List<Client> clients);

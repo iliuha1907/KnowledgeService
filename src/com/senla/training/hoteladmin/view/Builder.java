@@ -1,7 +1,7 @@
 package com.senla.training.hoteladmin.view;
 
-import com.senla.training.hoteladmin.annotation.ConfigProperty;
-import com.senla.training.hoteladmin.annotation.NeedDiClass;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.controller.ClientController;
 import com.senla.training.hoteladmin.controller.HotelServiceController;
 import com.senla.training.hoteladmin.controller.RoomController;
@@ -17,14 +17,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@NeedDiClass
+@NeedInjectionClass
 public class Builder {
     private Menu rootMenu;
-    @ConfigProperty
+    @NeedInjectionField
     private ClientController clientController;
-    @ConfigProperty
+    @NeedInjectionField
     private HotelServiceController hotelServiceController;
-    @ConfigProperty
+    @NeedInjectionField
     private RoomController roomController;
 
     public Builder() {
@@ -176,6 +176,7 @@ public class Builder {
         return rootMenu;
     }
 
+    //вынес здесь в методы, чтобы лямбды не получились большими слишком
     private void addClientAction() {
         String firstName = UserInteraction.getStringWithMessage("Enter first name");
         String lastName = UserInteraction.getStringWithMessage("Enter last name");

@@ -12,7 +12,6 @@ public class DateUtil {
         } catch (Exception ex) {
             return null;
         }
-
     }
 
     public static String getString(Date date) {

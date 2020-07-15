@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.List;
 
-
 public class Deserializator {
     private static final String FILE_NAME_ROOMS_CLIENTS = PropertyDataProvider.getRoomClientsFile();
     private static final String FILE_NAME_SERVICES = PropertyDataProvider.getServicesFile();

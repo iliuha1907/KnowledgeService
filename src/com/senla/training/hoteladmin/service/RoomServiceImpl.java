@@ -1,14 +1,14 @@
 package com.senla.training.hoteladmin.service;
 
-import com.senla.training.hoteladmin.annotation.ConfigProperty;
-import com.senla.training.hoteladmin.annotation.NeedDiClass;
+import com.senla.training.injection.annotation.ConfigProperty;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.repository.*;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.filecsv.writeread.RoomReaderWriter;
-import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
 import com.senla.training.hoteladmin.util.idspread.RoomIdProvider;
 import com.senla.training.hoteladmin.util.serializator.Deserializator;
 import com.senla.training.hoteladmin.util.serializator.Serializator;
@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@NeedDiClass
+@NeedInjectionClass
 public class RoomServiceImpl implements RoomService {
-    @ConfigProperty
+    @NeedInjectionField
     private RoomsRepository roomsRepository;
-    @ConfigProperty
+    @NeedInjectionField
     private ClientsRepository clientsRepository;
+    @ConfigProperty(propertyName = "rooms.changeStatus", type = Boolean.class)
+    private Boolean isChangeableStatus;
 
     public RoomServiceImpl() {
     }
@@ -43,7 +45,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void setRoomStatus(Integer roomId, RoomStatus status) {
-        if (!PropertyDataProvider.isChangeableStatus()) {
+        if (!isChangeableStatus) {
             throw new BusinessException("Error at modifying room: no permission!");
         }
         Room room = roomsRepository.getRoom(roomId);

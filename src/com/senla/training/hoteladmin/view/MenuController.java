@@ -1,23 +1,23 @@
 package com.senla.training.hoteladmin.view;
 
-import com.senla.training.hoteladmin.annotation.ConfigProperty;
-import com.senla.training.hoteladmin.annotation.NeedDiClass;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.controller.ClientController;
 import com.senla.training.hoteladmin.controller.HotelServiceController;
 import com.senla.training.hoteladmin.controller.RoomController;
 import com.senla.training.hoteladmin.util.UserInteraction;
 
-@NeedDiClass
+@NeedInjectionClass
 public class MenuController {
-    @ConfigProperty
+    @NeedInjectionField
     private Builder builder;
-    @ConfigProperty
+    @NeedInjectionField
     private Navigator navigator;
-    @ConfigProperty
+    @NeedInjectionField
     private RoomController roomController;
-    @ConfigProperty
+    @NeedInjectionField
     private ClientController clientController;
-    @ConfigProperty
+    @NeedInjectionField
     private HotelServiceController hotelServiceController;
 
     public MenuController() {
@@ -48,7 +48,6 @@ public class MenuController {
                 navigator.navigate(choice);
             }
         }
-
 
         System.out.println(roomController.serializeRoomsClients());
         System.out.println(clientController.serializeLastResidents());

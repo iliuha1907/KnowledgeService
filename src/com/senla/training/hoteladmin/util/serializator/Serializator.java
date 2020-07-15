@@ -10,7 +10,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
-
 public class Serializator {
     private static final String FILE_NAME_ROOMS_CLIENTS = PropertyDataProvider.getRoomClientsFile();
     private static final String FILE_NAME_SERVICES = PropertyDataProvider.getServicesFile();

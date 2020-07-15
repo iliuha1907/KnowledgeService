@@ -1,9 +1,8 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.annotation.ConfigProperty;
-import com.senla.training.hoteladmin.annotation.NeedDiClass;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
-import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.service.ClientService;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
@@ -11,9 +10,9 @@ import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 import java.util.Date;
 import java.util.List;
 
-@NeedDiClass
+@NeedInjectionClass
 public class ClientController {
-    @ConfigProperty
+    @NeedInjectionField
     private ClientService clientService;
 
     public ClientController() {
@@ -81,39 +80,23 @@ public class ClientController {
     }
 
     public String deserializeLastResidents() {
-        try {
-            clientService.deserializeMovedClients();
-            return "Successful deserialization of last residents";
-        } catch (IncorrectWorkException ex) {
-            return ex.getMessage();
-        }
+        clientService.deserializeMovedClients();
+        return "Successful deserialization of last residents";
     }
 
     public String serializeLastResidents() {
-        try {
-            clientService.serializeMovedClients();
-            return "Successful serialization of last residents";
-        } catch (IncorrectWorkException ex) {
-            return ex.getMessage();
-        }
+        clientService.serializeMovedClients();
+        return "Successful serialization of last residents";
     }
 
     public String deserializeClientsId() {
-        try {
-            clientService.deserializeId();
-            return "Successful deserialization of client idspread";
-        } catch (IncorrectWorkException ex) {
-            return ex.getMessage();
-        }
+        clientService.deserializeId();
+        return "Successful deserialization of client idspread";
     }
 
     public String serializeClientId() {
-        try {
-            clientService.serializeId();
-            return "Successful serialization of client idspread";
-        } catch (IncorrectWorkException ex) {
-            return ex.getMessage();
-        }
+        clientService.serializeId();
+        return "Successful serialization of client idspread";
     }
 }
 

@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.util;
+package com.senla.training.injection;
 
 import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 
@@ -12,6 +12,7 @@ public class PackageScanner {
     public static List<Class<?>> find(String path) {
         URL scannedUrl = Thread.currentThread().getContextClassLoader().getResource(path);
         if (scannedUrl == null) {
+            //Здесь исключение, так как далее все равно его нужно пробрасывать
             throw new IncorrectWorkException("Could not scan package");
         }
         File scannedDir = new File(scannedUrl.getFile());
