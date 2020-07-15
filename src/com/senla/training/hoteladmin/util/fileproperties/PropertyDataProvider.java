@@ -14,6 +14,7 @@ public class PropertyDataProvider {
             return prop.getProperty(PropertyNamesProvider.MOVED_CLIENTS,
                     DefaultPropertyValuesProvider.DEFAULT_MOVED_CLIENTS);
         } catch (IOException ex) {
+            //оставил такую подстановку, чтобы в любом случае что-то вернулось пользователю
             return DefaultPropertyValuesProvider.DEFAULT_MOVED_CLIENTS;
         }
     }
