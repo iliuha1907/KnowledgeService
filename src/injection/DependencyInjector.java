@@ -10,13 +10,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DependencyInjector {
-    private Map<Class<?>, Object> instances;
+    private static Map<Class<?>, Object> instances;
 
-    public DependencyInjector() {
+    public static void init(String startPackagePath) {
         instances = new HashMap<>();
-    }
-
-    public void init(String startPackagePath) {
         List<Class<?>> classes = PackageScanner.findClasses(startPackagePath);
         classes = classes.stream()
                 .filter(element -> element.isAnnotationPresent(NeedInjectionClass.class))
@@ -39,11 +36,11 @@ public class DependencyInjector {
         instances.forEach((key, value) -> initFields(value));
     }
 
-    public <T> T getClassInstance(Class<T> source) {
+    public static  <T> T getClassInstance(Class<T> source) {
         return (T) instances.get(source);
     }
 
-    private void initFields(Object element) {
+    private static void initFields(Object element) {
         for (Field field : element.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(NeedInjectionField.class)) {
                 field.setAccessible(true);

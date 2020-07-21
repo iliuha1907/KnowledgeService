@@ -20,10 +20,9 @@ public class Main {
 
     public static void main(String[] args) {
         UserInteraction.startWorking();
-        DependencyInjector dependencyInjector = new DependencyInjector();
         try {
-            dependencyInjector.init("com/senla/training/hoteladmin");
-            MenuController menuController = dependencyInjector.getClassInstance(MenuController.class);
+            DependencyInjector.init("com/senla/training/hoteladmin");
+            MenuController menuController = DependencyInjector.getClassInstance(MenuController.class);
             if (menuController == null) {
                 System.out.println("Could not get MenuController, shutting app down");
             } else {
