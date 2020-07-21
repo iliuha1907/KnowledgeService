@@ -1,28 +1,25 @@
-package com.senla.training.injection;
+package injection;
 
-import com.senla.training.injection.annotation.ConfigProperty;
-import com.senla.training.hoteladmin.exception.IncorrectWorkException;
-import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
-import com.senla.training.hoteladmin.util.fileproperties.PropertyNamesProvider;
+import injection.annotation.ConfigProperty;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 
-public class ParamConfigurator {
+public class ParametersConfigurator {
+    private static final String DEFAULT_FILE_NAME = "app.properties";
 
     public static void init(Object element) {
-        Arrays.stream(element.getClass().getDeclaredFields()).forEach(field -> {
+        for (Field field : element.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(ConfigProperty.class)) {
                 field.setAccessible(true);
                 ConfigProperty annotation = field.getAnnotation(ConfigProperty.class);
                 String name = annotation.propertyName();
-                if (name.equals("")) {
+                if (name.isEmpty()) {
                     name = element.getClass().getSimpleName() + "." + field.getName();
                 }
                 String configName = annotation.configName();
-                if (configName.equals("")) {
-                    configName = PropertyNamesProvider.FILE_NAME;
+                if (configName.isEmpty()) {
+                    configName = DEFAULT_FILE_NAME;
                 }
                 Type type = annotation.type();
                 if (type.equals(Object.class)) {
@@ -34,19 +31,25 @@ public class ParamConfigurator {
                 } else if (type.equals(Boolean.class)) {
                     Object value = PropertyDataProvider.getBoolean(name, configName);
                     setFieldWithValidation(field, element, value);
+                } else if (type.equals(String.class)) {
+                    Object value = PropertyDataProvider.getString(name, configName);
+                    setFieldWithValidation(field, element, value);
+                } else {
+                    throw new IncorrectInitializationException("Could not init parameters: unknown type");
                 }
+                field.setAccessible(false);
             }
-        });
+        }
     }
 
     private static void setFieldWithValidation(Field field, Object object, Object value) {
         if (!field.getType().isInstance(value)) {
-            throw new IncorrectWorkException("Could not initialize classes: incompatible types");
+            throw new IncorrectInitializationException("Could not initialize classes: incompatible types");
         }
         try {
             field.set(object, value);
         } catch (IllegalAccessException ex) {
-            throw new IncorrectWorkException("Could not initialize classes: incompatible types");
+            throw new IncorrectInitializationException("Could not initialize classes: incompatible types");
         }
     }
 }

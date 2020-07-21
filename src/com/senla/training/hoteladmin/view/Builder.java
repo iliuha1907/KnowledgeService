@@ -1,7 +1,7 @@
 package com.senla.training.hoteladmin.view;
 
-import com.senla.training.injection.annotation.NeedInjectionClass;
-import com.senla.training.injection.annotation.NeedInjectionField;
+import injection.annotation.NeedInjectionClass;
+import injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.controller.ClientController;
 import com.senla.training.hoteladmin.controller.HotelServiceController;
 import com.senla.training.hoteladmin.controller.RoomController;
@@ -42,7 +42,7 @@ public class Builder {
         itemsRoom.add(new MenuItem("Display price of a room", () ->
                 System.out.println(roomController.getSortedRooms(RoomsSortCriterion.PRICE))));
         itemsRoom.add(new MenuItem("Display details of a room", () -> {
-            Integer id = UserInteraction.getNaturalIntWithMessage("Enter idspread of the room");
+            Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the room");
             if (id == null) {
                 return;
             }
@@ -85,7 +85,7 @@ public class Builder {
         itemsClients.add(new MenuItem("Display clients, sorted by alphabet",
                 () -> System.out.println(clientController.getSortedClients(ClientsSortCriterion.ALPHABET))));
         itemsClients.add(new MenuItem("Display last residents of a room", () -> {
-            Integer roomId = UserInteraction.getNaturalIntWithMessage("Enter idspread of the room");
+            Integer roomId = UserInteraction.getNaturalIntWithMessage("Enter id of the room");
             if (roomId == null) {
                 return;
             }
@@ -95,7 +95,7 @@ public class Builder {
                 System.out.println(clientController.getNumberOfResidents())));
         itemsClients.add(new MenuItem("Add resident", this::addClientAction));
         itemsClients.add(new MenuItem("Remove resident", () -> {
-            Integer id = UserInteraction.getNaturalIntWithMessage("Enter idspread of the client");
+            Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the client");
             if (id == null) {
                 return;
             }
@@ -108,7 +108,7 @@ public class Builder {
         List<MenuItem> itemsSVC = new ArrayList<>();
         itemsSVC.add(new MenuItem("Main menu", rootMenu));
         itemsSVC.add(new MenuItem("Display services of a client, sorted by date", () -> {
-            Integer id = UserInteraction.getNaturalIntWithMessage("Enter idspread of the client");
+            Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the client");
             if (id == null) {
                 return;
             }
@@ -116,7 +116,7 @@ public class Builder {
                     HotelServiceSortCriterion.DATE));
         }));
         itemsSVC.add(new MenuItem("Display services of a client, sorted by price", () -> {
-            Integer id = UserInteraction.getNaturalIntWithMessage("Enter idspread");
+            Integer id = UserInteraction.getNaturalIntWithMessage("Enter id");
             if (id == null) {
                 return;
             }
@@ -176,7 +176,6 @@ public class Builder {
         return rootMenu;
     }
 
-    //вынес здесь в методы, чтобы лямбды не получились большими слишком
     private void addClientAction() {
         String firstName = UserInteraction.getStringWithMessage("Enter first name");
         String lastName = UserInteraction.getStringWithMessage("Enter last name");
@@ -192,7 +191,7 @@ public class Builder {
     }
 
     private void addHotelServiceAction() {
-        Integer id = UserInteraction.getNaturalIntWithMessage("Enter idspread of the client");
+        Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the client");
         if (id == null) {
             return;
         }
@@ -212,7 +211,7 @@ public class Builder {
     }
 
     private void changeHotelServicePriceAction() {
-        Integer id = UserInteraction.getNaturalIntWithMessage("Enter idspread");
+        Integer id = UserInteraction.getNaturalIntWithMessage("Enter id");
         if (id == null) {
             return;
         }
@@ -244,7 +243,7 @@ public class Builder {
     }
 
     private void changeRoomPriceAction() {
-        Integer id = UserInteraction.getNaturalIntWithMessage("Enter idspread of the room");
+        Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the room");
         if (id == null) {
             return;
         }
@@ -256,7 +255,7 @@ public class Builder {
     }
 
     private void changeRoomStatusAction() {
-        Integer id = UserInteraction.getNaturalIntWithMessage("Enter idspread of the room");
+        Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the room");
         if (id == null) {
             return;
         }

@@ -1,11 +1,9 @@
 package com.senla.training.hoteladmin.repository;
 
-import com.senla.training.injection.annotation.InterfaceOfInjection;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 
 import java.util.List;
 
-@InterfaceOfInjection
 public interface HotelServiceRepository {
 
     void setHotelServices(List<HotelService> hotelServices);

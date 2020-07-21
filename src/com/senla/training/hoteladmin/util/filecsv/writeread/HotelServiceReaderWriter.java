@@ -3,20 +3,24 @@ package com.senla.training.hoteladmin.util.filecsv.writeread;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.util.filecsv.parsing.HotelServiceConverter;
-import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
+import injection.annotation.ConfigProperty;
+import injection.annotation.NeedInjectionClass;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@NeedInjectionClass
 public class HotelServiceReaderWriter {
-    private static final String FILE_NAME = PropertyDataProvider.getServicesCsv();
-    private static final String SEPARATOR = PropertyDataProvider.getSeparator();
+    @ConfigProperty(propertyName = "csv.services.filePath", type = String.class)
+    private static String fileName;
+    @ConfigProperty(propertyName = "csv.separator", type = String.class)
+    private static String separator;
 
     public static void writeServices(List<HotelService> hotelServices) {
-        try (FileWriter fileWriter = new FileWriter(new File(FILE_NAME))) {
+        try (FileWriter fileWriter = new FileWriter(new File(fileName))) {
             for (HotelService hotelService : hotelServices) {
-                fileWriter.write(HotelServiceConverter.getStringFromService(hotelService, SEPARATOR) + "\n");
+                fileWriter.write(HotelServiceConverter.getStringFromService(hotelService, separator) + "\n");
             }
         } catch (Exception ex) {
             throw new BusinessException(ex.getMessage());
@@ -24,11 +28,11 @@ public class HotelServiceReaderWriter {
     }
 
     public static List<HotelService> readServices() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(new File(FILE_NAME)))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(new File(fileName)))) {
             List<HotelService> hotelServices = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
-                hotelServices.add(HotelServiceConverter.parseService(line, SEPARATOR));
+                hotelServices.add(HotelServiceConverter.parseService(line, separator));
             }
             return hotelServices;
         } catch (Exception ex) {

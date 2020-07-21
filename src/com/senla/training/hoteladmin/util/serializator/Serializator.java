@@ -4,22 +4,30 @@ import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.room.Room;
-import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
+import injection.annotation.ConfigProperty;
+import injection.annotation.NeedInjectionClass;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
+@NeedInjectionClass
 public class Serializator {
-    private static final String FILE_NAME_ROOMS_CLIENTS = PropertyDataProvider.getRoomClientsFile();
-    private static final String FILE_NAME_SERVICES = PropertyDataProvider.getServicesFile();
-    private static final String FILE_NAME_MOVED_CLIENTS = PropertyDataProvider.getMovedClientsFile();
-    private static final String FILE_NAME_ROOMS_ID = PropertyDataProvider.getRoomIdFile();
-    private static final String FILE_NAME_CLIENTS_ID = PropertyDataProvider.getClientIdFile();
-    private static final String FILE_NAME_SERVICES_ID = PropertyDataProvider.getHotelServiceIdFile();
+    @ConfigProperty(propertyName = "dat.roomClients.filePath", type = String.class)
+    private static String fileNameRoomsClients;
+    @ConfigProperty(propertyName = "dat.services.filePath", type = String.class)
+    private static String fileNameServices;
+    @ConfigProperty(propertyName = "dat.movedClients.filePath", type = String.class)
+    private static String fileNameMovedClients;
+    @ConfigProperty(propertyName = "dat.rooms.id.filePath", type = String.class)
+    private static String fileNameRoomsId;
+    @ConfigProperty(propertyName = "dat.clients.id.filePath", type = String.class)
+    private static String fileNameClientsId;
+    @ConfigProperty(propertyName = "dat.services.id.filePath", type = String.class)
+    private static String fileNameServicesId;
 
     public static void serializeRoomsClients(List<Room> rooms) {
-        try (FileOutputStream outputStream = new FileOutputStream(FILE_NAME_ROOMS_CLIENTS);
+        try (FileOutputStream outputStream = new FileOutputStream(fileNameRoomsClients);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(rooms);
 
@@ -30,7 +38,7 @@ public class Serializator {
     }
 
     public static void serializeServices(List<HotelService> services) {
-        try (FileOutputStream outputStream = new FileOutputStream(FILE_NAME_SERVICES);
+        try (FileOutputStream outputStream = new FileOutputStream(fileNameServices);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(services);
         } catch (Exception ex) {
@@ -39,7 +47,7 @@ public class Serializator {
     }
 
     public static void serializeMovedClients(List<Client> clients) {
-        try (FileOutputStream outputStream = new FileOutputStream(FILE_NAME_MOVED_CLIENTS);
+        try (FileOutputStream outputStream = new FileOutputStream(fileNameMovedClients);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(clients);
         } catch (Exception ex) {
@@ -48,7 +56,7 @@ public class Serializator {
     }
 
     public static void serializeClientId(Integer id) {
-        try (FileOutputStream outputStream = new FileOutputStream(FILE_NAME_CLIENTS_ID);
+        try (FileOutputStream outputStream = new FileOutputStream(fileNameClientsId);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(id);
         } catch (Exception ex) {
@@ -57,7 +65,7 @@ public class Serializator {
     }
 
     public static void serializeRoomId(Integer id) {
-        try (FileOutputStream outputStream = new FileOutputStream(FILE_NAME_ROOMS_ID);
+        try (FileOutputStream outputStream = new FileOutputStream(fileNameRoomsId);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(id);
         } catch (Exception ex) {
@@ -66,7 +74,7 @@ public class Serializator {
     }
 
     public static void serializeHotelServiceId(Integer id) {
-        try (FileOutputStream outputStream = new FileOutputStream(FILE_NAME_SERVICES_ID);
+        try (FileOutputStream outputStream = new FileOutputStream(fileNameServicesId);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(id);
         } catch (Exception ex) {

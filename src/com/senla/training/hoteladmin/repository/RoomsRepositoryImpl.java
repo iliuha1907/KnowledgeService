@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.repository;
 
-import com.senla.training.injection.annotation.NeedInjectionClass;
+import injection.annotation.NeedInjectionClass;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.idspread.RoomIdProvider;

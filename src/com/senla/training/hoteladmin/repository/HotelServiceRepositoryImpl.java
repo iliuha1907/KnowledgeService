@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.repository;
 
-import com.senla.training.injection.annotation.NeedInjectionClass;
+import injection.annotation.NeedInjectionClass;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.util.idspread.HotelServiceIdProvider;
 
@@ -27,8 +27,6 @@ public class HotelServiceRepositoryImpl implements HotelServiceRepository {
         hotelServices.add(hotelService);
     }
 
-    //Здесь while, так как надо удалить все сервисы клинта
-    //и пока они есть - удаляю по одному
     @Override
     public void removeClientHotelServices(Integer clientId) {
         HotelService hotelService;

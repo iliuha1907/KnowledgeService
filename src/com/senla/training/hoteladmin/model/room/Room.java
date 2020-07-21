@@ -87,7 +87,7 @@ public class Room implements Serializable {
 
     @Override
     public String toString() {
-        String result = String.format("Room with idspread:%d, status:%s, capacity: %d, stars: %d, price: %.2f",
+        String result = String.format("Room with id:%d, status:%s, capacity: %d, stars: %d, price: %.2f",
                 id, status.toString(), capacity, stars, price);
         if (resident != null) {
             result += ", taken from " + DateUtil.getString(resident.getArrivalDate()) +

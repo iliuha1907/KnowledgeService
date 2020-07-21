@@ -1,6 +1,5 @@
 package com.senla.training.hoteladmin.service;
 
-import com.senla.training.injection.annotation.InterfaceOfInjection;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
@@ -10,7 +9,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-@InterfaceOfInjection
 public interface HotelServiceService {
 
     void setServices(List<HotelService> hotelServices);

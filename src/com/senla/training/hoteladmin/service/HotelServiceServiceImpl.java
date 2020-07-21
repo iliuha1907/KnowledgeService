@@ -1,7 +1,7 @@
 package com.senla.training.hoteladmin.service;
 
-import com.senla.training.injection.annotation.NeedInjectionClass;
-import com.senla.training.injection.annotation.NeedInjectionField;
+import injection.annotation.NeedInjectionClass;
+import injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;

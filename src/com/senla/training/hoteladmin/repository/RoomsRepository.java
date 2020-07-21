@@ -1,12 +1,10 @@
 package com.senla.training.hoteladmin.repository;
 
-import com.senla.training.injection.annotation.InterfaceOfInjection;
 import com.senla.training.hoteladmin.model.room.Room;
 
 import java.util.Date;
 import java.util.List;
 
-@InterfaceOfInjection
 public interface RoomsRepository {
 
     void setRooms(List<Room> rooms);

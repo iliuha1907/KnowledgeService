@@ -1,4 +1,4 @@
-package com.senla.training.injection.annotation;
+package injection.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,11 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(value = ElementType.FIELD)
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface ConfigProperty {
-    String configName() default "";
-
-    String propertyName() default "";
-
-    Class<?> type() default Object.class;
+public @interface NeedInjectionField {
 }
 
