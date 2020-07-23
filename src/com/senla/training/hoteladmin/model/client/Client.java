@@ -88,7 +88,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Client %s %s, idspread:%d, arrival date:%s, departure date: %s, " +
+        return String.format("Client %s %s, id:%d, arrival date:%s, departure date: %s, " +
                         "\nroom:%s ", firstName, lastName, id, DateUtil.getString(arrivalDate),
                 DateUtil.getString(departureDate), room.toString());
     }

@@ -79,7 +79,7 @@ public class HotelService implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("service %s, idspread:%d, price: %.2f, date: %s for client %s %s", type, id, price,
+        return String.format("service %s, id:%d, price: %.2f, date: %s for client %s %s", type, id, price,
                 DateUtil.getString(date), client.getFirstName(), client.getLastName());
     }
 }
