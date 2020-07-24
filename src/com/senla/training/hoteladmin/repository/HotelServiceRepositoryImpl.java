@@ -1,8 +1,8 @@
 package com.senla.training.hoteladmin.repository;
 
-import injection.annotation.NeedInjectionClass;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.util.idspread.HotelServiceIdProvider;
+import com.senla.training.injection.annotation.NeedInjectionClass;
 
 import java.util.ArrayList;
 import java.util.List;

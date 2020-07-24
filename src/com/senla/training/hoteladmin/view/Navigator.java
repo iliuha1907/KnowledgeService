@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.view;
 
-import injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionClass;
 
 import java.util.List;
 

@@ -3,8 +3,8 @@ package com.senla.training.hoteladmin.util.filecsv.writeread;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.util.filecsv.parsing.HotelServiceConverter;
-import injection.annotation.ConfigProperty;
-import injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.ConfigProperty;
+import com.senla.training.injection.annotation.NeedInjectionClass;
 
 import java.io.*;
 import java.util.ArrayList;

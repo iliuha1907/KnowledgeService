@@ -1,6 +1,6 @@
-package injection;
+package com.senla.training.injection;
 
-import injection.annotation.ConfigProperty;
+import com.senla.training.injection.annotation.ConfigProperty;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -11,7 +11,6 @@ public class ParametersConfigurator {
     public static void init(Object element) {
         for (Field field : element.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(ConfigProperty.class)) {
-                field.setAccessible(true);
                 ConfigProperty annotation = field.getAnnotation(ConfigProperty.class);
                 String name = annotation.propertyName();
                 if (name.isEmpty()) {
@@ -37,7 +36,6 @@ public class ParametersConfigurator {
                 } else {
                     throw new IncorrectInitializationException("Could not init parameters: unknown type");
                 }
-                field.setAccessible(false);
             }
         }
     }
@@ -47,6 +45,7 @@ public class ParametersConfigurator {
             throw new IncorrectInitializationException("Could not initialize classes: incompatible types");
         }
         try {
+            field.setAccessible(true);
             field.set(object, value);
         } catch (IllegalAccessException ex) {
             throw new IncorrectInitializationException("Could not initialize classes: incompatible types");

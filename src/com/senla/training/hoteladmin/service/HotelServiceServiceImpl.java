@@ -1,7 +1,5 @@
 package com.senla.training.hoteladmin.service;
 
-import injection.annotation.NeedInjectionClass;
-import injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
@@ -14,6 +12,8 @@ import com.senla.training.hoteladmin.util.serializator.Deserializator;
 import com.senla.training.hoteladmin.util.serializator.Serializator;
 import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
 import com.senla.training.hoteladmin.util.sort.HotelServiceSorter;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 
 import java.math.BigDecimal;
 import java.util.Date;

@@ -1,7 +1,7 @@
-package injection;
+package com.senla.training.injection;
 
-import injection.annotation.NeedInjectionClass;
-import injection.annotation.NeedInjectionField;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -14,19 +14,18 @@ public class DependencyInjector {
 
     public static void init(String startPackagePath) {
         instances = new HashMap<>();
-        List<Class<?>> classes = PackageScanner.findClasses(startPackagePath);
-        classes = classes.stream()
+        List<Class<?>> classes = PackageScanner.findClasses(startPackagePath).stream()
                 .filter(element -> element.isAnnotationPresent(NeedInjectionClass.class))
                 .collect(Collectors.toList());
         for (Class<?> element : classes) {
             Class<?>[] elementInterfaces = element.getInterfaces();
             try {
+                Object instance = element.getDeclaredConstructor().newInstance();
                 if (elementInterfaces.length > 0) {
-                    Object instance = element.getDeclaredConstructor().newInstance();
                     instances.putIfAbsent(elementInterfaces[0], instance);
                     instances.put(element, instance);
                 } else {
-                    instances.put(element, element.getDeclaredConstructor().newInstance());
+                    instances.put(element, instance);
                 }
             } catch (Exception ex) {
                 throw new IncorrectInitializationException("Could not init classes");
@@ -36,24 +35,28 @@ public class DependencyInjector {
         instances.forEach((key, value) -> initFields(value));
     }
 
+    @SuppressWarnings("unchecked")
     public static  <T> T getClassInstance(Class<T> source) {
-        return (T) instances.get(source);
+        T instance = (T) instances.get(source);
+        if(instance == null){
+            throw new IncorrectInitializationException("Could not find class");
+        }
+        return instance;
     }
 
     private static void initFields(Object element) {
         for (Field field : element.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(NeedInjectionField.class)) {
-                field.setAccessible(true);
                 Object instance = instances.get(field.getType());
                 if (instance == null) {
                     throw new IncorrectInitializationException("Could not init classes: unknown type");
                 }
                 try {
+                    field.setAccessible(true);
                     field.set(element, instance);
                 } catch (IllegalAccessException ex) {
                     throw new IncorrectInitializationException("Could not init classes");
                 }
-                field.setAccessible(false);
             }
         }
         ParametersConfigurator.init(element);

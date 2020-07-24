@@ -4,8 +4,8 @@ import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.room.Room;
-import injection.annotation.ConfigProperty;
-import injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.ConfigProperty;
+import com.senla.training.injection.annotation.NeedInjectionClass;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;

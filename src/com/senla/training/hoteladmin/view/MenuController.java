@@ -1,8 +1,8 @@
 package com.senla.training.hoteladmin.view;
 
-import injection.annotation.NeedInjectionClass;
-import injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 
 @NeedInjectionClass
 public class MenuController {
