@@ -1,4 +1,4 @@
-package injection;
+package com.senla.training.injection;
 
 import java.io.File;
 import java.net.URL;
@@ -28,10 +28,11 @@ public class PackageScanner {
         List<Class<?>> classes = new ArrayList<>();
         String resource = scannedPackage + "." + file.getName();
         if (file.isDirectory()) {
-            if (file.listFiles() == null) {
+            File[] listFiles = file.listFiles();
+            if (listFiles == null) {
                 throw new IncorrectInitializationException("Could not scan package");
             }
-            for (File child : file.listFiles()) {
+            for (File child : listFiles) {
                 classes.addAll(findClasses(child, resource));
             }
         } else if (resource.endsWith(".class")) {

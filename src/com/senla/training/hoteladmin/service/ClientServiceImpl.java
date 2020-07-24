@@ -1,8 +1,5 @@
 package com.senla.training.hoteladmin.service;
 
-import injection.annotation.ConfigProperty;
-import injection.annotation.NeedInjectionClass;
-import injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.room.Room;
@@ -13,6 +10,9 @@ import com.senla.training.hoteladmin.util.serializator.Deserializator;
 import com.senla.training.hoteladmin.util.serializator.Serializator;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 import com.senla.training.hoteladmin.util.sort.ClientsSorter;
+import com.senla.training.injection.annotation.ConfigProperty;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 
 import java.util.Date;
 import java.util.List;

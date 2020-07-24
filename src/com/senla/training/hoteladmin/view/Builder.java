@@ -1,7 +1,5 @@
 package com.senla.training.hoteladmin.view;
 
-import injection.annotation.NeedInjectionClass;
-import injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.controller.ClientController;
 import com.senla.training.hoteladmin.controller.HotelServiceController;
 import com.senla.training.hoteladmin.controller.RoomController;
@@ -11,6 +9,8 @@ import com.senla.training.hoteladmin.util.UserInteraction;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

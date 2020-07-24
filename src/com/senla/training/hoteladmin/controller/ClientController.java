@@ -1,11 +1,11 @@
 package com.senla.training.hoteladmin.controller;
 
-import injection.annotation.NeedInjectionClass;
-import injection.annotation.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.service.ClientService;
 import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 
 import java.util.Date;
 import java.util.List;

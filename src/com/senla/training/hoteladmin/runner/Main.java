@@ -5,37 +5,35 @@ import com.senla.training.hoteladmin.controller.HotelServiceController;
 import com.senla.training.hoteladmin.controller.RoomController;
 import com.senla.training.hoteladmin.util.UserInteraction;
 import com.senla.training.hoteladmin.view.MenuController;
-import injection.DependencyInjector;
-import injection.annotation.NeedInjectionClass;
-import injection.annotation.NeedInjectionField;
+import com.senla.training.injection.DependencyInjector;
 
-@NeedInjectionClass
 public class Main {
-    @NeedInjectionField
     private static RoomController roomController;
-    @NeedInjectionField
     private static ClientController clientController;
-    @NeedInjectionField
     private static HotelServiceController hotelServiceController;
+    private static MenuController menuController;
 
     public static void main(String[] args) {
         UserInteraction.startWorking();
         try {
             DependencyInjector.init("com/senla/training/hoteladmin");
-            MenuController menuController = DependencyInjector.getClassInstance(MenuController.class);
-            if (menuController == null) {
-                System.out.println("Could not get MenuController, shutting app down");
-            } else {
-                deserializeData();
-                menuController.run();
-                serializeData();
-            }
+            initControllers();
+            deserializeData();
+            menuController.run();
+            serializeData();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             System.out.println("Shutting app down");
         } finally {
             UserInteraction.stopWorking();
         }
+    }
+
+    private static void initControllers() {
+        roomController = DependencyInjector.getClassInstance(RoomController.class);
+        clientController = DependencyInjector.getClassInstance(ClientController.class);
+        hotelServiceController = DependencyInjector.getClassInstance(HotelServiceController.class);
+        menuController = DependencyInjector.getClassInstance(MenuController.class);
     }
 
     private static void deserializeData() {
