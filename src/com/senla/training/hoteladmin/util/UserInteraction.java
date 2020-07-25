@@ -8,21 +8,13 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class UserInteraction {
-    private static UserInteraction instance;
-    private Scanner input;
+    private static Scanner input;
 
-    private UserInteraction() {
+    public static void startWorking() {
         input = new Scanner(System.in);
     }
 
-    public static UserInteraction getInstance() {
-        if (instance == null) {
-            instance = new UserInteraction();
-        }
-        return instance;
-    }
-
-    public Integer getInt() {
+    public static Integer getInt() {
         try {
             return Integer.parseInt(input.nextLine());
         } catch (Exception ex) {
@@ -30,7 +22,7 @@ public class UserInteraction {
         }
     }
 
-    public Integer getNaturalIntWithMessage(String messsage) {
+    public static Integer getNaturalIntWithMessage(String messsage) {
         System.out.println(messsage);
         try {
             Integer number = Integer.parseInt(input.nextLine());
@@ -45,15 +37,7 @@ public class UserInteraction {
         }
     }
 
-    public BigDecimal getBigDecimal() {
-        try {
-            return new BigDecimal(input.nextLine());
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public BigDecimal getPositiveBigDecimalWithMessage(String message) {
+    public static BigDecimal getPositiveBigDecimalWithMessage(String message) {
         System.out.println(message);
         try {
             BigDecimal number = new BigDecimal(input.nextLine());
@@ -68,16 +52,16 @@ public class UserInteraction {
         }
     }
 
-    public String getString() {
+    public static String getString() {
         return input.nextLine();
     }
 
-    public String getStringWithMessage(String message) {
+    public static String getStringWithMessage(String message) {
         System.out.println(message);
         return input.nextLine();
     }
 
-    public RoomStatus getRoomStatus() {
+    public static RoomStatus getRoomStatus() {
         System.out.println("Enter 1 to repaired, 2 to served");
         Integer choice = getInt();
         if (choice == null) {
@@ -93,7 +77,7 @@ public class UserInteraction {
         return null;
     }
 
-    public HotelServiceType getServiceType() {
+    public static HotelServiceType getServiceType() {
         System.out.println("Enter 1 to spa, 2 to massage, 3 to sauna");
         Integer choice = getInt();
         if (choice == null) {
@@ -113,7 +97,7 @@ public class UserInteraction {
         return null;
     }
 
-    public Date getDateWithMessage(String message) {
+    public static Date getDateWithMessage(String message) {
         System.out.println(message);
         Date date = DateUtil.getDate(getString());
         if (date == null) {
@@ -123,7 +107,7 @@ public class UserInteraction {
         return date;
     }
 
-    public void stopWorking() {
+    public static void stopWorking() {
         input.close();
     }
 }

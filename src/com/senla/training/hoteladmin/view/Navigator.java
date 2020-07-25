@@ -1,20 +1,18 @@
 package com.senla.training.hoteladmin.view;
 
+import com.senla.training.injection.annotation.NeedInjectionClass;
+
 import java.util.List;
 
+@NeedInjectionClass
 public class Navigator {
-    private static Navigator instance;
     private Menu currentMenu;
 
-    private Navigator(Menu currentMenu) {
-        this.currentMenu = currentMenu;
+    public Navigator() {
     }
 
-    public static Navigator getInstance(Menu currentMenu) {
-        if (instance == null) {
-            instance = new Navigator(currentMenu);
-        }
-        return instance;
+    public void setCurrentMenu(Menu currentMenu) {
+        this.currentMenu = currentMenu;
     }
 
     public Menu getCurrentMenu() {

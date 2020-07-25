@@ -14,10 +14,6 @@ public class Menu {
         this.menuItems = menuItems;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public List<MenuItem> getMenuItems() {
         return menuItems;
     }

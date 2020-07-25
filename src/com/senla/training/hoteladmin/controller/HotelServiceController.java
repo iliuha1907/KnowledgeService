@@ -5,30 +5,23 @@ import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
 import com.senla.training.hoteladmin.service.ClientService;
-import com.senla.training.hoteladmin.service.ClientServiceImpl;
 import com.senla.training.hoteladmin.service.HotelServiceService;
-import com.senla.training.hoteladmin.service.HotelServiceServiceImpl;
 import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+@NeedInjectionClass
 public class HotelServiceController {
-    private static HotelServiceController instance;
+    @NeedInjectionField
     private HotelServiceService hotelServiceService;
+    @NeedInjectionField
     private ClientService clientService;
 
-    private HotelServiceController() {
-        this.hotelServiceService = HotelServiceServiceImpl.getInstance();
-        this.clientService = ClientServiceImpl.getInstance();
-    }
-
-    public static HotelServiceController getInstance() {
-        if (instance == null) {
-            instance = new HotelServiceController();
-        }
-        return instance;
+    public HotelServiceController() {
     }
 
     public String addService(BigDecimal price, HotelServiceType type, Integer clientId, Date date) {
@@ -90,39 +83,23 @@ public class HotelServiceController {
     }
 
     public String deserializeHotelServices() {
-        try {
-            hotelServiceService.deserializeServices();
-            return "Successful deserialization of services";
-        } catch (BusinessException ex) {
-            return ex.getMessage();
-        }
+        hotelServiceService.deserializeServices();
+        return "Successful deserialization of services";
     }
 
     public String serializeHotelServices() {
-        try {
-            hotelServiceService.serializeServices();
-            return "Successful serialization of services";
-        } catch (BusinessException ex) {
-            return ex.getMessage();
-        }
+        hotelServiceService.serializeServices();
+        return "Successful serialization of services";
     }
 
     public String deserializeServicesId() {
-        try {
-            hotelServiceService.deserializeId();
-            return "Successful deserialization of services id";
-        } catch (BusinessException ex) {
-            return ex.getMessage();
-        }
+        hotelServiceService.deserializeId();
+        return "Successful deserialization of services idspread";
     }
 
     public String serializeServicesId() {
-        try {
-            hotelServiceService.serializeId();
-            return "Successful serialization of services id";
-        } catch (BusinessException ex) {
-            return ex.getMessage();
-        }
+        hotelServiceService.serializeId();
+        return "Successful serialization of services idspread";
     }
 }
 

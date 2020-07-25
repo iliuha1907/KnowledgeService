@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class Room implements Serializable {
-    private static final long SerialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
     private Integer id;
     private RoomStatus status;
     private BigDecimal price;

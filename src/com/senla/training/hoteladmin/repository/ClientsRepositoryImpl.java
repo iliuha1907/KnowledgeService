@@ -2,26 +2,20 @@ package com.senla.training.hoteladmin.repository;
 
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.util.id.ClientIdProvider;
+import com.senla.training.hoteladmin.util.idspread.ClientIdProvider;
+import com.senla.training.injection.annotation.NeedInjectionClass;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@NeedInjectionClass
 public class ClientsRepositoryImpl implements ClientsRepository {
-    private static ClientsRepository instance;
     private List<Client> clients;
     private List<Client> movedClients;
 
-    private ClientsRepositoryImpl() {
+    public ClientsRepositoryImpl() {
         clients = new ArrayList<>();
         movedClients = new ArrayList<>();
-    }
-
-    public static ClientsRepository getInstance() {
-        if (instance == null) {
-            instance = new ClientsRepositoryImpl();
-        }
-        return instance;
     }
 
     @Override
@@ -81,7 +75,10 @@ public class ClientsRepositoryImpl implements ClientsRepository {
     @Override
     public Client getClientById(Integer id) {
         try {
-            return clients.stream().filter(client -> client.getId().equals(id)).findFirst().get();
+            return clients.stream()
+                    .filter(client -> client.getId().equals(id))
+                    .findFirst()
+                    .get();
         } catch (Exception ex) {
             return null;
         }

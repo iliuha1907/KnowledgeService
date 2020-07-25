@@ -1,47 +1,26 @@
 package com.senla.training.hoteladmin.view;
 
-import com.senla.training.hoteladmin.controller.ClientController;
-import com.senla.training.hoteladmin.controller.HotelServiceController;
-import com.senla.training.hoteladmin.controller.RoomController;
 import com.senla.training.hoteladmin.util.UserInteraction;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 
+@NeedInjectionClass
 public class MenuController {
-    private static MenuController instance;
+    @NeedInjectionField
     private Builder builder;
+    @NeedInjectionField
     private Navigator navigator;
-    private RoomController roomController;
-    private ClientController clientController;
-    private HotelServiceController hotelServiceController;
 
-    private MenuController(Builder builder) {
-        this.builder = builder;
-        roomController = RoomController.getInstance();
-        clientController = ClientController.getInstance();
-        hotelServiceController = HotelServiceController.getInstance();
-    }
-
-    public static MenuController getInstance(Builder builder) {
-        if (instance == null) {
-            instance = new MenuController(builder);
-        }
-        return instance;
+    public MenuController() {
     }
 
     public void run() {
-        System.out.println(roomController.deserializeRoomsClients());
-        System.out.println(hotelServiceController.deserializeHotelServices());
-        System.out.println(clientController.deserializeLastResidents());
-        System.out.println(roomController.deserializeRoomsId());
-        System.out.println(hotelServiceController.deserializeServicesId());
-        System.out.println(clientController.deserializeClientsId());
-
         builder.buildMenu();
-        navigator = Navigator.getInstance(builder.getRootMenu());
-        UserInteraction userInteraction = UserInteraction.getInstance();
+        navigator.setCurrentMenu(builder.getRootMenu());
         boolean stop = false;
         while (!stop) {
             navigator.printMenu();
-            Integer choice = userInteraction.getInt();
+            Integer choice = UserInteraction.getInt();
             if (choice == null) {
                 System.out.println("Wrong input");
                 continue;
@@ -53,14 +32,6 @@ public class MenuController {
                 navigator.navigate(choice);
             }
         }
-        userInteraction.stopWorking();
-
-        System.out.println(roomController.serializeRoomsClients());
-        System.out.println(clientController.serializeLastResidents());
-        System.out.println(hotelServiceController.serializeHotelServices());
-        System.out.println(roomController.serializeRoomsId());
-        System.out.println(clientController.serializeClientId());
-        System.out.println(hotelServiceController.serializeServicesId());
     }
 }
 

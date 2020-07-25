@@ -6,34 +6,30 @@ import com.senla.training.hoteladmin.repository.*;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.filecsv.writeread.RoomReaderWriter;
-import com.senla.training.hoteladmin.util.fileproperties.PropertyDataProvider;
-import com.senla.training.hoteladmin.util.id.RoomIdProvider;
+import com.senla.training.hoteladmin.util.idspread.RoomIdProvider;
 import com.senla.training.hoteladmin.util.serializator.Deserializator;
 import com.senla.training.hoteladmin.util.serializator.Serializator;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.hoteladmin.util.sort.RoomsSorter;
+import com.senla.training.injection.annotation.ConfigProperty;
+import com.senla.training.injection.annotation.NeedInjectionClass;
+import com.senla.training.injection.annotation.NeedInjectionField;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@NeedInjectionClass
 public class RoomServiceImpl implements RoomService {
-    private static RoomService instance;
+    @NeedInjectionField
     private RoomsRepository roomsRepository;
+    @NeedInjectionField
     private ClientsRepository clientsRepository;
+    @ConfigProperty(propertyName = "rooms.changeStatus", type = Boolean.class)
+    private Boolean isChangeableStatus;
 
-    private RoomServiceImpl() {
-        this.roomsRepository = RoomsRepositoryImpl.getInstance();
-        this.clientsRepository = ClientsRepositoryImpl.getInstance();
-    }
-
-    public static RoomService getInstance() {
-        if (instance == null) {
-            instance = new RoomServiceImpl();
-            return instance;
-        }
-        return instance;
+    public RoomServiceImpl() {
     }
 
     @Override
@@ -49,7 +45,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void setRoomStatus(Integer roomId, RoomStatus status) {
-        if (!PropertyDataProvider.isChangeableStatus()) {
+        if (!isChangeableStatus) {
             throw new BusinessException("Error at modifying room: no permission!");
         }
         Room room = roomsRepository.getRoom(roomId);
@@ -121,19 +117,18 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void exportRooms() {
         RoomReaderWriter.writeRooms(roomsRepository.getRooms());
-
     }
 
     @Override
-    public void importRooms(ClientService clientService) {
+    public void importRooms() {
         List<Room> rooms = RoomReaderWriter.readRooms();
         rooms.forEach(room -> {
             if (room.getResident() == null) {
                 updateRoom(room);
             } else {
-                Client existing = clientService.getClientById(room.getResident().getId());
+                Client existing = clientsRepository.getClientById(room.getResident().getId());
                 if (existing == null) {
-                    throw new BusinessException("Could not import rooms: wrong id of a client!");
+                    throw new BusinessException("Could not import rooms: wrong idspread of a client!");
                 }
                 existing.getRoom().setResident(null);
                 room.setResident(existing);

@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class HotelService implements Serializable {
-    private static final long SerialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
     private Integer id;
     private BigDecimal price;
     private HotelServiceType type;
