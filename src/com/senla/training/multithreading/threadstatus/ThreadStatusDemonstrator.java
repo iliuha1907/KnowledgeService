@@ -24,16 +24,16 @@ public class ThreadStatusDemonstrator implements Runnable {
         }
     }
 
-    public static Object getLOCK() {
-        return LOCK;
-    }
-
     public static void setActive(boolean active) {
         ThreadStatusDemonstrator.active = active;
     }
 
     public static void setSleep(boolean sleep) {
         ThreadStatusDemonstrator.sleep = sleep;
+    }
+
+    public static Object getLOCK() {
+        return LOCK;
     }
 }
 

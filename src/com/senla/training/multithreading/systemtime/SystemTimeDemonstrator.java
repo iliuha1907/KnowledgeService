@@ -1,9 +1,9 @@
 package com.senla.training.multithreading.systemtime;
 
 public class SystemTimeDemonstrator implements Runnable {
-    private long timeToSleep;
+    private Long timeToSleep;
 
-    public SystemTimeDemonstrator(long timeToSleep) {
+    public SystemTimeDemonstrator(Long timeToSleep) {
         this.timeToSleep = timeToSleep;
     }
 

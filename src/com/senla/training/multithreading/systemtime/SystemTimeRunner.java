@@ -3,7 +3,7 @@ package com.senla.training.multithreading.systemtime;
 public class SystemTimeRunner {
 
     public static void main(String[] args) {
-        Thread demonstrator = new Thread(new SystemTimeDemonstrator(100));
+        Thread demonstrator = new Thread(new SystemTimeDemonstrator(100L));
         demonstrator.setDaemon(true);
         demonstrator.start();
         try {
