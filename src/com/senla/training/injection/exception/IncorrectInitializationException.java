@@ -6,3 +6,4 @@ public class IncorrectInitializationException extends RuntimeException {
         super(message);
     }
 }
+
