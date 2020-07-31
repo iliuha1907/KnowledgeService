@@ -1,5 +1,7 @@
 package com.senla.training.injection;
 
+import com.senla.training.injection.exception.IncorrectInitializationException;
+
 import java.io.InputStream;
 import java.util.Properties;
 
