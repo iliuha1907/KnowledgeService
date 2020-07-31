@@ -36,3 +36,4 @@ public class ThreadStatusDemonstrator implements Runnable {
         ThreadStatusDemonstrator.sleep = sleep;
     }
 }
+
