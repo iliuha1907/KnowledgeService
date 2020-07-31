@@ -11,7 +11,8 @@ public class ThreadNameDemonstrator implements Runnable {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    System.out.println("Sleep of name demonstrator was interrupted");
+                    return;
                 }
             }
         }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Communicator {
+public class NumbersCommunicator {
     private static final Integer TIME_TO_SLEEP = 100;
     private static final Integer AMOUNT = 5;
     private static final Object LOCK = new Object();
@@ -17,7 +17,7 @@ public class Communicator {
                 try {
                     Thread.sleep(TIME_TO_SLEEP);
                 } catch (InterruptedException e) {
-                    System.out.println("Sleep was interrupted");
+                    System.out.println("Sleep of generator was interrupted");
                     return;
                 }
 
@@ -26,7 +26,7 @@ public class Communicator {
                         System.out.println("No place!");
                         LOCK.wait();
                     } catch (Exception e) {
-                        System.out.println("Wait was interrupted");
+                        System.out.println("Wait of generator was interrupted");
                         return;
                     }
                 } else {
@@ -45,7 +45,7 @@ public class Communicator {
                 try {
                     Thread.sleep(TIME_TO_SLEEP);
                 } catch (InterruptedException e) {
-                    System.out.println("Sleep was interrupted");
+                    System.out.println("Sleep of getter was interrupted");
                     return;
                 }
 
@@ -54,7 +54,7 @@ public class Communicator {
                         System.out.println("Nothing to get!");
                         LOCK.wait();
                     } catch (Exception e) {
-                        System.out.println("Wait was interrupted");
+                        System.out.println("Wait of getter was interrupted");
                         return;
                     }
                 } else {

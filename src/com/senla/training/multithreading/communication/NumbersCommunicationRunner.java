@@ -1,13 +1,13 @@
 package com.senla.training.multithreading.communication;
 
-public class CommunicationRunner {
+public class NumbersCommunicationRunner {
 
     public static void main(String[] args) {
-        Communicator communicator = new Communicator();
+        NumbersCommunicator numbersCommunicator = new NumbersCommunicator();
         Thread threadGenerator = new Thread(() ->
-                communicator.generate());
+                numbersCommunicator.generate());
         Thread threadGetter = new Thread(() ->
-                communicator.get());
+                numbersCommunicator.get());
 
         threadGenerator.start();
         threadGetter.start();

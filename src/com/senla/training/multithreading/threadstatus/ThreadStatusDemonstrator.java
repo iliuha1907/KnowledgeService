@@ -1,9 +1,9 @@
 package com.senla.training.multithreading.threadstatus;
 
 public class ThreadStatusDemonstrator implements Runnable {
-    public static final Object LOCK = new Object();
-    public static boolean sleep = false;
-    public static boolean active = true;
+    private static final Object LOCK = new Object();
+    private static boolean sleep = false;
+    private static boolean active = true;
 
     @Override
     public void run() {
@@ -22,5 +22,17 @@ public class ThreadStatusDemonstrator implements Runnable {
                 return;
             }
         }
+    }
+
+    public static Object getLOCK() {
+        return LOCK;
+    }
+
+    public static void setActive(boolean active) {
+        ThreadStatusDemonstrator.active = active;
+    }
+
+    public static void setSleep(boolean sleep) {
+        ThreadStatusDemonstrator.sleep = sleep;
     }
 }
