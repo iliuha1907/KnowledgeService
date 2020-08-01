@@ -29,10 +29,8 @@ public class DependencyInjector {
                 Object instance = element.getDeclaredConstructor().newInstance();
                 if (elementInterfaces.length > 0) {
                     instances.putIfAbsent(elementInterfaces[0], instance);
-                    instances.put(element, instance);
-                } else {
-                    instances.put(element, instance);
                 }
+                instances.put(element, instance);
             } catch (Exception ex) {
                 throw new IncorrectInitializationException("Could not init classes");
             }
