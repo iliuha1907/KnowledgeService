@@ -1,4 +1,4 @@
-package com.senla.training.multithreading.communication;
+package com.senla.training.multithreading.numberscommunication;
 
 import java.util.ArrayList;
 import java.util.List;
