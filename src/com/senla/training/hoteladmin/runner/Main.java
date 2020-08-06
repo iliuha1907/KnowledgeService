@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         UserInteraction.startWorking();
         try {
-            DependencyInjector.init("com/senla/training/hoteladmin");
+            DependencyInjector.init("com.senla.training.hoteladmin");
             initControllers();
             deserializeData();
             menuController.run();

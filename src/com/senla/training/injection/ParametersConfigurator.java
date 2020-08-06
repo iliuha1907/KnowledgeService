@@ -1,6 +1,7 @@
 package com.senla.training.injection;
 
 import com.senla.training.injection.annotation.ConfigProperty;
+import com.senla.training.injection.exception.IncorrectInitializationException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -24,19 +25,21 @@ public class ParametersConfigurator {
                 if (type.equals(Object.class)) {
                     type = field.getType();
                 }
-                if (type.equals(Integer.class)) {
-                    Object value = PropertyDataProvider.getInt(name, configName);
-                    setFieldWithValidation(field, element, value);
-                } else if (type.equals(Boolean.class)) {
-                    Object value = PropertyDataProvider.getBoolean(name, configName);
-                    setFieldWithValidation(field, element, value);
-                } else if (type.equals(String.class)) {
-                    Object value = PropertyDataProvider.getString(name, configName);
-                    setFieldWithValidation(field, element, value);
-                } else {
-                    throw new IncorrectInitializationException("Could not init parameters: unknown type");
-                }
+                Object value = getObjectByType(type, name, configName);
+                setFieldWithValidation(field, element, value);
             }
+        }
+    }
+
+    private static Object getObjectByType(Type type, String name, String configName) {
+        if (type.equals(Integer.class)) {
+            return PropertyDataProvider.getInt(name, configName);
+        } else if (type.equals(Boolean.class)) {
+            return PropertyDataProvider.getBoolean(name, configName);
+        } else if (type.equals(String.class)) {
+            return PropertyDataProvider.getString(name, configName);
+        } else {
+            throw new IncorrectInitializationException("Could not init parameters: unknown type");
         }
     }
 

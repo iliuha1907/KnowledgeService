@@ -1,4 +1,4 @@
-package com.senla.training.injection;
+package com.senla.training.injection.exception;
 
 public class IncorrectInitializationException extends RuntimeException {
 
@@ -6,3 +6,4 @@ public class IncorrectInitializationException extends RuntimeException {
         super(message);
     }
 }
+
