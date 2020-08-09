@@ -21,3 +21,4 @@ insert into pc(code, pc_model, speed, ram, hd, cd, price) values(8,'cx200', 700,
 insert into pc(code, pc_model, speed, ram, hd, cd, price) values(9,'cx100', 700, 8000, 256, '8x', 600 );
 insert into pc(code, pc_model, speed, ram, hd, cd, price) values(10,'cx50', 500, 3000, 200, '4x', 400 );
 insert into pc(code, pc_model, speed, ram, hd, cd, price) values(11,'cx40', 400, 2000, 200, '4x', 400 );
+
