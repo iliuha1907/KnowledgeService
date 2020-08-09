@@ -91,9 +91,3 @@ select maker from product inner join printer on printer_model = model where make
 select maker from product inner join pc on model = pc_model where ram = (select min(ram) from pc) and
 speed = (select max(speed) from pc where ram = (select min(ram) from pc)) group by maker);
  
-  
-  
-
-
-   
-  
