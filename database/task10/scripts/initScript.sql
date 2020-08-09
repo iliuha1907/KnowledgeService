@@ -13,7 +13,7 @@ insert into product(model, maker, type) values('cx50','Samsung','PC');
 insert into product(model, maker, type) values('cx40','Samsung','PC');
 
 insert into laptop(code, laptop_model, speed, ram, hd, price, screen) values(1,'cx500', 560, 4000, 200, 400, 15 );
-insert into pc(code, pc_model, speed, ram, hd, cd, price) values(1,'cx600', 640, 8000, 200, '4x', 400 );
+insert into pc(code, pc_model, speed, ram, hd, cd, price) values(1,'cx600', 760, 8000, 200, '4x', 400 );
 insert into printer(code, printer_model, color, price, type) values(1,'cx700', 'y', 200, 'Laser' );
 insert into laptop(code, laptop_model, speed, ram, hd, price, screen) values(2,'cx400', 260, 6000, 256, 1100, 11 );
 insert into pc(code, pc_model, speed, ram, hd, cd, price) values(2,'cx800', 460, 4000, 200, '24x', 400 );
