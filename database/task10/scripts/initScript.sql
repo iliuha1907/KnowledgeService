@@ -13,6 +13,7 @@ insert into product(model, maker, type) values('cx50','Samsung','PC');
 insert into product(model, maker, type) values('cx40','Samsung','PC');
 
 insert into laptop(code, laptop_model, speed, ram, hd, price, screen) values(1,'cx500', 560, 4000, 200, 400, 15 );
+<<<<<<< HEAD
 insert into pc(code, pc_model, speed, ram, hd, cd, price) values(1,'cx600', 640, 8000, 200, '4x', 400 );
 insert into printer(code, printer_model, color, price, type) values(1,'cx700', 'y', 200, 'Laser' );
 insert into laptop(code, laptop_model, speed, ram, hd, price, screen) values(2,'cx400', 260, 6000, 256, 1100, 11 );
@@ -23,4 +24,16 @@ insert into pc(code, pc_model, speed, ram, hd, cd, price) values(4,'cx200', 700,
 insert into pc(code, pc_model, speed, ram, hd, cd, price) values(5,'cx100', 700, 8000, 256, '8x', 600 );
 insert into pc(code, pc_model, speed, ram, hd, cd, price) values(6,'cx50', 500, 3000, 200, '4x', 400 );
 insert into pc(code, pc_model, speed, ram, hd, cd, price) values(7,'cx40', 400, 2000, 200, '4x', 400 );
+=======
+insert into pc(code, pc_model, speed, ram, hd, cd, price) values(2,'cx600', 640, 8000, 200, '4x', 400 );
+insert into printer(code, printer_model, color, price, type) values(3,'cx700', 'y', 200, 'Laser' );
+insert into laptop(code, laptop_model, speed, ram, hd, price, screen) values(4,'cx400', 260, 6000, 256, 1100, 11 );
+insert into pc(code, pc_model, speed, ram, hd, cd, price) values(5,'cx800', 460, 4000, 200, '24x', 400 );
+insert into laptop(code, laptop_model, speed, ram, hd, price, screen) values(6,'cx900', 170, 4000, 200, 300, 12 );
+insert into pc(code, pc_model, speed, ram, hd, cd, price) values(7,'cx1000', 440, 8000, 250, '4x', 410 );
+insert into pc(code, pc_model, speed, ram, hd, cd, price) values(8,'cx200', 700, 8000, 512, '4x', 800 );
+insert into pc(code, pc_model, speed, ram, hd, cd, price) values(9,'cx100', 700, 8000, 256, '8x', 600 );
+insert into pc(code, pc_model, speed, ram, hd, cd, price) values(10,'cx50', 500, 3000, 200, '4x', 400 );
+insert into pc(code, pc_model, speed, ram, hd, cd, price) values(11,'cx40', 400, 2000, 200, '4x', 400 );
+>>>>>>> c881a84d628c48b1c31b729c84726697be7dd8c9
 
