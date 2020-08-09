@@ -92,8 +92,3 @@ select maker from product inner join pc on model = pc_model where ram = (select 
 speed = (select max(speed) from pc where ram = (select min(ram) from pc)) group by maker);
  
   
-  
-
-
-   
-  
