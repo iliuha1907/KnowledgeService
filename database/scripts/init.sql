@@ -19,4 +19,3 @@ insert into Reservations(room_id, resident_id, arrival_date, departure_date, isA
 insert into Reservations(room_id, resident_id, arrival_date, departure_date, isActive)
  values(3,2,'2020-5-10','2020-5-20',1);
  
- 
