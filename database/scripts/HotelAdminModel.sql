@@ -1,3 +1,5 @@
+START TRANSACTION;
+
 DROP SCHEMA IF EXISTS `hoteladmin`;
 CREATE SCHEMA `hoteladmin` DEFAULT CHARACTER SET utf8;
 USE `hoteladmin`;
@@ -54,3 +56,4 @@ CREATE TABLE IF NOT EXISTS `Visits` (
   CONSTRAINT `hotel_service_id`
     FOREIGN KEY (`hotel_service_id`)
     REFERENCES `Hotel_services` (`id`));
+    COMMIT;
