@@ -23,4 +23,3 @@ insert into Reservations(room_id, resident_id, arrival_date, departure_date, is_
  
  COMMIT;
  
- 
