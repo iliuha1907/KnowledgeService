@@ -1,14 +1,13 @@
 package com.senla.training.hoteladmin.view;
 
-import com.senla.training.hoteladmin.controller.ClientController;
-import com.senla.training.hoteladmin.controller.HotelServiceController;
-import com.senla.training.hoteladmin.controller.RoomController;
+import com.senla.training.hoteladmin.controller.*;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
+import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.UserInteraction;
-import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
-import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
+import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
+import com.senla.training.injection.annotation.ConfigProperty;
 import com.senla.training.injection.annotation.NeedInjectionClass;
 import com.senla.training.injection.annotation.NeedInjectionField;
 
@@ -19,6 +18,8 @@ import java.util.List;
 
 @NeedInjectionClass
 public class Builder {
+    @ConfigProperty(propertyName = "util.dateFormat", type = String.class)
+    private String dateFormat;
     private Menu rootMenu;
     @NeedInjectionField
     private ClientController clientController;
@@ -26,27 +27,33 @@ public class Builder {
     private HotelServiceController hotelServiceController;
     @NeedInjectionField
     private RoomController roomController;
-
-    public Builder() {
-    }
+    @NeedInjectionField
+    private VisitController visitController;
+    @NeedInjectionField
+    private ReservationController reservationController;
 
     private void buildRoomsMenu(Menu roomMenu, Menu freeRoomMenu) {
         List<MenuItem> itemsRoom = new ArrayList<>();
         itemsRoom.add(new MenuItem("Main menu", rootMenu));
         itemsRoom.add(new MenuItem("Display rooms, sorted by price", () ->
-                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.PRICE))));
+                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.price))));
         itemsRoom.add(new MenuItem("Display rooms, sorted by capacity", () ->
-                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.CAPACITY))));
+                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.capacity))));
         itemsRoom.add(new MenuItem("Display rooms, sorted by stars", () ->
-                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.STARS))));
-        itemsRoom.add(new MenuItem("Display price of a room", () ->
-                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.PRICE))));
+                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.stars))));
+        itemsRoom.add(new MenuItem("Display price of a room", () -> {
+            Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the room");
+            if (id == null) {
+                return;
+            }
+            System.out.println(roomController.getPriceRoom(id));
+        }));
         itemsRoom.add(new MenuItem("Display details of a room", () -> {
             Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the room");
             if (id == null) {
                 return;
             }
-            System.out.println(roomController.getRoomInfo(id));
+            System.out.println(roomController.getRoom(id));
         }));
         itemsRoom.add(new MenuItem("Add room", this::addRoomAction));
         itemsRoom.add(new MenuItem("Change price of a room", this::changeRoomPriceAction));
@@ -59,19 +66,20 @@ public class Builder {
         List<MenuItem> itemsFreeRoom = new ArrayList<>();
         itemsFreeRoom.add(new MenuItem("Main menu", rootMenu));
         itemsFreeRoom.add(new MenuItem("Display rooms, sorted by price", () ->
-                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.PRICE))));
+                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.price))));
         itemsFreeRoom.add(new MenuItem("Display rooms, sorted by capacity", () ->
-                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.CAPACITY))));
+                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.capacity))));
         itemsFreeRoom.add(new MenuItem("Display rooms, sorted by stars", () ->
-                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.STARS))));
+                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.stars))));
         itemsFreeRoom.add(new MenuItem("Display number of free rooms", () ->
                 System.out.println(roomController.getNumberOfFreeRooms())));
-        itemsFreeRoom.add(new MenuItem("Display free rooms after date", () -> {
-            Date date = UserInteraction.getDateWithMessage("Enter date");
+        itemsFreeRoom.add(new MenuItem("Display free rooms and expired reservations after date", () -> {
+            Date date = UserInteraction.getDateWithMessage("Enter date(" + dateFormat + ")");
             if (date == null) {
                 return;
             }
-            System.out.println(roomController.getFreeRoomsAfterDate(date));
+            System.out.println(reservationController.getReservationsExpiredAfterDate(date) + "\n" +
+                    roomController.getFreeRooms());
         }));
         itemsFreeRoom.add(new MenuItem("Rooms menu", roomMenu));
         freeRoomMenu.setMenuItems(itemsFreeRoom);
@@ -80,56 +88,73 @@ public class Builder {
     private void buildClientsMenu(Menu clientMenu) {
         List<MenuItem> itemsClients = new ArrayList<>();
         itemsClients.add(new MenuItem("Main menu", rootMenu));
-        itemsClients.add(new MenuItem("Display clients, sorted by departure date", () ->
-                System.out.println(clientController.getSortedClients(ClientsSortCriterion.DEPARTURE_DATE))));
-        itemsClients.add(new MenuItem("Display clients, sorted by alphabet",
-                () -> System.out.println(clientController.getSortedClients(ClientsSortCriterion.ALPHABET))));
-        itemsClients.add(new MenuItem("Display last residents of a room", () -> {
+        itemsClients.add(new MenuItem("Display reservations and clients, sorted by departure date", () ->
+                System.out.println(reservationController.getSortedReservations(
+                        ReservationSortCriterion.departure_date))));
+        itemsClients.add(new MenuItem("Display reservations and clients, sorted by alphabet",
+                () -> System.out.println(reservationController.getSortedReservations(
+                        ReservationSortCriterion.first_name))));
+        itemsClients.add(new MenuItem("Display last reservations and residents of a room", () -> {
             Integer roomId = UserInteraction.getNaturalIntWithMessage("Enter id of the room");
             if (roomId == null) {
                 return;
             }
-            System.out.println(clientController.getLastResidents(roomId));
+            System.out.println(reservationController.getLastRoomVisits(roomId));
         }));
         itemsClients.add(new MenuItem("Display number of residents", () ->
-                System.out.println(clientController.getNumberOfResidents())));
-        itemsClients.add(new MenuItem("Add resident", this::addClientAction));
+                System.out.println(reservationController.getNumberOfResidents())));
+        itemsClients.add(new MenuItem("Display clients", () ->
+                System.out.println(clientController.getClients())));
+        itemsClients.add(new MenuItem("Add client", this::addClientAction));
         itemsClients.add(new MenuItem("Remove resident", () -> {
             Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the client");
             if (id == null) {
                 return;
             }
-            System.out.println(clientController.removeResident(id));
+            System.out.println(reservationController.deactivateReservation(id));
         }));
+        itemsClients.add(new MenuItem("Add resident from clients", this::addResidentFromClientAction));
         clientMenu.setMenuItems(itemsClients);
     }
 
     private void buildServiceMenu(Menu svcMenu) {
         List<MenuItem> itemsSVC = new ArrayList<>();
         itemsSVC.add(new MenuItem("Main menu", rootMenu));
-        itemsSVC.add(new MenuItem("Display services of a client, sorted by date", () -> {
+        itemsSVC.add(new MenuItem("Display service of a client, sorted by date", () -> {
             Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the client");
             if (id == null) {
                 return;
             }
-            System.out.println(hotelServiceController.getSortedClientServices(id,
-                    HotelServiceSortCriterion.DATE));
+            System.out.println(visitController.getSortedClientVisits(id,
+                    VisitSortCriterion.date));
         }));
-        itemsSVC.add(new MenuItem("Display services of a client, sorted by price", () -> {
-            Integer id = UserInteraction.getNaturalIntWithMessage("Enter id");
+        itemsSVC.add(new MenuItem("Display service of a client, sorted by price", () -> {
+            Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the client");
             if (id == null) {
                 return;
             }
-            BigDecimal price = UserInteraction.getPositiveBigDecimalWithMessage("Enter price");
-            if (price == null) {
-                return;
-            }
-            System.out.println(hotelServiceController.setServicePrice(id, price));
+            System.out.println(visitController.getSortedClientVisits(id,
+                    VisitSortCriterion.price));
         }));
         itemsSVC.add(new MenuItem("Display services", () ->
                 System.out.println(hotelServiceController.getServices())));
         itemsSVC.add(new MenuItem("Change price of a service", this::changeHotelServicePriceAction));
         itemsSVC.add(new MenuItem("Add service", this::addHotelServiceAction));
+        itemsSVC.add(new MenuItem("Add service visit ", () -> {
+            Integer clientId = UserInteraction.getNaturalIntWithMessage("Enter id of a client");
+            if (clientId == null) {
+                return;
+            }
+            Integer serviceId = UserInteraction.getNaturalIntWithMessage("Enter id of the service");
+            if (serviceId == null) {
+                return;
+            }
+            Date date = UserInteraction.getDateWithMessage("Enter date(" + dateFormat + ")");
+            if (date == null) {
+                return;
+            }
+            System.out.println(visitController.addVisit(serviceId, clientId, date));
+        }));
         svcMenu.setMenuItems(itemsSVC);
     }
 
@@ -138,18 +163,6 @@ public class Builder {
         itemsMain.add(new MenuItem("Room menu", roomMenu));
         itemsMain.add(new MenuItem("Client menu", clientMenu));
         itemsMain.add(new MenuItem("Services menu", svcMenu));
-        itemsMain.add(new MenuItem("Export services", () ->
-                System.out.println(hotelServiceController.exportServices())));
-        itemsMain.add(new MenuItem("Export clients", () ->
-                System.out.println(clientController.exportClients())));
-        itemsMain.add(new MenuItem("Export rooms", () ->
-                System.out.println(roomController.exportRooms())));
-        itemsMain.add(new MenuItem("Import services", () ->
-                System.out.println(hotelServiceController.importServices())));
-        itemsMain.add(new MenuItem("Import clients", () ->
-                System.out.println(clientController.importClients())));
-        itemsMain.add(new MenuItem("Import rooms", () ->
-                System.out.println(roomController.importRooms())));
         rootMenu.setMenuItems(itemsMain);
     }
 
@@ -176,25 +189,29 @@ public class Builder {
         return rootMenu;
     }
 
-    private void addClientAction() {
-        String firstName = UserInteraction.getStringWithMessage("Enter first name");
-        String lastName = UserInteraction.getStringWithMessage("Enter last name");
-        Date arrival = UserInteraction.getDateWithMessage("Enter arrival date");
-        if (arrival == null) {
-            return;
-        }
-        Date departure = UserInteraction.getDateWithMessage("Enter departure date");
-        if (departure == null) {
-            return;
-        }
-        System.out.println(clientController.addResident(firstName, lastName, arrival, departure));
-    }
-
-    private void addHotelServiceAction() {
+    private void addResidentFromClientAction() {
         Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the client");
         if (id == null) {
             return;
         }
+        Date arrival = UserInteraction.getDateWithMessage("Enter arrival date(" + dateFormat + ")");
+        if (arrival == null) {
+            return;
+        }
+        Date departure = UserInteraction.getDateWithMessage("Enter departure date(" + dateFormat + ")");
+        if (departure == null) {
+            return;
+        }
+        System.out.println(reservationController.addReservationForExistingClient(id, arrival, departure));
+    }
+
+    private void addClientAction() {
+        String firstName = UserInteraction.getStringWithMessage("Enter first name");
+        String lastName = UserInteraction.getStringWithMessage("Enter last name");
+        System.out.println(clientController.addClient(firstName, lastName));
+    }
+
+    private void addHotelServiceAction() {
         BigDecimal price = UserInteraction.getPositiveBigDecimalWithMessage("Enter price");
         if (price == null) {
             return;
@@ -203,11 +220,7 @@ public class Builder {
         if (type == null) {
             return;
         }
-        Date date = UserInteraction.getDateWithMessage("Enter date");
-        if (date == null) {
-            return;
-        }
-        System.out.println(hotelServiceController.addService(price, type, id, date));
+        System.out.println(hotelServiceController.addService(price, type));
     }
 
     private void changeHotelServicePriceAction() {

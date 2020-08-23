@@ -4,7 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtil {
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-M-dd");
 
     public static Date getDate(String data) {
         try {

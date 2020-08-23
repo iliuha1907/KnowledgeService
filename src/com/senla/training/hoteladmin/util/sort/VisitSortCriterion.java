@@ -1,8 +1,7 @@
 package com.senla.training.hoteladmin.util.sort;
 
-public enum RoomsSortCriterion {
+public enum VisitSortCriterion {
     price,
-    stars,
-    capacity
+    date
 }
 

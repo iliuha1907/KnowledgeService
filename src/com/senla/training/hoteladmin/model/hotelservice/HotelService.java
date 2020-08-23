@@ -1,36 +1,21 @@
 package com.senla.training.hoteladmin.model.hotelservice;
 
-import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.util.DateUtil;
-
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
-public class HotelService implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class HotelService {
     private Integer id;
     private BigDecimal price;
     private HotelServiceType type;
-    private Client client;
-    private Date date;
 
-    public HotelService() {
-    }
-
-    public HotelService(BigDecimal price, HotelServiceType type, Client client, Date date) {
+    public HotelService(BigDecimal price, HotelServiceType type) {
         this.price = price;
         this.type = type;
-        this.client = client;
-        this.date = date;
     }
 
-    public HotelService(Integer id, BigDecimal price, HotelServiceType type, Client client, Date date) {
+    public HotelService(Integer id, BigDecimal price, HotelServiceType type) {
         this.id = id;
         this.price = price;
         this.type = type;
-        this.client = client;
-        this.date = date;
     }
 
     public void setId(Integer id) {
@@ -39,14 +24,6 @@ public class HotelService implements Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public Integer getId() {
@@ -61,14 +38,6 @@ public class HotelService implements Serializable {
         return type;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (id == null) {
@@ -79,8 +48,7 @@ public class HotelService implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("service %s, id:%d, price: %.2f, date: %s for client %s %s", type, id, price,
-                DateUtil.getString(date), client.getFirstName(), client.getLastName());
+        return String.format("service %s, id:%d, price: %.2f", type, id, price);
     }
 }
 
