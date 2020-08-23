@@ -1,4 +1,3 @@
-
 DROP SCHEMA IF EXISTS `hoteladmin`;
 CREATE SCHEMA `hoteladmin` DEFAULT CHARACTER SET utf8;
 USE `hoteladmin`;
@@ -23,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `Rooms` (
   `price` DECIMAL(10,0) NOT NULL,
   `capacity` INT NOT NULL,
   `stars` INT NOT NULL,
-  `isFree` TINYINT NOT NULL,
+  `is_free` TINYINT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
 
@@ -32,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `Reservations` (
   `resident_id` INT NOT NULL,
   `arrival_date` DATE NOT NULL,
   `departure_date` DATE NOT NULL,
-  `isActive` TINYINT NOT NULL,
+  `is_active` TINYINT NOT NULL,
   INDEX `room_id_idx` (`room_id` ASC) VISIBLE,
   INDEX `resident_id_idx` (`resident_id` ASC) VISIBLE,
   CONSTRAINT `resident_id`
@@ -46,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `Visits` (
   `client_id` INT NOT NULL,
   `hotel_service_id` INT NOT NULL,
   `date` DATE NOT NULL,
-  `isActive` TINYINT NOT NULL,
+  `is_active` TINYINT NOT NULL,
   INDEX `client_id_idx` (`client_id` ASC) VISIBLE,
   INDEX `hotel_service_id_idx` (`hotel_service_id` ASC) VISIBLE,
   CONSTRAINT `client_id`
@@ -55,4 +54,3 @@ CREATE TABLE IF NOT EXISTS `Visits` (
   CONSTRAINT `hotel_service_id`
     FOREIGN KEY (`hotel_service_id`)
     REFERENCES `Hotel_services` (`id`));
-
