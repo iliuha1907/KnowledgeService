@@ -31,7 +31,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     private static String clientTable;
     private static final String fields = "(" + ReservationFields.room_id +
             ", " + ReservationFields.resident_id + ", " + ReservationFields.arrival_date + ", " +
-            ReservationFields.departure_date + ", " + ReservationFields.isActive + ")";
+            ReservationFields.departure_date + ", " + ReservationFields.is_active + ")";
     private static final String jokers = "(?, ?, ?, ?, ?)";
 
     @Override
@@ -46,7 +46,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
 
     @Override
     public Integer getNumberOfResidents(Connection connection) {
-        String sql = "select count(*) from " + tableName + " where " + ReservationFields.isActive + " = 1";
+        String sql = "select count(*) from " + tableName + " where " + ReservationFields.is_active + " = 1";
         try (Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(sql);
             rs.next();
@@ -93,7 +93,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
 
     @Override
     public void deactivateClientReservation(Integer clientId, Connection connection) {
-        String sql = getUpdateQuery(ReservationFields.isActive.toString()) + " where " +
+        String sql = getUpdateQuery(ReservationFields.is_active.toString()) + " where " +
                 ReservationFields.resident_id + " = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, false);
@@ -136,8 +136,8 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
                 Date arrival_date = rs.getDate(ReservationFields.arrival_date.toString());
                 Date departure_date = rs.getDate(ReservationFields.departure_date.toString());
 
-                boolean isFree = rs.getBoolean(RoomFields.isFree.toString());
-                boolean isActive = rs.getBoolean(ReservationFields.isActive.toString());
+                boolean isFree = rs.getBoolean(RoomFields.is_free.toString());
+                boolean isActive = rs.getBoolean(ReservationFields.is_active.toString());
 
                 reservations.add(new Reservation(new Room(roomId, roomStatus, roomPrice, roomCapacity, roomStars, isFree),
                         new Client(clientId, clientFirstName, clientLastName),
@@ -168,7 +168,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     }
 
     private String getSelectAllActiveQuery() {
-        return getSelectAllQuery() + " and " + ReservationFields.isActive + " = 1";
+        return getSelectAllQuery() + " and " + ReservationFields.is_active + " = 1";
     }
 }
 

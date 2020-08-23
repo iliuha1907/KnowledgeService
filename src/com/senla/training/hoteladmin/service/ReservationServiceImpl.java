@@ -44,7 +44,7 @@ public class ReservationServiceImpl implements ReservationService {
         try {
             reservationDao.add(new Reservation(room, client, arrivalDate, departureDate, true),
                     connection);
-            roomDao.updateById(room.getId(), 0, RoomFields.isFree.toString(), connection);
+            roomDao.updateById(room.getId(), 0, RoomFields.is_free.toString(), connection);
             daoManager.commitConnection();
         } catch (Exception ex) {
             daoManager.rollbackConnection();
@@ -76,7 +76,7 @@ public class ReservationServiceImpl implements ReservationService {
         daoManager.setConnectionAutocommit(false);
         try {
             reservationDao.deactivateClientReservation(clientId, connection);
-            roomDao.updateById(reservation.getRoom().getId(), 1, RoomFields.isFree.toString(), connection);
+            roomDao.updateById(reservation.getRoom().getId(), 1, RoomFields.is_free.toString(), connection);
             daoManager.commitConnection();
         } catch (Exception ex) {
             daoManager.rollbackConnection();

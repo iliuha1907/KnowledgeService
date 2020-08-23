@@ -5,6 +5,6 @@ public enum ReservationFields {
     resident_id,
     arrival_date,
     departure_date,
-    isActive
+    is_active
 }
 

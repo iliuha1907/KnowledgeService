@@ -20,7 +20,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     @ConfigProperty(propertyName = "db.Room.tableName", type = String.class)
     private static String tableName;
     private static final String fields = "(" + RoomFields.status + ", " + RoomFields.price + ", " +
-            RoomFields.capacity + ", " + RoomFields.stars + ", " + RoomFields.isFree + ")";
+            RoomFields.capacity + ", " + RoomFields.stars + ", " + RoomFields.is_free + ")";
     private static final String jokers = "(?, ?, ?, ?, ?)";
 
     @Override
@@ -54,7 +54,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
 
     @Override
     public Integer getNumberOfFreeRooms(Connection connection) {
-        String sql = "select count(*) from " + tableName + " where " + RoomFields.isFree + " = 1 and " +
+        String sql = "select count(*) from " + tableName + " where " + RoomFields.is_free + " = 1 and " +
                 RoomFields.status + " = 'served'";
         try (Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(sql);
@@ -101,7 +101,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
                 BigDecimal price = rs.getBigDecimal(RoomFields.price.toString());
                 Integer capacity = rs.getInt(RoomFields.capacity.toString());
                 Integer stars = rs.getInt(RoomFields.stars.toString());
-                boolean isFree = rs.getBoolean(RoomFields.isFree.toString());
+                boolean isFree = rs.getBoolean(RoomFields.is_free.toString());
                 rooms.add(new Room(id, status, price, capacity, stars, isFree));
             }
         } catch (SQLException ex) {
@@ -117,7 +117,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     }
 
     private String getSelectFreeRoomsQuery() {
-        return "select * from " + tableName + " where " + RoomFields.isFree + " = 1 and "
+        return "select * from " + tableName + " where " + RoomFields.is_free + " = 1 and "
                 + RoomFields.status + " = 'served'";
     }
 }

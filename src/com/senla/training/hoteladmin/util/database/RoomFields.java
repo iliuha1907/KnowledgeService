@@ -6,6 +6,6 @@ public enum RoomFields {
     price,
     capacity,
     stars,
-    isFree
+    is_free
 }
 

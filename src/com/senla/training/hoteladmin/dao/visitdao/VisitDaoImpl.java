@@ -29,7 +29,7 @@ public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
     @ConfigProperty(propertyName = "db.Client.tableName", type = String.class)
     private static String clientTable;
     private static final String fields = "(" + VisitFields.client_id + ", "
-            + VisitFields.hotel_service_id + ", " + VisitFields.date + ", " + VisitFields.isActive + ")";
+            + VisitFields.hotel_service_id + ", " + VisitFields.date + ", " + VisitFields.is_active + ")";
     private static final String jokers = "(?, ?, ?, ?)";
 
     @Override
@@ -46,7 +46,7 @@ public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
 
     @Override
     public void deactivateClientVisits(Integer clientId, Connection connection) {
-        String sql = getUpdateQuery(VisitFields.isActive.toString()) + " where " + VisitFields.client_id + " = ?";
+        String sql = getUpdateQuery(VisitFields.is_active.toString()) + " where " + VisitFields.client_id + " = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, false);
             statement.setInt(2, clientId);
@@ -83,7 +83,7 @@ public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
                 String clientLastName = rs.getString(ClientFields.last_name.toString());
                 Integer clientId = rs.getInt(VisitFields.client_id.toString());
                 Date date = rs.getDate(VisitFields.date.toString());
-                boolean isActive = rs.getBoolean(VisitFields.isActive.toString());
+                boolean isActive = rs.getBoolean(VisitFields.is_active.toString());
                 visits.add(new Visit(new Client(clientId, clientFirstName, clientLastName),
                         new HotelService(serviceId, servicePrice, serviceType), date, isActive));
             }
@@ -112,7 +112,7 @@ public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
     }
 
     private String getSelectAllActiveQuery() {
-        return getSelectAllQuery() + " and " + VisitFields.isActive + " = 1";
+        return getSelectAllQuery() + " and " + VisitFields.is_active + " = 1";
     }
 }
 
