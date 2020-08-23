@@ -7,3 +7,4 @@ CREATE INDEX id ON Hotel_services(id);
 CREATE INDEX id ON Clients(id);
 
 COMMIT;
+
