@@ -99,10 +99,12 @@ public class Builder {
             if (roomId == null) {
                 return;
             }
-            System.out.println(reservationController.getLastRoomVisits(roomId));
+            System.out.println(reservationController.getLastRoomReservations(roomId));
         }));
         itemsClients.add(new MenuItem("Display number of residents", () ->
                 System.out.println(reservationController.getNumberOfResidents())));
+        itemsClients.add(new MenuItem("Display number of clients", () ->
+                System.out.println(clientController.getNumberOfClients())));
         itemsClients.add(new MenuItem("Display clients", () ->
                 System.out.println(clientController.getClients())));
         itemsClients.add(new MenuItem("Add client", this::addClientAction));

@@ -36,5 +36,10 @@ public class ClientServiceImpl implements ClientService {
     public List<Client> getClients() {
         return clientDao.getAll(daoManager.getConnection());
     }
+
+    @Override
+    public Integer getNumberOfClients() {
+        return clientDao.getNumberOfClients(daoManager.getConnection());
+    }
 }
 

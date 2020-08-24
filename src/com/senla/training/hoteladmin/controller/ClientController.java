@@ -35,5 +35,13 @@ public class ClientController {
         });
         return result.toString();
     }
+
+    public String getNumberOfClients() {
+        try {
+            return clientService.getNumberOfClients().toString();
+        } catch (Exception ex) {
+            return "Error at getting number of clients: " + ex.getMessage();
+        }
+    }
 }
 

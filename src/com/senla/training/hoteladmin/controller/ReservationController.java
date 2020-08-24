@@ -62,7 +62,7 @@ public class ReservationController {
         return result.toString();
     }
 
-    public String getLastRoomVisits(Integer roomId) {
+    public String getLastRoomReservations(Integer roomId) {
         List<Reservation> reservations;
         try {
             reservations = reservationService.getLastRoomVisits(roomId);

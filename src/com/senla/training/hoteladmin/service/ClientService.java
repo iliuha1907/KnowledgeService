@@ -9,5 +9,7 @@ public interface ClientService {
     void addClient(String firstName, String lastName);
 
     List<Client> getClients();
+
+    Integer getNumberOfClients();
 }
 
