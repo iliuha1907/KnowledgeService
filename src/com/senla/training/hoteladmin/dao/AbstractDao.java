@@ -9,36 +9,6 @@ import java.util.List;
 
 public abstract class AbstractDao<T> implements GenericDao<T> {
 
-    protected abstract String getTableName();
-
-    protected abstract String getFields();
-
-    protected abstract String getInsertJokers();
-
-    protected abstract List<T> parseSelectResultSet(ResultSet rs);
-
-    protected String getSelectAllQuery() {
-        return "select * from " + getTableName();
-    }
-
-    protected String getSelectByIdQuery() {
-        return "select * from " + getTableName() + " where id = ?";
-    }
-
-    protected String getUpdateQuery(String columnName) {
-        return "update " + getTableName() + " set " + columnName + " = ?";
-    }
-
-    protected String getUpdateByIdQuery(String columnName) {
-        return getUpdateQuery(columnName) + " where id = ?";
-    }
-
-    protected String getAddQuery() {
-        return "insert into " + getTableName() + " " + getFields() + " values" + getInsertJokers();
-    }
-
-    protected abstract List<Object> getInsertData(T object);
-
     @Override
     public void add(T object, Connection connection) {
         String sql = getAddQuery();
@@ -91,5 +61,35 @@ public abstract class AbstractDao<T> implements GenericDao<T> {
             throw new BusinessException(ex.getMessage());
         }
     }
+
+    protected abstract String getTableName();
+
+    protected abstract String getFields();
+
+    protected abstract String getInsertJokers();
+
+    protected abstract List<T> parseSelectResultSet(ResultSet rs);
+
+    protected String getSelectAllQuery() {
+        return "select * from " + getTableName();
+    }
+
+    protected String getSelectByIdQuery() {
+        return "select * from " + getTableName() + " where id = ?";
+    }
+
+    protected String getUpdateQuery(String columnName) {
+        return "update " + getTableName() + " set " + columnName + " = ?";
+    }
+
+    protected String getUpdateByIdQuery(String columnName) {
+        return getUpdateQuery(columnName) + " where id = ?";
+    }
+
+    protected String getAddQuery() {
+        return "insert into " + getTableName() + " " + getFields() + " values" + getInsertJokers();
+    }
+
+    protected abstract List<Object> getInsertData(T object);
 }
 

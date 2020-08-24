@@ -57,6 +57,17 @@ public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
     }
 
     @Override
+    public Visit getById(Integer id, Connection connection) {
+        throw new BusinessException("Could not get by id");
+    }
+
+    @Override
+    public void updateById(Integer id, Object value, String columnName, Connection connection) {
+        throw new BusinessException("Could not update by id");
+    }
+
+
+    @Override
     protected String getTableName() {
         return tableName;
     }
@@ -98,11 +109,6 @@ public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
         return "select * from " + tableName + ", " + clientTable + ", " + hotelServiceTable
                 + " where hotel_service_id = " + hotelServiceTable + ".id" + " and " +
                 clientTable + ".id = client_id";
-    }
-
-    @Override
-    protected String getSelectByIdQuery() {
-        throw new BusinessException("Could not select by id");
     }
 
     @Override

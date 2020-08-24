@@ -40,7 +40,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
         try (Statement statement = connection.createStatement()) {
             return parseSelectResultSet(statement.executeQuery(sql));
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new BusinessException(ex.getMessage());
         }
     }
 
@@ -52,7 +52,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
             rs.next();
             return rs.getInt(1);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new BusinessException(ex.getMessage());
         }
     }
 
@@ -63,7 +63,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
             statement.setDate(1, java.sql.Date.valueOf(DateUtil.getString(date)));
             return parseSelectResultSet(statement.executeQuery());
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new BusinessException(ex.getMessage());
         }
     }
 
@@ -75,7 +75,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
             statement.setInt(2, count);
             return parseSelectResultSet(statement.executeQuery());
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new BusinessException(ex.getMessage());
         }
     }
 
@@ -87,7 +87,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
             List<Reservation> reservations = parseSelectResultSet(statement.executeQuery());
             return reservations.size() == 0 ? null : reservations.get(0);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new BusinessException(ex.getMessage());
         }
     }
 
@@ -100,8 +100,18 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
             statement.setInt(2, clientId);
             statement.execute();
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new BusinessException(ex.getMessage());
         }
+    }
+
+    @Override
+    public Reservation getById(Integer id, Connection connection) {
+        throw new BusinessException("Could not get by id");
+    }
+
+    @Override
+    public void updateById(Integer id, Object value, String columnName, Connection connection) {
+        throw new BusinessException("Could not update by id");
     }
 
     @Override
@@ -144,7 +154,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
                         arrival_date, departure_date, isActive));
             }
         } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+            throw new BusinessException(ex.getMessage());
         }
         return reservations;
     }
@@ -154,11 +164,6 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
         return "select *" + " from " +
                 tableName + ", " + clientTable + ", " + roomTable + " where " + ReservationFields.room_id + " = " +
                 roomTable + ".id" + " and " + clientTable + ".id = " + ReservationFields.resident_id;
-    }
-
-    @Override
-    protected String getSelectByIdQuery() {
-        throw new BusinessException("Could not select by id");
     }
 
     @Override

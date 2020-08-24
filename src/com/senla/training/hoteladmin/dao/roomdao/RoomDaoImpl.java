@@ -105,7 +105,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
                 rooms.add(new Room(id, status, price, capacity, stars, isFree));
             }
         } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+            throw new BusinessException(ex.getMessage());
         }
         return rooms;
     }
