@@ -9,10 +9,8 @@ import com.senla.training.injection.annotation.ConfigProperty;
 import com.senla.training.injection.annotation.NeedInjectionClass;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
