@@ -5,7 +5,6 @@ import com.senla.training.hoteladmin.dao.hotelservicedao.HotelServiceDao;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
-import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
 import com.senla.training.injection.annotation.NeedInjectionClass;
 import com.senla.training.injection.annotation.NeedInjectionField;
 
