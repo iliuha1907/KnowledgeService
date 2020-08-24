@@ -8,7 +8,5 @@ import java.sql.Connection;
 import java.util.List;
 
 public interface HotelServiceDao extends GenericDao<HotelService> {
-
-    List<HotelService> getSortedHotelServices(VisitSortCriterion criterion, Connection connection);
 }
 

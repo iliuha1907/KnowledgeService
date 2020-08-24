@@ -62,7 +62,7 @@ public class ClientDaoImpl extends AbstractDao<Client> implements ClientDao {
                 clients.add(new Client(id, firstName, lastName));
             }
         } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+            throw new BusinessException(ex.getMessage());
         }
         return clients;
     }

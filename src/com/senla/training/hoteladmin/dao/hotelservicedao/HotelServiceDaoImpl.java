@@ -1,6 +1,7 @@
 package com.senla.training.hoteladmin.dao.hotelservicedao;
 
 import com.senla.training.hoteladmin.dao.AbstractDao;
+import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.util.database.HotelServiceFields;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
@@ -23,16 +24,6 @@ public class HotelServiceDaoImpl extends AbstractDao<HotelService> implements Ho
     private static String tableName;
     private static final String fields = "(" + HotelServiceFields.price + ", " + HotelServiceFields.type + ")";
     private static final String jokers = "(?, ?)";
-
-    @Override
-    public List<HotelService> getSortedHotelServices(VisitSortCriterion criterion, Connection connection) {
-        String sql = getSelectAllQuery() + " order by " + criterion.toString();
-        try (Statement statement = connection.createStatement()) {
-            return parseSelectResultSet(statement.executeQuery(sql));
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 
     @Override
     protected String getTableName() {
@@ -60,7 +51,7 @@ public class HotelServiceDaoImpl extends AbstractDao<HotelService> implements Ho
                 hotelServices.add(new HotelService(id, price, type));
             }
         } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+            throw new BusinessException(ex.getMessage());
         }
         return hotelServices;
     }

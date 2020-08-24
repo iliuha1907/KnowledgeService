@@ -66,7 +66,6 @@ public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
         throw new BusinessException("Could not update by id");
     }
 
-
     @Override
     protected String getTableName() {
         return tableName;
