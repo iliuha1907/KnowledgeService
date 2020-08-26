@@ -82,6 +82,13 @@ public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
     }
 
     @Override
+    protected String getSelectAllQuery() {
+        return "select * from " + tableName + ", " + clientTable + ", " + hotelServiceTable
+                + " where hotel_service_id = " + hotelServiceTable + ".id" + " and " +
+                clientTable + ".id = client_id";
+    }
+
+    @Override
     protected List<Visit> parseSelectResultSet(ResultSet rs) {
         List<Visit> visits = new ArrayList<>();
         try {
@@ -101,13 +108,6 @@ public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
             throw new BusinessException(ex.getMessage());
         }
         return visits;
-    }
-
-    @Override
-    protected String getSelectAllQuery() {
-        return "select * from " + tableName + ", " + clientTable + ", " + hotelServiceTable
-                + " where hotel_service_id = " + hotelServiceTable + ".id" + " and " +
-                clientTable + ".id = client_id";
     }
 
     @Override

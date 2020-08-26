@@ -17,28 +17,30 @@ public class DaoManager {
     private String user;
     @ConfigProperty(propertyName = "daoManager.password", type = String.class)
     private String password;
-    private Connection connection;
+    private static Connection connection;
 
-    public void openConnection() {
+    public Connection getConnection() {
+        if (connection == null) {
+            openConnection();
+        }
         try {
-            connection = DriverManager.getConnection(url, user, password);
-        } catch (Exception ex) {
+            if (connection.isClosed()) {
+                openConnection();
+            }
+        } catch (SQLException ex) {
             throw new IncorrectWorkException(ex.getMessage());
         }
+        return connection;
     }
 
-    public void close() {
+    public void closeConnection() {
         try {
-            if (connection != null) {
+            if (connection != null && !connection.isClosed()) {
                 connection.close();
             }
         } catch (SQLException ex) {
             throw new IncorrectWorkException(ex.getMessage());
         }
-    }
-
-    public Connection getConnection() {
-        return connection;
     }
 
     public boolean getAutoConnectionCommit() {
@@ -72,5 +74,14 @@ public class DaoManager {
             throw new BusinessException(ex.getMessage());
         }
     }
+
+    private void openConnection() {
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+        } catch (Exception ex) {
+            throw new IncorrectWorkException(ex.getMessage());
+        }
+    }
+
 }
 

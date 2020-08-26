@@ -70,6 +70,8 @@ public abstract class AbstractDao<T> implements GenericDao<T> {
 
     protected abstract List<T> parseSelectResultSet(ResultSet rs);
 
+    protected abstract List<Object> getInsertData(T object);
+
     protected String getSelectAllQuery() {
         return "select * from " + getTableName();
     }
@@ -89,7 +91,5 @@ public abstract class AbstractDao<T> implements GenericDao<T> {
     protected String getAddQuery() {
         return "insert into " + getTableName() + " " + getFields() + " values" + getInsertJokers();
     }
-
-    protected abstract List<Object> getInsertData(T object);
 }
 

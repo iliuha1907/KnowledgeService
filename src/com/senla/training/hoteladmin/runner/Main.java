@@ -14,7 +14,6 @@ public class Main {
         try {
             DependencyInjector.init("com.senla.training.hoteladmin");
             daoManager = DependencyInjector.getClassInstance(DaoManager.class);
-            daoManager.openConnection();
             menuController = DependencyInjector.getClassInstance(MenuController.class);
             menuController.run();
         } catch (Exception ex) {
@@ -24,7 +23,7 @@ public class Main {
             UserInteraction.stopWorking();
             if (daoManager != null) {
                 try {
-                    daoManager.close();
+                    daoManager.closeConnection();
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
                     System.out.println("Shutting app down");

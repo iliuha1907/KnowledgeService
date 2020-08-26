@@ -130,6 +130,13 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     }
 
     @Override
+    protected String getSelectAllQuery() {
+        return "select *" + " from " +
+                tableName + ", " + clientTable + ", " + roomTable + " where " + ReservationFields.room_id + " = " +
+                roomTable + ".id" + " and " + clientTable + ".id = " + ReservationFields.resident_id;
+    }
+
+    @Override
     protected List<Reservation> parseSelectResultSet(ResultSet rs) {
         List<Reservation> reservations = new ArrayList<>();
         try {
@@ -157,13 +164,6 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
             throw new BusinessException(ex.getMessage());
         }
         return reservations;
-    }
-
-    @Override
-    protected String getSelectAllQuery() {
-        return "select *" + " from " +
-                tableName + ", " + clientTable + ", " + roomTable + " where " + ReservationFields.room_id + " = " +
-                roomTable + ".id" + " and " + clientTable + ".id = " + ReservationFields.resident_id;
     }
 
     @Override
