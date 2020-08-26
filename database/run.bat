@@ -1,3 +1,4 @@
 @echo off
-mysql -h 127.0.0.1 -u root -p < scripts/HotelAdminModel.sql < scripts/init.sql
+mysql -u root -p < scripts/HotelAdminModel.sql
+mysql -u root -p < scripts/init.sql
 PAUSE
