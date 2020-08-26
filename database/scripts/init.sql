@@ -2,6 +2,10 @@ USE `hoteladmin` ;
 
 START TRANSACTION;
 
+CREATE INDEX id ON Rooms(id);
+CREATE INDEX id ON Hotel_services(id);
+CREATE INDEX id ON Clients(id);
+
 INSERT INTO Rooms(status, price, capacity, stars, is_free) VALUES('SERVED',100,3,5,0); 
 INSERT INTO Rooms(status, price, capacity, stars, is_free) VALUES('REPAIRED',400,4,4,1); 
 INSERT INTO Rooms(status, price, capacity, stars, is_free) VALUES('SERVED',200,3,5,0); 

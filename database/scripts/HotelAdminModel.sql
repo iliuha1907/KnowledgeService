@@ -8,15 +8,13 @@ CREATE TABLE IF NOT EXISTS `Clients` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+  PRIMARY KEY (`id`));
 
 CREATE TABLE IF NOT EXISTS `Hotel_services` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `price` DECIMAL(10,0) NOT NULL,
   `type` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+  PRIMARY KEY (`id`));
 
 CREATE TABLE IF NOT EXISTS `Rooms` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -25,8 +23,7 @@ CREATE TABLE IF NOT EXISTS `Rooms` (
   `capacity` INT NOT NULL,
   `stars` INT NOT NULL,
   `is_free` TINYINT NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE);
+  PRIMARY KEY (`id`));
 
 CREATE TABLE IF NOT EXISTS `Reservations` (
   `room_id` INT NOT NULL,
@@ -34,8 +31,6 @@ CREATE TABLE IF NOT EXISTS `Reservations` (
   `arrival_date` DATE NOT NULL,
   `departure_date` DATE NOT NULL,
   `is_active` TINYINT NOT NULL,
-  INDEX `room_id_idx` (`room_id` ASC) VISIBLE,
-  INDEX `resident_id_idx` (`resident_id` ASC) VISIBLE,
   CONSTRAINT `resident_id`
     FOREIGN KEY (`resident_id`)
     REFERENCES `Clients` (`id`),
@@ -48,8 +43,6 @@ CREATE TABLE IF NOT EXISTS `Visits` (
   `hotel_service_id` INT NOT NULL,
   `date` DATE NOT NULL,
   `is_active` TINYINT NOT NULL,
-  INDEX `client_id_idx` (`client_id` ASC) VISIBLE,
-  INDEX `hotel_service_id_idx` (`hotel_service_id` ASC) VISIBLE,
   CONSTRAINT `client_id`
     FOREIGN KEY (`client_id`)
     REFERENCES `Clients` (`id`),
