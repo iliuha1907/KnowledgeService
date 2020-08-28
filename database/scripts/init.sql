@@ -14,11 +14,10 @@ INSERT INTO Clients(first_name, last_name) VALUES('Ivan', 'Petrov');
 INSERT INTO Clients(first_name, last_name) VALUES('Serge', 'Sidorov'); 
 
 INSERT INTO Hotel_services(price, type) VALUES(15, 'SPA');
-INSERT INTO Hotel_services(price, type) VALUES(20, 'MASSAGE');
 INSERT INTO Hotel_services(price, type) VALUES(10, 'SAUNA');
 
 INSERT INTO Visits(client_id, hotel_service_id, date, is_active) VALUES(1,1,'2020-4-11',1);
-INSERT INTO Visits(client_id, hotel_service_id, date, is_active) VALUES(2,3,'2020-5-11',1);
+INSERT INTO Visits(client_id, hotel_service_id, date, is_active) VALUES(2,2,'2020-5-11',1);
 
 INSERT INTO Reservations(room_id, resident_id, arrival_date, departure_date, is_active)
  VALUES(1,1,'2020-4-10','2020-4-20',1);
