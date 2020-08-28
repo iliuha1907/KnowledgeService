@@ -1,5 +1,6 @@
 package com.senla.training.hoteladmin.controller;
 
+import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
@@ -51,9 +52,9 @@ public class RoomController {
         }
 
         StringBuilder result = new StringBuilder("Rooms:\n");
-        rooms.forEach(room -> {
-            result.append(room).append("\n");
-        });
+        rooms.forEach(room ->
+                result.append(room).append("\n")
+        );
         return result.toString();
     }
 
@@ -66,9 +67,9 @@ public class RoomController {
         }
 
         StringBuilder result = new StringBuilder("Free rooms:\n");
-        rooms.forEach(room -> {
-            result.append(room).append("\n");
-        });
+        rooms.forEach(room ->
+                result.append(room).append("\n")
+        );
         return result.toString();
     }
 
@@ -81,9 +82,9 @@ public class RoomController {
         }
 
         StringBuilder result = new StringBuilder("Free rooms:\n");
-        rooms.forEach(room -> {
-            result.append(room).append("\n");
-        });
+        rooms.forEach(room ->
+                result.append(room).append("\n")
+        );
         return result.toString();
     }
 
@@ -114,6 +115,24 @@ public class RoomController {
             return roomService.getNumberOfFreeRooms().toString();
         } catch (Exception ex) {
             return "Error at getting number of free rooms";
+        }
+    }
+
+    public String exportRooms() {
+        try {
+            roomService.exportRooms();
+            return "Successfully exported rooms";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String importRooms() {
+        try {
+            roomService.importRooms();
+            return "Successfully imported rooms";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 }

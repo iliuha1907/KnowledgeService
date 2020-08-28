@@ -1,5 +1,6 @@
 package com.senla.training.hoteladmin.controller;
 
+import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.injection.annotation.NeedInjectionClass;
 import com.senla.training.injection.annotation.NeedInjectionField;
@@ -21,7 +22,7 @@ public class ClientController {
         }
     }
 
-    public String getClients(){
+    public String getClients() {
         List<Client> clients;
         try {
             clients = clientService.getClients();
@@ -41,6 +42,24 @@ public class ClientController {
             return clientService.getNumberOfClients().toString();
         } catch (Exception ex) {
             return "Error at getting number of clients: " + ex.getMessage();
+        }
+    }
+
+    public String exportClients() {
+        try {
+            clientService.exportClients();
+            return "Successfully exported clients";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String importClients() {
+        try {
+            clientService.importClients();
+            return "Successfully imported clients";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 }

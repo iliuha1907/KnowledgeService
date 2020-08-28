@@ -11,5 +11,9 @@ public interface VisitService {
     void addVisit(Integer serviceId, Integer clientId, Date date);
 
     List<Visit> getSortedClientVisits(Integer clientId, VisitSortCriterion criterion);
+
+    void exportVisits();
+
+    void importVisits();
 }
 

@@ -16,6 +16,10 @@ public class Client {
         this.lastName = lastName;
     }
 
+    public Client(Integer id){
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

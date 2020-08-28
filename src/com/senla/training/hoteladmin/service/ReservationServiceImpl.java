@@ -7,6 +7,8 @@ import com.senla.training.hoteladmin.dao.roomdao.RoomDao;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.reservation.Reservation;
+import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.util.filecsv.writeread.ReservationReaderWriter;
 import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.util.database.RoomFields;
@@ -48,10 +50,10 @@ public class ReservationServiceImpl implements ReservationService {
             daoManager.commitConnection();
         } catch (Exception ex) {
             daoManager.rollbackConnection();
-            daoManager.setConnectionAutocommit(isAutocommit);
             throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
         }
-        daoManager.setConnectionAutocommit(isAutocommit);
     }
 
     @Override
@@ -80,10 +82,10 @@ public class ReservationServiceImpl implements ReservationService {
             daoManager.commitConnection();
         } catch (Exception ex) {
             daoManager.rollbackConnection();
-            daoManager.setConnectionAutocommit(isAutocommit);
             throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
         }
-        daoManager.setConnectionAutocommit(isAutocommit);
     }
 
     @Override
@@ -104,6 +106,44 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Integer getNumberOfResidents() {
         return reservationDao.getNumberOfResidents(daoManager.getConnection());
+    }
+
+    @Override
+    public void exportReservations() {
+        ReservationReaderWriter.writeReservations(reservationDao.getAll(daoManager.getConnection()));
+    }
+
+    @Override
+    public void importReservations() {
+        List<Reservation> reservations = ReservationReaderWriter.readReservations();
+        Connection connection = daoManager.getConnection();
+        reservations.forEach(reservation -> {
+            Reservation existing = reservationDao.getByRoomClientId(reservation.getRoom().getId(),
+                    reservation.getResident().getId(), connection);
+            Room room = roomDao.getById(reservation.getRoom().getId(), connection);
+            Client client = clientDao.getById(reservation.getResident().getId(), connection);
+            if (existing == null && room != null && client != null && room.isFree() && room.getStatus().equals(
+                    RoomStatus.SERVED)) {
+                addReservation(new Reservation(room, client, reservation.getArrivalDate(),
+                        reservation.getDepartureDate(), reservation.isActive()));
+            }
+        });
+    }
+
+    private void addReservation(Reservation reservation) {
+        Connection connection = daoManager.getConnection();
+        boolean isAutocommit = daoManager.getAutoConnectionCommit();
+        daoManager.setConnectionAutocommit(false);
+        try {
+            reservationDao.add(reservation, connection);
+            roomDao.updateById(reservation.getRoom().getId(), 0, RoomFields.is_free.toString(), connection);
+            daoManager.commitConnection();
+        } catch (Exception ex) {
+            daoManager.rollbackConnection();
+            throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
+        }
     }
 }
 

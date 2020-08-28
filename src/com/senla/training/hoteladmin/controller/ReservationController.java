@@ -1,5 +1,6 @@
 package com.senla.training.hoteladmin.controller;
 
+import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.reservation.Reservation;
 import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
 import com.senla.training.injection.annotation.NeedInjectionClass;
@@ -41,9 +42,9 @@ public class ReservationController {
         }
 
         StringBuilder result = new StringBuilder("Reservations:\n");
-        reservations.forEach(reservation -> {
-            result.append(reservation).append("\n");
-        });
+        reservations.forEach(reservation ->
+                result.append(reservation).append("\n")
+        );
         return result.toString();
     }
 
@@ -56,9 +57,9 @@ public class ReservationController {
         }
 
         StringBuilder result = new StringBuilder("Reservations:\n");
-        reservations.forEach(reservation -> {
-            result.append(reservation).append("\n");
-        });
+        reservations.forEach(reservation ->
+                result.append(reservation).append("\n")
+        );
         return result.toString();
     }
 
@@ -71,9 +72,9 @@ public class ReservationController {
         }
 
         StringBuilder result = new StringBuilder("Reservations:\n");
-        reservations.forEach(reservation -> {
-            result.append(reservation).append("\n");
-        });
+        reservations.forEach(reservation ->
+                result.append(reservation).append("\n")
+        );
         return result.toString();
     }
 
@@ -82,6 +83,24 @@ public class ReservationController {
             return reservationService.getNumberOfResidents().toString();
         } catch (Exception ex) {
             return "Error at getting number of residents: " + ex.getMessage();
+        }
+    }
+
+    public String exportReservations() {
+        try {
+            reservationService.exportReservations();
+            return "Successfully exported reservations";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String importReservations() {
+        try {
+            reservationService.importReservations();
+            return "Successfully imported reservations";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
         }
     }
 }

@@ -22,5 +22,9 @@ public interface ReservationService {
     List<Reservation> getLastRoomVisits(Integer roomId);
 
     Integer getNumberOfResidents();
+
+    void exportReservations();
+
+    void importReservations();
 }
 

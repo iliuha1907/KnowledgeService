@@ -18,7 +18,7 @@ import java.util.List;
 
 @NeedInjectionClass
 public class Builder {
-    @ConfigProperty(propertyName = "util.dateFormat", type = String.class)
+    @ConfigProperty(propertyName = "date.dateFormat", type = String.class)
     private String dateFormat;
     private Menu rootMenu;
     @NeedInjectionField
@@ -31,6 +31,9 @@ public class Builder {
     private VisitController visitController;
     @NeedInjectionField
     private ReservationController reservationController;
+
+    public Builder() {
+    }
 
     private void buildRoomsMenu(Menu roomMenu, Menu freeRoomMenu) {
         List<MenuItem> itemsRoom = new ArrayList<>();
@@ -165,6 +168,27 @@ public class Builder {
         itemsMain.add(new MenuItem("Room menu", roomMenu));
         itemsMain.add(new MenuItem("Client menu", clientMenu));
         itemsMain.add(new MenuItem("Services menu", svcMenu));
+        itemsMain.add(new MenuItem("Export services", () ->
+                System.out.println(hotelServiceController.exportServices())));
+        itemsMain.add(new MenuItem("Export clients", () ->
+                System.out.println(clientController.exportClients())));
+        itemsMain.add(new MenuItem("Export rooms", () ->
+                System.out.println(roomController.exportRooms())));
+        itemsMain.add(new MenuItem("Export reservations", () ->
+                System.out.println(reservationController.exportReservations())));
+        itemsMain.add(new MenuItem("Export visits", () ->
+                System.out.println(visitController.exportVisits())));
+        itemsMain.add(new MenuItem("Import services", () ->
+                System.out.println(hotelServiceController.importServices())));
+        itemsMain.add(new MenuItem("Import clients", () ->
+                System.out.println(clientController.importClients())));
+        itemsMain.add(new MenuItem("Import rooms", () ->
+                System.out.println(roomController.importRooms())));
+        itemsMain.add(new MenuItem("Import reservations", () ->
+                System.out.println(reservationController.importReservations())));
+        itemsMain.add(new MenuItem("Import visits", () ->
+                System.out.println(visitController.importVisits())));
+        rootMenu.setMenuItems(itemsMain);
         rootMenu.setMenuItems(itemsMain);
     }
 

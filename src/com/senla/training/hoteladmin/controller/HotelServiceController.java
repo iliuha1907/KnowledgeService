@@ -1,5 +1,6 @@
 package com.senla.training.hoteladmin.controller;
 
+import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
 import com.senla.training.injection.annotation.NeedInjectionClass;
@@ -44,10 +45,28 @@ public class HotelServiceController {
         }
 
         StringBuilder result = new StringBuilder("Services:\n");
-        hotelServices.forEach(hotelService -> {
-            result.append(hotelService).append("\n");
-        });
+        hotelServices.forEach(hotelService ->
+                result.append(hotelService).append("\n")
+        );
         return result.toString();
+    }
+
+    public String exportServices() {
+        try {
+            hotelServiceService.exportServices();
+            return "Successfully exported services";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String importServices() {
+        try {
+            hotelServiceService.importServices();
+            return "Successfully imported services";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
     }
 }
 

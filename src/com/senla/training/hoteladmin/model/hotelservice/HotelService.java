@@ -18,6 +18,10 @@ public class HotelService {
         this.type = type;
     }
 
+    public HotelService(Integer id){
+        this.id = id;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }

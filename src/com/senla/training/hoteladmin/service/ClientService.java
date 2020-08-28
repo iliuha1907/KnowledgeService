@@ -11,5 +11,9 @@ public interface ClientService {
     List<Client> getClients();
 
     Integer getNumberOfClients();
+
+    void exportClients();
+
+    void importClients();
 }
 

@@ -45,18 +45,6 @@ public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
     }
 
     @Override
-    public void deactivateClientVisits(Integer clientId, Connection connection) {
-        String sql = getUpdateQuery(VisitFields.is_active.toString()) + " where " + VisitFields.client_id + " = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setBoolean(1, false);
-            statement.setInt(2, clientId);
-            statement.execute();
-        } catch (Exception ex) {
-            throw new BusinessException(ex.getMessage());
-        }
-    }
-
-    @Override
     public Visit getById(Integer id, Connection connection) {
         throw new BusinessException("Could not get by id");
     }

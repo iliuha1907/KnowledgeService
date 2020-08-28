@@ -27,5 +27,9 @@ public interface RoomService {
     Room getRoom(Integer roomId);
 
     Integer getNumberOfFreeRooms();
+
+    void exportRooms();
+
+    void importRooms();
 }
 

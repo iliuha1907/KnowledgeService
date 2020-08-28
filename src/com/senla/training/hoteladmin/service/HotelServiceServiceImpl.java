@@ -5,6 +5,7 @@ import com.senla.training.hoteladmin.dao.hotelservicedao.HotelServiceDao;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
+import com.senla.training.hoteladmin.util.filecsv.writeread.HotelServiceReaderWriter;
 import com.senla.training.injection.annotation.NeedInjectionClass;
 import com.senla.training.injection.annotation.NeedInjectionField;
 
@@ -29,10 +30,10 @@ public class HotelServiceServiceImpl implements HotelServiceService {
             daoManager.commitConnection();
         } catch (Exception ex) {
             daoManager.rollbackConnection();
-            daoManager.setConnectionAutocommit(isAutocommit);
             throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
         }
-        daoManager.setConnectionAutocommit(isAutocommit);
     }
 
     @Override
@@ -50,15 +51,31 @@ public class HotelServiceServiceImpl implements HotelServiceService {
             daoManager.commitConnection();
         } catch (Exception ex) {
             daoManager.rollbackConnection();
-            daoManager.setConnectionAutocommit(isAutocommit);
             throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
         }
-        daoManager.setConnectionAutocommit(isAutocommit);
     }
 
     @Override
     public List<HotelService> getServices() {
         return hotelServiceDao.getAll(daoManager.getConnection());
+    }
+
+    @Override
+    public void exportServices() {
+        HotelServiceReaderWriter.writeServices(hotelServiceDao.getAll(daoManager.getConnection()));
+    }
+
+    @Override
+    public void importServices() {
+        List<HotelService> hotelServices = HotelServiceReaderWriter.readServices();
+        hotelServices.forEach(hotelService -> {
+            HotelService existing = hotelServiceDao.getById(hotelService.getId(), daoManager.getConnection());
+            if (existing == null) {
+                addService(hotelService.getPrice(), hotelService.getType());
+            }
+        });
     }
 }
 

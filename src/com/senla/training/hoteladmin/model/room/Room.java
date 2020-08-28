@@ -23,12 +23,15 @@ public class Room implements Serializable {
 
     public Room(RoomStatus status, BigDecimal price, Integer capacity,
                 Integer stars, boolean isFree) {
-        this.id = id;
         this.status = status;
         this.price = price;
         this.capacity = capacity;
         this.stars = stars;
         this.isFree = isFree;
+    }
+
+    public Room(Integer id) {
+        this.id = id;
     }
 
     public void setId(Integer id) {
@@ -68,14 +71,13 @@ public class Room implements Serializable {
         if (id == null) {
             return false;
         }
-        return (obj instanceof Room) && this.id.equals(((Room) obj).getId());
+        return (obj instanceof Room) && ((Room) obj).getId() != null && this.id.equals(((Room) obj).getId());
     }
 
     @Override
     public String toString() {
-        String result = String.format("Room with id:%d, status:%s, capacity: %d, stars: %d, price: %.2f, is free:%s",
+        return String.format("Room with id:%d, status:%s, capacity: %d, stars: %d, price: %.2f, is free:%s",
                 id, status.toString(), capacity, stars, price, isFree);
-        return result;
     }
 }
 

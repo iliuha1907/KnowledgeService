@@ -1,5 +1,6 @@
 package com.senla.training.hoteladmin.controller;
 
+import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.visit.Visit;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
 import com.senla.training.injection.annotation.NeedInjectionClass;
@@ -32,10 +33,28 @@ public class VisitController {
         }
 
         StringBuilder result = new StringBuilder("Visits:\n");
-        visits.forEach(visit -> {
-            result.append(visit).append("\n");
-        });
+        visits.forEach(visit ->
+                result.append(visit).append("\n")
+        );
         return result.toString();
+    }
+
+    public String exportVisits() {
+        try {
+            visitService.exportVisits();
+            return "Successfully exported visits";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
+    }
+
+    public String importVisits() {
+        try {
+            visitService.importVisits();
+            return "Successfully imported visits";
+        } catch (BusinessException ex) {
+            return ex.getMessage();
+        }
     }
 }
 

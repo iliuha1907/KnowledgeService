@@ -5,6 +5,7 @@ import com.senla.training.hoteladmin.dao.roomdao.RoomDao;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.util.filecsv.writeread.RoomReaderWriter;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.injection.annotation.ConfigProperty;
 import com.senla.training.injection.annotation.NeedInjectionClass;
@@ -33,10 +34,10 @@ public class RoomServiceImpl implements RoomService {
             daoManager.commitConnection();
         } catch (Exception ex) {
             daoManager.rollbackConnection();
-            daoManager.setConnectionAutocommit(isAutocommit);
             throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
         }
-        daoManager.setConnectionAutocommit(isAutocommit);
     }
 
     @Override
@@ -58,10 +59,10 @@ public class RoomServiceImpl implements RoomService {
             daoManager.commitConnection();
         } catch (Exception ex) {
             daoManager.rollbackConnection();
-            daoManager.setConnectionAutocommit(isAutocommit);
             throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
         }
-        daoManager.setConnectionAutocommit(isAutocommit);
     }
 
     @Override
@@ -79,10 +80,10 @@ public class RoomServiceImpl implements RoomService {
             daoManager.commitConnection();
         } catch (Exception ex) {
             daoManager.rollbackConnection();
-            daoManager.setConnectionAutocommit(isAutocommit);
             throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
         }
-        daoManager.setConnectionAutocommit(isAutocommit);
     }
 
     @Override
@@ -118,6 +119,22 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Integer getNumberOfFreeRooms() {
         return roomDao.getNumberOfFreeRooms(daoManager.getConnection());
+    }
+
+    @Override
+    public void exportRooms() {
+        RoomReaderWriter.writeRooms(roomDao.getAll(daoManager.getConnection()));
+    }
+
+    @Override
+    public void importRooms() {
+        List<Room> rooms = RoomReaderWriter.readRooms();
+        rooms.forEach(room -> {
+            Room existing = roomDao.getById(room.getId(), daoManager.getConnection());
+            if (existing == null) {
+                addRoom(room.getStatus(), room.getPrice(), room.getCapacity(), room.getStars());
+            }
+        });
     }
 }
 

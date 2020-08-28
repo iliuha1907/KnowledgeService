@@ -6,7 +6,6 @@ import com.senla.training.hoteladmin.view.MenuController;
 import com.senla.training.injection.DependencyInjector;
 
 public class Main {
-    private static MenuController menuController;
     private static DaoManager daoManager;
 
     public static void main(String[] args) {
@@ -14,7 +13,7 @@ public class Main {
         try {
             DependencyInjector.init("com.senla.training.hoteladmin");
             daoManager = DependencyInjector.getClassInstance(DaoManager.class);
-            menuController = DependencyInjector.getClassInstance(MenuController.class);
+            MenuController menuController = DependencyInjector.getClassInstance(MenuController.class);
             menuController.run();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

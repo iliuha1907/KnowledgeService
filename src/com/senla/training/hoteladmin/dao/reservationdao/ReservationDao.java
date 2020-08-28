@@ -21,5 +21,7 @@ public interface ReservationDao extends GenericDao<Reservation> {
     Reservation getClientReservation(Integer clientId, Connection connection);
 
     void deactivateClientReservation(Integer clientId, Connection connection);
+
+    Reservation getByRoomClientId(Integer roomId, Integer clientId, Connection connection);
 }
 

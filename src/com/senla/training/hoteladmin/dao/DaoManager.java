@@ -82,6 +82,5 @@ public class DaoManager {
             throw new IncorrectWorkException(ex.getMessage());
         }
     }
-
 }
 

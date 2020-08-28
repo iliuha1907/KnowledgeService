@@ -11,7 +11,5 @@ public interface VisitDao extends GenericDao<Visit> {
 
     List<Visit> getSortedClientVisits(Integer clientId, VisitSortCriterion criterion,
                                       Connection connection);
-
-    void deactivateClientVisits(Integer clientId, Connection connection);
 }
 

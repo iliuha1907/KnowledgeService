@@ -3,6 +3,7 @@ package com.senla.training.hoteladmin.service;
 import com.senla.training.hoteladmin.dao.DaoManager;
 import com.senla.training.hoteladmin.dao.clientdao.ClientDao;
 import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.util.filecsv.writeread.ClientReaderWriter;
 import com.senla.training.injection.annotation.NeedInjectionClass;
 import com.senla.training.injection.annotation.NeedInjectionField;
 
@@ -26,10 +27,10 @@ public class ClientServiceImpl implements ClientService {
             daoManager.commitConnection();
         } catch (Exception ex) {
             daoManager.rollbackConnection();
-            daoManager.setConnectionAutocommit(isAutocommit);
             throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
         }
-        daoManager.setConnectionAutocommit(isAutocommit);
     }
 
     @Override
@@ -40,6 +41,22 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Integer getNumberOfClients() {
         return clientDao.getNumberOfClients(daoManager.getConnection());
+    }
+
+    @Override
+    public void exportClients() {
+        ClientReaderWriter.writeClients(clientDao.getAll(daoManager.getConnection()));
+    }
+
+    @Override
+    public void importClients() {
+        List<Client> clients = ClientReaderWriter.readClients();
+        clients.forEach(client -> {
+            Client existing = clientDao.getById(client.getId(), daoManager.getConnection());
+            if (existing == null) {
+                addClient(client.getFirstName(), client.getLastName());
+            }
+        });
     }
 }
 

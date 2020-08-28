@@ -13,5 +13,9 @@ public interface HotelServiceService {
     void setServicePrice(Integer id, BigDecimal price);
 
     List<HotelService> getServices();
+
+    void exportServices();
+
+    void importServices();
 }
 

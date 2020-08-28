@@ -46,7 +46,9 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
 
     @Override
     public Integer getNumberOfResidents(Connection connection) {
-        String sql = "select count(*) from " + tableName + " where " + ReservationFields.is_active + " = 1";
+        String innerSql = "select distinct " + ReservationFields.resident_id +
+                " from " + tableName + " where " + ReservationFields.is_active + " = 1";
+        String sql = "select count(*) from (" + innerSql + ") as residents";
         try (Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(sql);
             rs.next();
@@ -99,6 +101,20 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
             statement.setBoolean(1, false);
             statement.setInt(2, clientId);
             statement.execute();
+        } catch (Exception ex) {
+            throw new BusinessException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public Reservation getByRoomClientId(Integer roomId, Integer clientId, Connection connection) {
+        String sql = getSelectAllActiveQuery() + " and " + ReservationFields.room_id + " = ? and " +
+                ReservationFields.resident_id + " = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, roomId);
+            statement.setInt(2, clientId);
+            List<Reservation> reservations = parseSelectResultSet(statement.executeQuery());
+            return reservations.size() == 0 ? null : reservations.get(0);
         } catch (Exception ex) {
             throw new BusinessException(ex.getMessage());
         }
