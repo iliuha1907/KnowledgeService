@@ -1,197 +1,140 @@
 package com.senla.training.hoteladmin.service;
 
+import com.senla.training.hoteladmin.dao.DaoManager;
+import com.senla.training.hoteladmin.dao.roomdao.RoomDao;
 import com.senla.training.hoteladmin.exception.BusinessException;
-import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.repository.*;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.util.filecsv.writeread.RoomReaderWriter;
-import com.senla.training.hoteladmin.util.idspread.RoomIdProvider;
-import com.senla.training.hoteladmin.util.serializator.Deserializator;
-import com.senla.training.hoteladmin.util.serializator.Serializator;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
-import com.senla.training.hoteladmin.util.sort.RoomsSorter;
 import com.senla.training.injection.annotation.ConfigProperty;
 import com.senla.training.injection.annotation.NeedInjectionClass;
 import com.senla.training.injection.annotation.NeedInjectionField;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Connection;
 import java.util.List;
 
 @NeedInjectionClass
 public class RoomServiceImpl implements RoomService {
     @NeedInjectionField
-    private RoomsRepository roomsRepository;
+    private RoomDao roomDao;
     @NeedInjectionField
-    private ClientsRepository clientsRepository;
+    private DaoManager daoManager;
     @ConfigProperty(propertyName = "rooms.changeStatus", type = Boolean.class)
     private Boolean isChangeableStatus;
 
-    public RoomServiceImpl() {
-    }
-
-    @Override
-    public void setRooms(List<Room> rooms) {
-        roomsRepository.setRooms(rooms);
-    }
-
     @Override
     public void addRoom(RoomStatus status, BigDecimal price, Integer capacity, Integer stars) {
-        Room room = new Room(status, price, capacity, stars);
-        roomsRepository.addRoom(room);
+        Connection connection = daoManager.getConnection();
+        boolean isAutocommit = daoManager.getAutoConnectionCommit();
+        daoManager.setConnectionAutocommit(false);
+        try {
+            roomDao.add(new Room(status, price, capacity, stars, true), connection);
+            daoManager.commitConnection();
+        } catch (Exception ex) {
+            daoManager.rollbackConnection();
+            throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
+        }
     }
 
     @Override
     public void setRoomStatus(Integer roomId, RoomStatus status) {
         if (!isChangeableStatus) {
-            throw new BusinessException("Error at modifying room: no permission!");
+            throw new BusinessException("No permission to change status");
         }
-        Room room = roomsRepository.getRoom(roomId);
+
+        Connection connection = daoManager.getConnection();
+        Room room = roomDao.getById(roomId, connection);
         if (room == null) {
-            throw new BusinessException("Error at modifying room: no such room!");
+            throw new BusinessException("No such room");
         }
-        room.setStatus(status);
+
+        boolean isAutocommit = daoManager.getAutoConnectionCommit();
+        daoManager.setConnectionAutocommit(false);
+        try {
+            roomDao.updateById(room.getId(), status.toString(), "status", connection);
+            daoManager.commitConnection();
+        } catch (Exception ex) {
+            daoManager.rollbackConnection();
+            throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
+        }
     }
 
     @Override
     public void setRoomPrice(Integer roomId, BigDecimal price) {
-        Room room = roomsRepository.getRoom(roomId);
+        Connection connection = daoManager.getConnection();
+        Room room = roomDao.getById(roomId, connection);
         if (room == null) {
-            throw new BusinessException("Error at modifying room: no such room!");
+            throw new BusinessException("No such room");
         }
-        room.setPrice(price);
+
+        boolean isAutocommit = daoManager.getAutoConnectionCommit();
+        daoManager.setConnectionAutocommit(false);
+        try {
+            roomDao.updateById(room.getId(), price, "price", connection);
+            daoManager.commitConnection();
+        } catch (Exception ex) {
+            daoManager.rollbackConnection();
+            throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
+        }
     }
 
     @Override
     public List<Room> getSortedRooms(RoomsSortCriterion criterion) {
-        List<Room> rooms = roomsRepository.getRooms();
-        if (criterion.equals(RoomsSortCriterion.PRICE)) {
-            RoomsSorter.sortRoomsByPrice(rooms);
-        } else if (criterion.equals(RoomsSortCriterion.STARS)) {
-            RoomsSorter.sortRoomsByStars(rooms);
-        } else if (criterion.equals(RoomsSortCriterion.CAPACITY)) {
-            RoomsSorter.sortRoomsByCapacity(rooms);
-        }
-        return rooms;
+        return roomDao.getSortedRooms(criterion, daoManager.getConnection());
+    }
+
+    @Override
+    public List<Room> getFreeRooms() {
+        return roomDao.getFreeRooms(daoManager.getConnection());
     }
 
     @Override
     public List<Room> getSortedFreeRooms(RoomsSortCriterion criterion) {
-        List<Room> free = getFreeRooms();
-        if (criterion.equals(RoomsSortCriterion.PRICE)) {
-            RoomsSorter.sortRoomsByPrice(free);
-        } else if (criterion.equals(RoomsSortCriterion.STARS)) {
-            RoomsSorter.sortRoomsByStars(free);
-        } else if (criterion.equals(RoomsSortCriterion.CAPACITY)) {
-            RoomsSorter.sortRoomsByCapacity(free);
-        }
-        return free;
-    }
-
-    @Override
-    public List<Room> getFreeRoomsAfterDate(Date date) {
-        return roomsRepository.getFreeRoomsAfterDate(date);
+        return roomDao.getSortedFreeRooms(criterion, daoManager.getConnection());
     }
 
     @Override
     public BigDecimal getPriceRoom(Integer roomId) {
-        Room room = roomsRepository.getRoom(roomId);
+        Room room = roomDao.getById(roomId, daoManager.getConnection());
         if (room == null) {
-            throw new BusinessException("Error at modifying room: no such room!");
+            throw new BusinessException("No such room");
         }
+
         return room.getPrice();
     }
 
     @Override
     public Room getRoom(Integer roomId) {
-        return roomsRepository.getRoom(roomId);
+        return roomDao.getById(roomId, daoManager.getConnection());
     }
 
     @Override
     public Integer getNumberOfFreeRooms() {
-        return roomsRepository.getFreeRooms().size();
+        return roomDao.getNumberOfFreeRooms(daoManager.getConnection());
     }
 
     @Override
     public void exportRooms() {
-        RoomReaderWriter.writeRooms(roomsRepository.getRooms());
+        RoomReaderWriter.writeRooms(roomDao.getAll(daoManager.getConnection()));
     }
 
     @Override
     public void importRooms() {
         List<Room> rooms = RoomReaderWriter.readRooms();
         rooms.forEach(room -> {
-            if (room.getResident() == null) {
-                updateRoom(room);
-            } else {
-                Client existing = clientsRepository.getClientById(room.getResident().getId());
-                if (existing == null) {
-                    throw new BusinessException("Could not import rooms: wrong idspread of a client!");
-                }
-                existing.getRoom().setResident(null);
-                room.setResident(existing);
-                existing.setRoom(room);
-                updateRoom(room);
+            Room existing = roomDao.getById(room.getId(), daoManager.getConnection());
+            if (existing == null) {
+                addRoom(room.getStatus(), room.getPrice(), room.getCapacity(), room.getStars());
             }
         });
-    }
-
-    @Override
-    public void updateRoom(Room room) {
-        if (room == null) {
-            return;
-        }
-        List<Room> rooms = roomsRepository.getRooms();
-        int index = rooms.indexOf(room);
-        if (index == -1) {
-            roomsRepository.addRoom(room);
-        } else {
-            if (rooms.get(index).getResident() != null) {
-                if (!rooms.get(index).getResident().equals(room.getResident())) {
-                    clientsRepository.removeClient(rooms.get(index).getResident());
-                }
-            }
-            rooms.set(index, room);
-        }
-    }
-
-    @Override
-    public void deserializeRooms() {
-        List<Room> rooms = Deserializator.deserializeRoomClients();
-        setRooms(rooms);
-        clientsRepository.setClients(getClientsFromRooms(rooms));
-    }
-
-    @Override
-    public void serializeRooms() {
-        Serializator.serializeRoomsClients(roomsRepository.getRooms());
-    }
-
-    @Override
-    public void serializeId() {
-        Serializator.serializeRoomId(RoomIdProvider.getCurrentId());
-    }
-
-    @Override
-    public void deserializeId() {
-        Integer id = Deserializator.deserializeRoomId();
-        RoomIdProvider.setCurrentId(id);
-    }
-
-    private List<Room> getFreeRooms() {
-        return roomsRepository.getFreeRooms();
-    }
-
-    private List<Client> getClientsFromRooms(List<Room> rooms) {
-        List<Client> clients = new ArrayList<>();
-        rooms.forEach(room -> {
-            if (room.getResident() != null) {
-                clients.add(room.getResident());
-            }
-        });
-        return clients;
     }
 }
 

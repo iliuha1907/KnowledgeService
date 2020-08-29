@@ -1,43 +1,19 @@
 package com.senla.training.hoteladmin.service;
 
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.util.sort.ClientsSortCriterion;
 
-import java.util.Date;
 import java.util.List;
 
 public interface ClientService {
 
-    void setClients(List<Client> clients);
+    void addClient(String firstName, String lastName);
 
-    void setLastResidents(List<Client> residents);
+    List<Client> getClients();
 
-    void addResident(String firstName, String lastName, Date arrival, Date departure);
-
-    void removeResident(Client resident);
-
-    void removeResidentById(Integer id);
-
-    List<Client> getSortedClients(ClientsSortCriterion criterion);
-
-    Integer getNumberOfResidents();
-
-    Client getClientById(Integer id);
-
-    List<Client> getLastResidents(Integer roomId);
+    Integer getNumberOfClients();
 
     void exportClients();
 
     void importClients();
-
-    void updateClient(Client client);
-
-    void serializeMovedClients();
-
-    void deserializeMovedClients();
-
-    void serializeId();
-
-    void deserializeId();
 }
 

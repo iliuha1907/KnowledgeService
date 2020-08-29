@@ -1,141 +1,81 @@
 package com.senla.training.hoteladmin.service;
 
+import com.senla.training.hoteladmin.dao.DaoManager;
+import com.senla.training.hoteladmin.dao.hotelservicedao.HotelServiceDao;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
-import com.senla.training.hoteladmin.repository.ClientsRepository;
-import com.senla.training.hoteladmin.repository.HotelServiceRepository;
-import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.util.filecsv.writeread.HotelServiceReaderWriter;
-import com.senla.training.hoteladmin.util.idspread.HotelServiceIdProvider;
-import com.senla.training.hoteladmin.util.serializator.Deserializator;
-import com.senla.training.hoteladmin.util.serializator.Serializator;
-import com.senla.training.hoteladmin.util.sort.HotelServiceSortCriterion;
-import com.senla.training.hoteladmin.util.sort.HotelServiceSorter;
 import com.senla.training.injection.annotation.NeedInjectionClass;
 import com.senla.training.injection.annotation.NeedInjectionField;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Connection;
 import java.util.List;
 
 @NeedInjectionClass
 public class HotelServiceServiceImpl implements HotelServiceService {
     @NeedInjectionField
-    private HotelServiceRepository hotelServiceRepository;
+    private HotelServiceDao hotelServiceDao;
     @NeedInjectionField
-    private ClientsRepository clientsRepository;
-
-    public HotelServiceServiceImpl() {
-    }
+    private DaoManager daoManager;
 
     @Override
-    public void setServices(List<HotelService> hotelServices) {
-        hotelServiceRepository.setHotelServices(hotelServices);
-    }
-
-    @Override
-    public void addService(BigDecimal price, HotelServiceType type, Integer clientId, Date date) {
-        Client client = clientsRepository.getClientById(clientId);
-        if (client == null) {
-            throw new BusinessException("Error at adding service: no such client");
+    public void addService(BigDecimal price, HotelServiceType type) {
+        Connection connection = daoManager.getConnection();
+        boolean isAutocommit = daoManager.getAutoConnectionCommit();
+        daoManager.setConnectionAutocommit(false);
+        try {
+            hotelServiceDao.add(new HotelService(price, type), connection);
+            daoManager.commitConnection();
+        } catch (Exception ex) {
+            daoManager.rollbackConnection();
+            throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
         }
-        if (!(date.after(client.getArrivalDate()) && date.before(client.getDepartureDate()))) {
-            throw new BusinessException("Error at adding service: incompatible dates");
-        }
-        hotelServiceRepository.addHotelService(new HotelService(price, type, client, date));
     }
 
     @Override
     public void setServicePrice(Integer id, BigDecimal price) {
-        HotelService hotelService = hotelServiceRepository.getHotelServiceById(id);
+        Connection connection = daoManager.getConnection();
+        HotelService hotelService = hotelServiceDao.getById(id, connection);
         if (hotelService == null) {
-            throw new BusinessException("Error at modifying service: ino such service");
+            throw new BusinessException("No such service");
         }
-        hotelService.setPrice(price);
+
+        boolean isAutocommit = daoManager.getAutoConnectionCommit();
+        daoManager.setConnectionAutocommit(false);
+        try {
+            hotelServiceDao.updateById(hotelService.getId(), price, "price", connection);
+            daoManager.commitConnection();
+        } catch (Exception ex) {
+            daoManager.rollbackConnection();
+            throw ex;
+        } finally {
+            daoManager.setConnectionAutocommit(isAutocommit);
+        }
     }
 
     @Override
-    public List<HotelService> getSortedClientServices(Client client, HotelServiceSortCriterion criterion) {
-        List<HotelService> hotelServices = getClientServices(client);
-        if (criterion.equals(HotelServiceSortCriterion.DATE)) {
-            HotelServiceSorter.sortByDate(hotelServices);
-        } else if (criterion.equals(HotelServiceSortCriterion.PRICE)) {
-            HotelServiceSorter.sortByPrice(hotelServices);
-        }
-        return hotelServices;
-    }
-
-    @Override
-    public List<HotelService> getServices(HotelServiceSortCriterion criterion) {
-        List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
-        if (criterion.equals(HotelServiceSortCriterion.DATE)) {
-            HotelServiceSorter.sortByDate(hotelServices);
-        } else if (criterion.equals(HotelServiceSortCriterion.PRICE)) {
-            HotelServiceSorter.sortByPrice(hotelServices);
-        }
-        return hotelServices;
+    public List<HotelService> getServices() {
+        return hotelServiceDao.getAll(daoManager.getConnection());
     }
 
     @Override
     public void exportServices() {
-        HotelServiceReaderWriter.writeServices(hotelServiceRepository.getHotelServices());
+        HotelServiceReaderWriter.writeServices(hotelServiceDao.getAll(daoManager.getConnection()));
     }
 
     @Override
     public void importServices() {
         List<HotelService> hotelServices = HotelServiceReaderWriter.readServices();
         hotelServices.forEach(hotelService -> {
-            Client existing = clientsRepository.getClientById(hotelService.getClient().getId());
+            HotelService existing = hotelServiceDao.getById(hotelService.getId(), daoManager.getConnection());
             if (existing == null) {
-                throw new BusinessException("Could not import services: wrong idspread of a client");
+                addService(hotelService.getPrice(), hotelService.getType());
             }
-            hotelService.setClient(existing);
-            updateService(hotelService);
         });
-    }
-
-    @Override
-    public void updateService(HotelService hotelService) {
-        if (hotelService == null) {
-            return;
-        }
-        List<HotelService> hotelServices = hotelServiceRepository.getHotelServices();
-        int index = hotelServices.indexOf(hotelService);
-        if (index == -1) {
-            hotelServiceRepository.addHotelService(hotelService);
-        } else {
-            hotelServices.set(index, hotelService);
-        }
-    }
-
-    @Override
-    public void serializeServices() {
-        Serializator.serializeServices(hotelServiceRepository.getHotelServices());
-    }
-
-    @Override
-    public void deserializeServices() {
-        List<HotelService> hotelServices = Deserializator.deserializeServices();
-        hotelServices.forEach(hotelService -> {
-            hotelService.setClient(clientsRepository.getClientById(hotelService.getClient().getId()));
-        });
-        setServices(hotelServices);
-    }
-
-    @Override
-    public void serializeId() {
-        Serializator.serializeHotelServiceId(HotelServiceIdProvider.getCurrentId());
-    }
-
-    @Override
-    public void deserializeId() {
-        Integer id = Deserializator.deserializeHotelServiceId();
-        HotelServiceIdProvider.setCurrentId(id);
-    }
-
-    private List<HotelService> getClientServices(Client client) {
-        return hotelServiceRepository.getClientHotelServices(client.getId());
     }
 }
 

@@ -2,9 +2,16 @@ package com.senla.training.hoteladmin.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateUtil {
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+    private static final String timeZone = "GMT";
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-M-dd");
+
+    static {
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
+    }
 
     public static Date getDate(String data) {
         try {

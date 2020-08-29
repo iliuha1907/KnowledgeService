@@ -6,7 +6,10 @@ import com.senla.training.hoteladmin.util.filecsv.parsing.ClientConverter;
 import com.senla.training.injection.annotation.ConfigProperty;
 import com.senla.training.injection.annotation.NeedInjectionClass;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class ClientReaderWriter {
     public static void writeClients(List<Client> clients) {
         try (FileWriter fileWriter = new FileWriter(new File(fileName))) {
             for (Client client : clients) {
-                fileWriter.write(ClientConverter.getStringFromResident(client, separator) + "\n");
+                fileWriter.write(ClientConverter.getStringFromClient(client, separator) + "\n");
             }
         } catch (Exception ex) {
             throw new BusinessException(ex.getMessage());
