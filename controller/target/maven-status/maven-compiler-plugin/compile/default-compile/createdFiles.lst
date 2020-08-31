@@ -1,0 +1,5 @@
+controller\ReservationController.class
+controller\VisitController.class
+controller\HotelServiceController.class
+controller\RoomController.class
+controller\ClientController.class

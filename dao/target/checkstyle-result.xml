@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.29">
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\AbstractDao.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\client\ClientDao.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\client\ClientDaoImpl.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\DaoManager.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\GenericDao.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\HotelServiceDao.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\HotelServiceDaoImpl.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\ReservationDao.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\ReservationDaoImpl.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\RoomDao.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\RoomDaoImpl.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\visit\VisitDao.java">
+</file>
+<file name="C:\Users\HP\IdeaProjects\hotel_admin\dao\src\main\java\dao\visit\VisitDaoImpl.java">
+</file>
+</checkstyle>

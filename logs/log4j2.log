@@ -1,0 +1,27 @@
+2020-08-31 12:42:21,269 ERROR s.ReservationServiceImpl [main] Error at adding reservation: No such client
+2020-08-31 12:51:22,565 ERROR s.ReservationServiceImpl [main] Error at adding reservation: No such client
+2020-08-31 14:12:00,504 ERROR f.w.VisitReaderWriter [main] Error at writing visits: null
+2020-08-31 14:13:46,657 ERROR f.w.HotelServiceReaderWriter [main] Error at writing services: null
+2020-08-31 14:14:07,141 ERROR f.w.HotelServiceReaderWriter [main] Error at reading services: null
+2020-08-31 14:16:47,420 ERROR f.w.HotelServiceReaderWriter [main] Error at writing services: null
+2020-08-31 14:17:26,556 ERROR f.w.ClientReaderWriter [main] Error at writing clients: null
+2020-08-31 14:18:03,968 ERROR f.w.ClientReaderWriter [main] Error at writing clients: resources\csv\clients.csv (Системе не удается найти указанный путь)
+2020-08-31 14:18:53,757 ERROR f.w.ClientReaderWriter [main] Error at writing clients: resources\csv\clients.csv (Системе не удается найти указанный путь)
+2020-08-31 14:21:02,467 ERROR f.w.ClientReaderWriter [main] Error at writing clients: resources\csv\clients.csv (Системе не удается найти указанный путь)
+2020-08-31 14:21:38,661 ERROR f.w.ClientReaderWriter [main] Error at writing clients: csv\client.csv (Системе не удается найти указанный путь)
+2020-08-31 14:24:38,636 ERROR f.w.ClientReaderWriter [main] Error at finding classes: Could not scan package
+2020-08-31 14:26:09,108 ERROR f.w.ClientReaderWriter [main] Error at writing clients: resources\csv\clients.csv (Системе не удается найти указанный путь)
+2020-08-31 14:26:45,447 ERROR f.w.ClientReaderWriter [main] Error at writing clients: resources\csv\clients.csv (Системе не удается найти указанный путь)
+2020-08-31 19:41:12,784 ERROR d.DaoManager [main] Error at opening connection: No suitable driver found for jdbc:mysql://localhost:3306/HotelAdmin?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+2020-08-31 20:36:24,061 ERROR d.DaoManager [main] Error at opening connection: Could not create connection to database server.
+2020-08-31 20:37:17,915 ERROR d.DaoManager [main] Error at opening connection: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2020-08-31 20:37:41,540 ERROR d.DaoManager [main] Error at opening connection: Could not create connection to database server.
+2020-08-31 20:38:17,934 ERROR d.DaoManager [main] Error at opening connection: Could not create connection to database server.
+2020-08-31 20:41:17,336 ERROR d.DaoManager [main] Error at opening connection: No suitable driver found for jdbc:mysql:host:3306/HotelAdmin
+2020-08-31 20:43:10,852 ERROR d.DaoManager [main] Error at opening connection: com.mysql.cj.jdbc.Driver
+2020-08-31 20:43:34,117 ERROR d.DaoManager [main] Error at opening connection: Could not create connection to database server.
+2020-08-31 20:44:19,632 ERROR d.DaoManager [main] Error at opening connection: Could not create connection to database server.
+2020-08-31 20:46:55,741 ERROR d.DaoManager [main] Error at opening connection: The server time zone value '�������� (����)' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the serverTimezone configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+2020-08-31 21:23:40,445 ERROR d.DaoManager [main] Error at opening connection: Unknown database 'hoteladmin_huzei'
