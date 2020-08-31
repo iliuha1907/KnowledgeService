@@ -1,5 +1,5 @@
-C:\Users\HP\IdeaProjects\hotel_admin\injection\src\main\java\injection\ParametersConfigurator.java
-C:\Users\HP\IdeaProjects\hotel_admin\injection\src\main\java\injection\PropertyDataProvider.java
-C:\Users\HP\IdeaProjects\hotel_admin\injection\src\main\java\injection\PackageScanner.java
-C:\Users\HP\IdeaProjects\hotel_admin\injection\src\main\java\injection\exception\IncorrectInitializationException.java
-C:\Users\HP\IdeaProjects\hotel_admin\injection\src\main\java\injection\DependencyInjector.java
+D:\SENLA\huzei_ilya-Task-12\injection\src\main\java\injection\PropertyDataProvider.java
+D:\SENLA\huzei_ilya-Task-12\injection\src\main\java\injection\PackageScanner.java
+D:\SENLA\huzei_ilya-Task-12\injection\src\main\java\injection\exception\IncorrectInitializationException.java
+D:\SENLA\huzei_ilya-Task-12\injection\src\main\java\injection\DependencyInjector.java
+D:\SENLA\huzei_ilya-Task-12\injection\src\main\java\injection\ParametersConfigurator.java

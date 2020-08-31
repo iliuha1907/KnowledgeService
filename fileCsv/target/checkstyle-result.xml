@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="8.29">
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\fileCsv\src\main\java\filecsv\parsing\ClientConverter.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\fileCsv\src\main\java\filecsv\parsing\ClientConverter.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\fileCsv\src\main\java\filecsv\parsing\HotelServiceConverter.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\fileCsv\src\main\java\filecsv\parsing\HotelServiceConverter.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\fileCsv\src\main\java\filecsv\parsing\ReservationConverter.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\fileCsv\src\main\java\filecsv\parsing\ReservationConverter.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\fileCsv\src\main\java\filecsv\parsing\RoomConverter.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\fileCsv\src\main\java\filecsv\parsing\RoomConverter.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\fileCsv\src\main\java\filecsv\parsing\VisitConverter.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\fileCsv\src\main\java\filecsv\parsing\VisitConverter.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\fileCsv\src\main\java\filecsv\writeread\ClientReaderWriter.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\fileCsv\src\main\java\filecsv\writeread\ClientReaderWriter.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\fileCsv\src\main\java\filecsv\writeread\HotelServiceReaderWriter.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\fileCsv\src\main\java\filecsv\writeread\HotelServiceReaderWriter.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\fileCsv\src\main\java\filecsv\writeread\ReservationReaderWriter.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\fileCsv\src\main\java\filecsv\writeread\ReservationReaderWriter.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\fileCsv\src\main\java\filecsv\writeread\RoomReaderWriter.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\fileCsv\src\main\java\filecsv\writeread\RoomReaderWriter.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\fileCsv\src\main\java\filecsv\writeread\VisitReaderWriter.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\fileCsv\src\main\java\filecsv\writeread\VisitReaderWriter.java">
 </file>
 </checkstyle>

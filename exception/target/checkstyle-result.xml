@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="8.29">
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\exception\src\main\java\exception\BusinessException.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\exception\src\main\java\exception\BusinessException.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\exception\src\main\java\exception\IncorrectWorkException.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\exception\src\main\java\exception\IncorrectWorkException.java">
 </file>
 </checkstyle>

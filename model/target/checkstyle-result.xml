@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="8.29">
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\model\src\main\java\model\client\Client.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\model\src\main\java\model\client\Client.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\model\src\main\java\model\hotelservice\HotelService.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\model\src\main\java\model\hotelservice\HotelService.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\model\src\main\java\model\hotelservice\HotelServiceType.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\model\src\main\java\model\hotelservice\HotelServiceType.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\model\src\main\java\model\reservation\Reservation.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\model\src\main\java\model\reservation\Reservation.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\model\src\main\java\model\room\Room.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\model\src\main\java\model\room\Room.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\model\src\main\java\model\room\RoomStatus.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\model\src\main\java\model\room\RoomStatus.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\model\src\main\java\model\visit\Visit.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\model\src\main\java\model\visit\Visit.java">
 </file>
 </checkstyle>

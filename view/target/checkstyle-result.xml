@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="8.29">
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\view\src\main\java\view\Builder.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\view\src\main\java\view\Builder.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\view\src\main\java\view\IAction.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\view\src\main\java\view\IAction.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\view\src\main\java\view\Menu.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\view\src\main\java\view\Menu.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\view\src\main\java\view\MenuController.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\view\src\main\java\view\MenuController.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\view\src\main\java\view\MenuItem.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\view\src\main\java\view\MenuItem.java">
 </file>
-<file name="C:\Users\HP\IdeaProjects\hotel_admin\view\src\main\java\view\Navigator.java">
+<file name="D:\SENLA\huzei_ilya-Task-12\view\src\main\java\view\Navigator.java">
 </file>
 </checkstyle>
