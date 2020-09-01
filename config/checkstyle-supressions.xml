@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+    <suppress checks="DesignForExtension"/>
+    <suppress checks="JavadocVariable"/>
+    <suppress checks="HiddenField"/>
+    <suppress checks="ParenPad"/>
+    <suppress checks="EqualsHashCode"
+              files="HotelService.java|Room.java"/>
+    <suppress checks="MagicNumber"
+              files="UserInteraction.java"/>
+    <suppress checks="HideUtilityClassConstructor"/>
+    <suppress checks="AvoidInlineConditionals"
+              files="ReservationDaoImpl.java|RoomDaoImpl.java|AbstractDao.java"/>
+    <suppress checks="AvoidStarImport"/>
+    <suppress checks="VisibilityModifier"
+              files="AbstractDao.java"/>
+    <suppress checks="FinalParameters"/>
+
+</suppressions>
