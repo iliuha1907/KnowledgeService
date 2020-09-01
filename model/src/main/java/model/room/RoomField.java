@@ -1,4 +1,4 @@
-package util.database;
+package model.room;
 
 public enum RoomField {
 

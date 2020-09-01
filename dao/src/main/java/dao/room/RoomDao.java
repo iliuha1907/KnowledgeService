@@ -1,5 +1,6 @@
-package dao;
+package dao.room;
 
+import dao.GenericDao;
 import model.room.Room;
 import util.sort.RoomsSortCriterion;
 

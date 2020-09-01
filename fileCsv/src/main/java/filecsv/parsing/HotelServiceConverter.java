@@ -2,7 +2,7 @@ package filecsv.parsing;
 
 import model.hotelservice.HotelService;
 import model.hotelservice.HotelServiceType;
-import util.database.HotelServiceField;
+import model.hotelservice.HotelServiceField;
 
 import java.math.BigDecimal;
 

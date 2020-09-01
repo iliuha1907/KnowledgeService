@@ -1,5 +1,6 @@
-package dao;
+package dao.reservation;
 
+import dao.GenericDao;
 import model.reservation.Reservation;
 import util.sort.ReservationSortCriterion;
 

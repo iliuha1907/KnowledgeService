@@ -19,14 +19,15 @@ import java.util.List;
 public class VisitReaderWriter {
 
     private static final Logger LOGGER = LogManager.getLogger(VisitReaderWriter.class);
-    @ConfigProperty(propertyName = "csv.visits.filePath", type = String.class)
-    private static String fileName;
+    @ConfigProperty(propertyName = "csv.visits.import.filePath", type = String.class)
+    private static String fileNameImport;
+    @ConfigProperty(propertyName = "csv.visits.export.filePath", type = String.class)
+    private static String fileNameExport;
     @ConfigProperty(propertyName = "csv.separator", type = String.class)
     private static String separator;
 
     public static void writeVisits(final List<Visit> visits) {
-        try (FileWriter fileWriter = new FileWriter(new File(ClientReaderWriter.class.getClassLoader().
-                getResource(fileName).getFile()))) {
+        try (FileWriter fileWriter = new FileWriter(new File(fileNameExport))) {
             for (Visit visit : visits) {
                 fileWriter.write(VisitConverter.getStringFromVisit(visit, separator) + "\n");
             }
@@ -38,7 +39,7 @@ public class VisitReaderWriter {
 
     public static List<Visit> readVisits() {
         try (BufferedReader reader = new BufferedReader(new FileReader(new File(
-                ClientReaderWriter.class.getClassLoader().getResource(fileName).getFile())))) {
+                ClientReaderWriter.class.getClassLoader().getResource(fileNameImport).getFile())))) {
             List<Visit> visits = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {

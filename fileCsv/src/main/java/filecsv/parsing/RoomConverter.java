@@ -2,7 +2,7 @@ package filecsv.parsing;
 
 import model.room.Room;
 import model.room.RoomStatus;
-import util.database.RoomField;
+import model.room.RoomField;
 
 import java.math.BigDecimal;
 

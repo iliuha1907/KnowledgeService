@@ -4,7 +4,7 @@ import model.client.Client;
 import model.hotelservice.HotelService;
 import model.visit.Visit;
 import util.DateUtil;
-import util.database.VisitField;
+import model.visit.VisitField;
 
 import java.util.Date;
 

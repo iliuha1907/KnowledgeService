@@ -4,7 +4,7 @@ import annotation.ConfigProperty;
 import annotation.NeedInjectionClass;
 import annotation.NeedInjectionField;
 import dao.DaoManager;
-import dao.RoomDao;
+import dao.room.RoomDao;
 import exception.BusinessException;
 import filecsv.writeread.RoomReaderWriter;
 import model.room.Room;

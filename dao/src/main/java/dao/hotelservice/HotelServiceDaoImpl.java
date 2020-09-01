@@ -1,11 +1,12 @@
-package dao;
+package dao.hotelservice;
 
 import annotation.ConfigProperty;
 import annotation.NeedInjectionClass;
+import dao.AbstractDao;
 import exception.BusinessException;
 import model.hotelservice.HotelService;
 import model.hotelservice.HotelServiceType;
-import util.database.HotelServiceField;
+import model.hotelservice.HotelServiceField;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;

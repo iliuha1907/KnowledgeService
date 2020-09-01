@@ -3,7 +3,7 @@ package service;
 import annotation.NeedInjectionClass;
 import annotation.NeedInjectionField;
 import dao.DaoManager;
-import dao.HotelServiceDao;
+import dao.hotelservice.HotelServiceDao;
 import exception.BusinessException;
 import filecsv.writeread.HotelServiceReaderWriter;
 import model.hotelservice.HotelService;

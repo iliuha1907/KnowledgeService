@@ -19,14 +19,15 @@ import java.util.List;
 public class ReservationReaderWriter {
 
     private static final Logger LOGGER = LogManager.getLogger(ReservationReaderWriter.class);
-    @ConfigProperty(propertyName = "csv.reservations.filePath", type = String.class)
-    private static String fileName;
+    @ConfigProperty(propertyName = "csv.reservations.import.filePath", type = String.class)
+    private static String fileNameImport;
+    @ConfigProperty(propertyName = "csv.reservations.export.filePath", type = String.class)
+    private static String fileNameExport;
     @ConfigProperty(propertyName = "csv.separator", type = String.class)
     private static String separator;
 
     public static void writeReservations(final List<Reservation> reservations) {
-        try (FileWriter fileWriter = new FileWriter(new File(ClientReaderWriter.class.getClassLoader().
-                getResource(fileName).getFile()))) {
+        try (FileWriter fileWriter = new FileWriter(new File(fileNameExport))) {
             for (Reservation reservation : reservations) {
                 fileWriter.write(ReservationConverter.getStringFromReservation(reservation, separator) + "\n");
             }
@@ -38,7 +39,7 @@ public class ReservationReaderWriter {
 
     public static List<Reservation> readReservations() {
         try (BufferedReader reader = new BufferedReader(new FileReader(new File(
-                ClientReaderWriter.class.getClassLoader().getResource(fileName).getFile())))) {
+                ClientReaderWriter.class.getClassLoader().getResource(fileNameImport).getFile())))) {
             List<Reservation> reservations = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {

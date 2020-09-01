@@ -4,7 +4,7 @@ import model.client.Client;
 import model.reservation.Reservation;
 import model.room.Room;
 import util.DateUtil;
-import util.database.ReservationField;
+import model.reservation.ReservationField;
 
 import java.util.Date;
 

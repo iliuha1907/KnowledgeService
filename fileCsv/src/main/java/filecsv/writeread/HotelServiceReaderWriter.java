@@ -19,14 +19,15 @@ import java.util.List;
 public class HotelServiceReaderWriter {
 
     private static final Logger LOGGER = LogManager.getLogger(HotelServiceReaderWriter.class);
-    @ConfigProperty(propertyName = "csv.services.filePath", type = String.class)
-    private static String fileName;
+    @ConfigProperty(propertyName = "csv.services.import.filePath", type = String.class)
+    private static String fileNameImport;
+    @ConfigProperty(propertyName = "csv.services.export.filePath", type = String.class)
+    private static String fileNameExport;
     @ConfigProperty(propertyName = "csv.separator", type = String.class)
     private static String separator;
 
     public static void writeServices(final List<HotelService> hotelServices) {
-        try (FileWriter fileWriter = new FileWriter(new File(ClientReaderWriter.class.getClassLoader().
-                getResource(fileName).getFile()))) {
+        try (FileWriter fileWriter = new FileWriter(new File(fileNameExport))) {
             for (HotelService hotelService : hotelServices) {
                 fileWriter.write(HotelServiceConverter.getStringFromService(hotelService, separator) + "\n");
             }
@@ -38,7 +39,7 @@ public class HotelServiceReaderWriter {
 
     public static List<HotelService> readServices() {
         try (BufferedReader reader = new BufferedReader(new FileReader(new File(
-                ClientReaderWriter.class.getClassLoader().getResource(fileName).getFile())))) {
+                ClientReaderWriter.class.getClassLoader().getResource(fileNameImport).getFile())))) {
             List<HotelService> hotelServices = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {

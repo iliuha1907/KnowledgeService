@@ -5,7 +5,7 @@ import annotation.NeedInjectionClass;
 import dao.AbstractDao;
 import exception.BusinessException;
 import model.client.Client;
-import util.database.ClientField;
+import model.client.ClientField;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

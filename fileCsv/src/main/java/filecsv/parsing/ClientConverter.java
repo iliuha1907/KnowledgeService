@@ -1,7 +1,7 @@
 package filecsv.parsing;
 
 import model.client.Client;
-import util.database.ClientField;
+import model.client.ClientField;
 
 public class ClientConverter {
 

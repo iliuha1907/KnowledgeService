@@ -1,1 +1,7 @@
 2020-08-31 21:23:40,445 ERROR d.DaoManager [main] Error at opening connection: Unknown database 'hoteladmin_huzei'
+2020-09-01 12:12:55,926 ERROR f.w.ClientReaderWriter [main] Error at writing clients: export\clients.csv (Системе не удается найти указанный путь)
+2020-09-01 12:27:34,232 ERROR f.w.ReservationReaderWriter [main] Error at reading reservations: For input string: "2021-6-1"
+2020-09-01 12:27:35,890 ERROR f.w.VisitReaderWriter [main] Error at reading visits: For input string: "2021-6-09"
+2020-09-01 12:27:44,530 ERROR f.w.ReservationReaderWriter [main] Error at reading reservations: For input string: "2021-6-1"
+2020-09-01 12:29:38,258 ERROR f.w.ReservationReaderWriter [main] Error at reading reservations: For input string: "2021-6-1"
+2020-09-01 12:30:15,317 ERROR f.w.ReservationReaderWriter [main] Error at reading reservations: For input string: "2021-6-1"

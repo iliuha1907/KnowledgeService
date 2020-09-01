@@ -1,8 +1,7 @@
-package util.database;
+package model.visit;
 
 public enum VisitField {
 
-    ID,
     CLIENT_ID,
     HOTEL_SERVICE_ID,
     DATE,

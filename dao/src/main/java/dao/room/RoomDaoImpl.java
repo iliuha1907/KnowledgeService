@@ -1,11 +1,12 @@
-package dao;
+package dao.room;
 
 import annotation.ConfigProperty;
 import annotation.NeedInjectionClass;
+import dao.AbstractDao;
 import exception.BusinessException;
 import model.room.Room;
 import model.room.RoomStatus;
-import util.database.RoomField;
+import model.room.RoomField;
 import util.sort.RoomsSortCriterion;
 
 import java.math.BigDecimal;

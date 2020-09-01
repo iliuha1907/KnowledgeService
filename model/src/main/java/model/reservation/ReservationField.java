@@ -1,8 +1,7 @@
-package util.database;
+package model.reservation;
 
 public enum ReservationField {
 
-    ID,
     ROOM_ID,
     RESIDENT_ID,
     ARRIVAL_DATE,

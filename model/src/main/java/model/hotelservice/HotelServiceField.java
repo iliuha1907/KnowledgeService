@@ -1,4 +1,4 @@
-package util.database;
+package model.hotelservice;
 
 public enum HotelServiceField {
 

@@ -1,16 +1,17 @@
-package dao;
+package dao.reservation;
 
 import annotation.ConfigProperty;
 import annotation.NeedInjectionClass;
+import dao.AbstractDao;
 import exception.BusinessException;
 import model.client.Client;
 import model.reservation.Reservation;
 import model.room.Room;
 import model.room.RoomStatus;
 import util.DateUtil;
-import util.database.ClientField;
-import util.database.ReservationField;
-import util.database.RoomField;
+import model.client.ClientField;
+import model.reservation.ReservationField;
+import model.room.RoomField;
 import util.sort.ReservationSortCriterion;
 
 import java.math.BigDecimal;

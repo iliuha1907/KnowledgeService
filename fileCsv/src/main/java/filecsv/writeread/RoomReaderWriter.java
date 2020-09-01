@@ -19,14 +19,15 @@ import java.util.List;
 public class RoomReaderWriter {
 
     private static final Logger LOGGER = LogManager.getLogger(RoomReaderWriter.class);
-    @ConfigProperty(propertyName = "csv.rooms.filePath", type = String.class)
-    private static String fileName;
+    @ConfigProperty(propertyName = "csv.rooms.import.filePath", type = String.class)
+    private static String fileNameImport;
+    @ConfigProperty(propertyName = "csv.rooms.export.filePath", type = String.class)
+    private static String fileNameExport;
     @ConfigProperty(propertyName = "csv.separator", type = String.class)
     private static String separator;
 
     public static void writeRooms(final List<Room> rooms) {
-        try (FileWriter fileWriter = new FileWriter(new File(ClientReaderWriter.class.getClassLoader().
-                getResource(fileName).getFile()))) {
+        try (FileWriter fileWriter = new FileWriter(new File(fileNameExport))) {
             for (Room room : rooms) {
                 fileWriter.write(RoomConverter.getStringFromRoom(room, separator) + "\n");
             }
@@ -38,7 +39,7 @@ public class RoomReaderWriter {
 
     public static List<Room> readRooms() {
         try (BufferedReader reader = new BufferedReader(new FileReader(new File(
-                ClientReaderWriter.class.getClassLoader().getResource(fileName).getFile())))) {
+                ClientReaderWriter.class.getClassLoader().getResource(fileNameImport).getFile())))) {
             List<Room> rooms = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
