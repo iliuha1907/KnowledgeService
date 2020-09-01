@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="8.29">
-<file name="D:\SENLA\huzei_ilya-Task-12\injectionAnnotation\src\main\java\annotation\ConfigProperty.java">
-</file>
-<file name="D:\SENLA\huzei_ilya-Task-12\injectionAnnotation\src\main\java\annotation\NeedInjectionClass.java">
-</file>
-<file name="D:\SENLA\huzei_ilya-Task-12\injectionAnnotation\src\main\java\annotation\NeedInjectionField.java">
-</file>
-</checkstyle>
