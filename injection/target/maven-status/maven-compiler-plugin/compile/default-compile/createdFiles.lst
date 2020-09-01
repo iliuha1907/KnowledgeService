@@ -1,5 +1,0 @@
-injection\DependencyInjector.class
-injection\ParametersConfigurator.class
-injection\PropertyDataProvider.class
-injection\exception\IncorrectInitializationException.class
-injection\PackageScanner.class

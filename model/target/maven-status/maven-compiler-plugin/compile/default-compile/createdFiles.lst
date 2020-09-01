@@ -1,7 +1,0 @@
-model\room\Room.class
-model\client\Client.class
-model\visit\Visit.class
-model\hotelservice\HotelServiceType.class
-model\reservation\Reservation.class
-model\room\RoomStatus.class
-model\hotelservice\HotelService.class
