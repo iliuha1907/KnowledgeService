@@ -12,13 +12,13 @@
     <suppress checks="EqualsHashCode"
               files="HotelService.java|Room.java"/>
     <suppress checks="MagicNumber"
-              files="UserInteraction.java"></suppress>
+              files="UserInteraction.java"/>
     <suppress checks="HideUtilityClassConstructor"/>
     <suppress checks="AvoidInlineConditionals"
-              files="ReservationDaoImpl.java|RoomDaoImpl.java|AbstractDao.java"></suppress>
+              files="ReservationDaoImpl.java|RoomDaoImpl.java|AbstractDao.java"/>
     <suppress checks="AvoidStarImport"/>
     <suppress checks="VisibilityModifier"
-              files="AbstractDao.java"></suppress>
-    <suppress checks="FinalParameters"></suppress>
+              files="AbstractDao.java"/>
+    <suppress checks="FinalParameters"/>
 
 </suppressions>
