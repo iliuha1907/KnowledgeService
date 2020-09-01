@@ -2,5 +2,6 @@
 *.iml
 **/.idea
 **/META-INF
+target/**
 **/target
 **/.jar
