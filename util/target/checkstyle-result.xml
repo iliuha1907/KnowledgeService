@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.29">
+<file name="D:\SENLA\huzei_ilya-Task-12\util\src\main\java\util\database\ClientField.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\util\src\main\java\util\database\HotelServiceField.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\util\src\main\java\util\database\ReservationField.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\util\src\main\java\util\database\RoomField.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\util\src\main\java\util\database\VisitField.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\util\src\main\java\util\DateUtil.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\util\src\main\java\util\sort\ReservationSortCriterion.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\util\src\main\java\util\sort\RoomsSortCriterion.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\util\src\main\java\util\sort\VisitSortCriterion.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\util\src\main\java\util\UserInteraction.java">
+</file>
+</checkstyle>

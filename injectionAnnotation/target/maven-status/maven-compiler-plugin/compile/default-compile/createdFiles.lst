@@ -1,0 +1,3 @@
+annotation\ConfigProperty.class
+annotation\NeedInjectionClass.class
+annotation\NeedInjectionField.class

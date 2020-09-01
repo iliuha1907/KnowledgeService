@@ -1,0 +1,13 @@
+dao\HotelServiceDaoImpl.class
+dao\ReservationDaoImpl.class
+dao\RoomDaoImpl.class
+dao\RoomDao.class
+dao\AbstractDao.class
+dao\GenericDao.class
+dao\DaoManager.class
+dao\HotelServiceDao.class
+dao\visit\VisitDaoImpl.class
+dao\client\ClientDao.class
+dao\client\ClientDaoImpl.class
+dao\visit\VisitDao.class
+dao\ReservationDao.class

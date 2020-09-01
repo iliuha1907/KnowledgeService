@@ -1,0 +1,10 @@
+service\ClientServiceImpl.class
+service\RoomServiceImpl.class
+service\RoomService.class
+service\ClientService.class
+service\VisitServiceImpl.class
+service\HotelServiceService.class
+service\ReservationServiceImpl.class
+service\VisitService.class
+service\ReservationService.class
+service\HotelServiceServiceImpl.class

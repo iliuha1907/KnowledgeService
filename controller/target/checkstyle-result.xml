@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.29">
+<file name="D:\SENLA\huzei_ilya-Task-12\controller\src\main\java\controller\ClientController.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\controller\src\main\java\controller\HotelServiceController.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\controller\src\main\java\controller\ReservationController.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\controller\src\main\java\controller\RoomController.java">
+</file>
+<file name="D:\SENLA\huzei_ilya-Task-12\controller\src\main\java\controller\VisitController.java">
+</file>
+</checkstyle>
