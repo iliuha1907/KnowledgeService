@@ -1,5 +1,0 @@
-2020-09-10 14:36:09,867 ERROR RoomDaoImpl [main] Error at getting by id: no such entity!
-2020-09-10 14:46:18,571 ERROR RoomDaoImpl [main] Error at getting by id: no such entity!
-2020-09-10 14:50:46,025 ERROR RoomDaoImpl [main] Error at getting by id: no such entity!
-2020-09-10 15:04:53,533 ERROR RoomDaoImpl [main] Error at getting by id: no such entity!
-2020-09-10 15:05:30,475 ERROR c.s.t.h.d.EntityManagerProvider [main] Error at getting entity manager: No Persistence provider for EntityManager named Manager1
