@@ -4,7 +4,7 @@ import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
 import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
-import com.senla.training.hoteladmin.service.ClientService;
+import com.senla.training.hoteladmin.service.client.ClientService;
 
 import java.util.List;
 

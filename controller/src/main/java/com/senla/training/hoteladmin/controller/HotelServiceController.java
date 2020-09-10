@@ -5,8 +5,8 @@ import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
-import com.senla.training.hoteladmin.service.ClientService;
-import com.senla.training.hoteladmin.service.HotelServiceService;
+import com.senla.training.hoteladmin.service.client.ClientService;
+import com.senla.training.hoteladmin.service.hotelserice.HotelServiceService;
 
 import java.math.BigDecimal;
 import java.util.List;

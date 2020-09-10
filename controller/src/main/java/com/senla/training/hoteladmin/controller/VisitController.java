@@ -4,7 +4,7 @@ import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
 import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.visit.Visit;
-import com.senla.training.hoteladmin.service.VisitService;
+import com.senla.training.hoteladmin.service.visit.VisitService;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
 
 import java.util.Date;

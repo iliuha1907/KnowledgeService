@@ -5,7 +5,7 @@ import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.service.RoomService;
+import com.senla.training.hoteladmin.service.room.RoomService;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 
 import java.math.BigDecimal;

@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.service;
+package com.senla.training.hoteladmin.service.hotelserice;
 
 import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
 import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;

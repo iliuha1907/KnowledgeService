@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.service;
+package com.senla.training.hoteladmin.service.room;
 
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;

@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.service;
+package com.senla.training.hoteladmin.service.visit;
 
 import com.senla.training.hoteladmin.model.visit.Visit;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
