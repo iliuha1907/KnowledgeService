@@ -61,7 +61,13 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public List<Visit> getSortedClientVisits(Integer clientId, VisitSortCriterion criterion) {
-        return visitDao.getSortedClientVisits(clientId, criterion, EntityManagerProvider.getEntityManager());
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
+        Client client = clientDao.getById(clientId, entityManager);
+        if (client == null) {
+            LOGGER.error("Error at getting visits: No such client");
+            throw new BusinessException("No such client");
+        }
+        return visitDao.getSortedClientVisits(client, criterion, entityManager);
     }
 
     @Override

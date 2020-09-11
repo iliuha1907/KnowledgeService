@@ -144,16 +144,14 @@ public class Room implements Serializable {
         }
         Room room = (Room) o;
         return Objects.equals(id, room.id)
-                && Objects.equals(status, room.status)
                 && Objects.equals(price, room.price)
                 && Objects.equals(capacity, room.capacity)
-                && Objects.equals(stars, room.stars)
-                && Objects.equals(isFree, room.isFree);
+                && Objects.equals(stars, room.stars);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, status, price, capacity, stars, isFree);
+        return Objects.hash(id, price, capacity, stars);
     }
 
     @Override

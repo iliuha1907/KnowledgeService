@@ -19,7 +19,7 @@ public interface ReservationService {
 
     List<Reservation> getSortedReservations(ReservationSortCriterion criterion);
 
-    List<Reservation> getLastRoomVisits(Integer roomId);
+    List<Reservation> getLastRoomReservations(Integer roomId);
 
     Long getNumberOfResidents();
 

@@ -68,7 +68,7 @@ public class ReservationController {
     public String getLastRoomReservations(final Integer roomId) {
         List<Reservation> reservations;
         try {
-            reservations = reservationService.getLastRoomVisits(roomId);
+            reservations = reservationService.getLastRoomReservations(roomId);
         } catch (Exception ex) {
             return "Error at getting reservations: " + ex.getMessage();
         }

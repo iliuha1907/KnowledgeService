@@ -78,14 +78,15 @@ public class ReservationServiceImpl implements ReservationService {
         EntityManager entityManager = EntityManagerProvider.getEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         Client client = clientDao.getById(clientId, entityManager);
-        if (client == null) {
-            LOGGER.error("Error at deactivating reservation: No such client");
-            throw new BusinessException("No such client");
+        Room room = roomDao.getById(roomId, entityManager);
+        if (client == null || room == null) {
+            LOGGER.error("Error at deactivating reservation: No such entity");
+            throw new BusinessException("No such entity");
         }
 
         transaction.begin();
         try {
-            reservationDao.deactivateClientReservation(clientId, roomId, entityManager);
+            reservationDao.deactivateClientReservation(client, room, entityManager);
         } catch (Exception ex) {
             transaction.rollback();
             throw ex;
@@ -104,8 +105,14 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> getLastRoomVisits(Integer roomId) {
-        return reservationDao.getLastRoomVisits(roomId, numberOfResidents, EntityManagerProvider.getEntityManager());
+    public List<Reservation> getLastRoomReservations(Integer roomId) {
+        EntityManager entityManager = EntityManagerProvider.getEntityManager();
+        Room room = roomDao.getById(roomId, entityManager);
+        if (room == null) {
+            LOGGER.error("Error at getting reservations: No such room");
+            throw new BusinessException("No free rooms");
+        }
+        return reservationDao.getLastRoomReservations(room, numberOfResidents, entityManager);
     }
 
     @Override
@@ -127,18 +134,20 @@ public class ReservationServiceImpl implements ReservationService {
         transaction.begin();
         try {
             reservations.forEach(reservation -> {
-                Reservation existing = reservationDao.getReservationByRoomClient(reservation.getRoom().getId(),
-                        reservation.getResident().getId(), entityManager);
                 Room room = roomDao.getById(reservation.getRoom().getId(), entityManager);
                 Client client = clientDao.getById(reservation.getResident().getId(), entityManager);
-                if (existing == null && room != null && client != null && room.getIsFree().equals(1)
-                        && room.getStatus().equals(
-                        RoomStatus.SERVED)) {
-                    reservationDao.add(new Reservation(room, client, java.sql.Date.valueOf(
-                            DateUtil.getString(reservation.getArrivalDate())),
-                            java.sql.Date.valueOf(DateUtil.getString(reservation.getDeparture())),
-                            reservation.getIsActive()), entityManager);
-                    roomDao.updateById(room.getId(), 0, Room_.IS_FREE, entityManager);
+                if (room != null && client != null) {
+                    Reservation existing = reservationDao.getReservationByRoomClient(client,
+                            room, entityManager);
+                    if (existing == null && room.getIsFree().equals(1)
+                            && room.getStatus().equals(
+                            RoomStatus.SERVED)) {
+                        reservationDao.add(new Reservation(room, client, java.sql.Date.valueOf(
+                                DateUtil.getString(reservation.getArrivalDate())),
+                                java.sql.Date.valueOf(DateUtil.getString(reservation.getDeparture())),
+                                reservation.getIsActive()), entityManager);
+                        roomDao.updateById(room.getId(), 0, Room_.IS_FREE, entityManager);
+                    }
                 }
             });
         } catch (Exception ex) {
