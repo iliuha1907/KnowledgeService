@@ -13,8 +13,8 @@ import com.senla.training.hoteladmin.csvapi.writeread.ReservationReaderWriter;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.reservation.Reservation;
 import com.senla.training.hoteladmin.model.room.Room;
-import com.senla.training.hoteladmin.model.room.RoomField;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.model.room.Room_;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.DateUtil;
@@ -54,8 +54,7 @@ public class ReservationServiceImpl implements ReservationService {
             reservationDao.add(new Reservation(room, client, java.sql.Date.valueOf(DateUtil.getString(arrivalDate)),
                             java.sql.Date.valueOf(DateUtil.getString(departureDate)), 1),
                     entityManager);
-            roomDao.updateById(room.getId(), 0, RoomField.IS_FREE.toString().toLowerCase(),
-                    entityManager);
+            roomDao.updateById(room.getId(), 0, Room_.IS_FREE, entityManager);
         } catch (Exception ex) {
             transaction.rollback();
             throw ex;
@@ -139,8 +138,7 @@ public class ReservationServiceImpl implements ReservationService {
                             DateUtil.getString(reservation.getArrivalDate())),
                             java.sql.Date.valueOf(DateUtil.getString(reservation.getDeparture())),
                             reservation.getIsActive()), entityManager);
-                    roomDao.updateById(room.getId(), 0, RoomField.IS_FREE.toString().toLowerCase(),
-                            entityManager);
+                    roomDao.updateById(room.getId(), 0, Room_.IS_FREE, entityManager);
                 }
             });
         } catch (Exception ex) {
