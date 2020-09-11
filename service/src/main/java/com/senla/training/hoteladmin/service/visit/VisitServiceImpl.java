@@ -11,6 +11,7 @@ import com.senla.training.hoteladmin.csvapi.writeread.VisitReaderWriter;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.visit.Visit;
+import com.senla.training.hoteladmin.util.DateUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
@@ -49,7 +50,8 @@ public class VisitServiceImpl implements VisitService {
 
         transaction.begin();
         try {
-            visitDao.add(new Visit(client, hotelService), entityManager);
+            visitDao.add(new Visit(client, hotelService, java.sql.Date.valueOf(DateUtil.getString(date)), true),
+                    entityManager);
         } catch (Exception ex) {
             transaction.rollback();
             throw ex;
