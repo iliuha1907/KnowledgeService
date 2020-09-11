@@ -1,6 +1,6 @@
 **/out
 *.iml
 **/.idea
-**/target
 **/.jar
+**/target
 **/logs
