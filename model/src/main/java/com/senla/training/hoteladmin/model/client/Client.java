@@ -14,7 +14,7 @@ import java.util.Set;
 public class Client implements Serializable {
 
     private Integer id;
-    private String firstName;
+    private String name;
     private String lastName;
     private Set<Reservation> clientReservations = new HashSet<>();
     private Set<Visit> clientVisits = new HashSet<>();
@@ -26,14 +26,14 @@ public class Client implements Serializable {
         this.id = id;
     }
 
-    public Client(final String firstName, final String lastName) {
-        this.firstName = firstName;
+    public Client(final String name, final String lastName) {
+        this.name = name;
         this.lastName = lastName;
     }
 
-    public Client(final Integer clientId, final String firstName, final String lastName) {
+    public Client(final Integer clientId, final String name, final String lastName) {
         this.id = clientId;
-        this.firstName = firstName;
+        this.name = name;
         this.lastName = lastName;
     }
 
@@ -46,8 +46,8 @@ public class Client implements Serializable {
 
     @Basic
     @Column(name = "first_name", nullable = false, length = 45)
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
     @Basic
@@ -70,8 +70,8 @@ public class Client implements Serializable {
         this.id = id;
     }
 
-    public void setFirstName(final String firstName) {
-        this.firstName = firstName;
+    public void setName(final String name) {
+        this.name = name;
     }
 
     public void setLastName(final String lastName) {
@@ -96,18 +96,18 @@ public class Client implements Serializable {
         }
         Client client = (Client) o;
         return Objects.equals(id, client.id)
-                && Objects.equals(firstName, client.firstName)
+                && Objects.equals(name, client.name)
                 && Objects.equals(lastName, client.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName);
+        return Objects.hash(id, name, lastName);
     }
 
     @Override
     public String toString() {
-        return "Client{" + "id: " + id + ", firstName: " + firstName
+        return "Client{" + "id: " + id + ", name: " + name
                 + ", lastName: " + lastName + '}';
     }
 }

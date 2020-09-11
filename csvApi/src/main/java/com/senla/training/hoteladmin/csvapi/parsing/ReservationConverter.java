@@ -16,7 +16,7 @@ public class ReservationConverter {
         }
         return reservation.getRoom().getId() + separator + reservation.getResident().getId() + separator
                 + DateUtil.getString(reservation.getArrivalDate()) + separator
-                + DateUtil.getString(reservation.getDepartureDate()) + separator + reservation.getIsActive() + separator;
+                + DateUtil.getString(reservation.getDeparture()) + separator + reservation.getIsActive() + separator;
     }
 
     public static Reservation parseReservation(final String data, final String separator) {

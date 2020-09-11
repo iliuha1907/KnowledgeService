@@ -3,6 +3,8 @@ package com.senla.training.hoteladmin.dao.reservation;
 import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
 import com.senla.training.hoteladmin.dao.HibernateAbstractDao;
 import com.senla.training.hoteladmin.exception.BusinessException;
+import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.model.client.Client_;
 import com.senla.training.hoteladmin.model.reservation.Reservation;
 import com.senla.training.hoteladmin.model.reservation.Reservation_;
 import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
@@ -27,9 +29,14 @@ public class ReservationDaoImpl extends HibernateAbstractDao<Reservation> implem
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
-            Root<Reservation> reservationRoot = query.from(Reservation.class);
-            reservationRoot.join(Reservation_.RESIDENT);
-            query.select(reservationRoot).distinct(true);
+            Root<Client> clientRoot = query.from(Client.class);
+            Join<Client, Reservation> reservationJoin = clientRoot.join(Client_.CLIENT_RESERVATIONS);
+            query.select(reservationJoin);
+            if (criterion.equals(ReservationSortCriterion.DEPARTURE)) {
+                query.orderBy(criteriaBuilder.asc(reservationJoin.get(Reservation_.DEPARTURE)));
+            } else if (criterion.equals(ReservationSortCriterion.NAME)) {
+                query.orderBy(criteriaBuilder.asc(clientRoot.get(Client_.NAME)));
+            }
             TypedQuery<Reservation> typedQuery = entityManager.createQuery(query);
             return typedQuery.getResultList();
         } catch (Exception ex) {
@@ -59,7 +66,7 @@ public class ReservationDaoImpl extends HibernateAbstractDao<Reservation> implem
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
             Root<Reservation> root = query.from(Reservation.class);
-            query.select(root).where(criteriaBuilder.lessThan(root.get(Reservation_.DEPARTURE_DATE),
+            query.select(root).where(criteriaBuilder.lessThan(root.get(Reservation_.DEPARTURE),
                     date));
             return entityManager.createQuery(query).getResultList();
         } catch (Exception ex) {

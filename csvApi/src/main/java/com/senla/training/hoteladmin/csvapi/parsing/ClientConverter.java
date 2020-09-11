@@ -9,7 +9,7 @@ public class ClientConverter {
         if (client == null) {
             return "-" + separator;
         }
-        return client.getId() + separator + client.getFirstName() + separator + client.getLastName() + separator;
+        return client.getId() + separator + client.getName() + separator + client.getLastName() + separator;
     }
 
     public static Client parseClient(final String data, final String separator) {

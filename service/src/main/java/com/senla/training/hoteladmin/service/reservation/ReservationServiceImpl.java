@@ -137,7 +137,7 @@ public class ReservationServiceImpl implements ReservationService {
                         RoomStatus.SERVED)) {
                     reservationDao.add(new Reservation(room, client, java.sql.Date.valueOf(
                             DateUtil.getString(reservation.getArrivalDate())),
-                            java.sql.Date.valueOf(DateUtil.getString(reservation.getDepartureDate())),
+                            java.sql.Date.valueOf(DateUtil.getString(reservation.getDeparture())),
                             reservation.getIsActive()), entityManager);
                     roomDao.updateById(room.getId(), 0, RoomField.IS_FREE.toString().toLowerCase(),
                             entityManager);

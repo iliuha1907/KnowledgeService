@@ -40,11 +40,11 @@ public class Builder {
         List<MenuItem> itemsRoom = new ArrayList<>();
         itemsRoom.add(new MenuItem("Main menu", rootMenu));
         itemsRoom.add(new MenuItem("Display rooms, sorted by price", () ->
-                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.price))));
+                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.PRICE))));
         itemsRoom.add(new MenuItem("Display rooms, sorted by capacity", () ->
-                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.capacity))));
+                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.CAPACITY))));
         itemsRoom.add(new MenuItem("Display rooms, sorted by stars", () ->
-                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.stars))));
+                System.out.println(roomController.getSortedRooms(RoomsSortCriterion.STARS))));
         itemsRoom.add(new MenuItem("Display price of a room", () -> {
             Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the room");
             if (id == null) {
@@ -70,11 +70,11 @@ public class Builder {
         List<MenuItem> itemsFreeRoom = new ArrayList<>();
         itemsFreeRoom.add(new MenuItem("Main menu", rootMenu));
         itemsFreeRoom.add(new MenuItem("Display rooms, sorted by price", () ->
-                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.price))));
+                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.PRICE))));
         itemsFreeRoom.add(new MenuItem("Display rooms, sorted by capacity", () ->
-                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.capacity))));
+                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.CAPACITY))));
         itemsFreeRoom.add(new MenuItem("Display rooms, sorted by stars", () ->
-                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.stars))));
+                System.out.println(roomController.getSortedFreeRooms(RoomsSortCriterion.STARS))));
         itemsFreeRoom.add(new MenuItem("Display number of free rooms", () ->
                 System.out.println(roomController.getNumberOfFreeRooms())));
         itemsFreeRoom.add(new MenuItem("Display free rooms and expired reservations after date", () -> {
@@ -94,10 +94,10 @@ public class Builder {
         itemsClients.add(new MenuItem("Main menu", rootMenu));
         itemsClients.add(new MenuItem("Display reservations and clients, sorted by departure date", () ->
                 System.out.println(reservationController.getSortedReservations(
-                        ReservationSortCriterion.departure_date))));
+                        ReservationSortCriterion.DEPARTURE))));
         itemsClients.add(new MenuItem("Display reservations and clients, sorted by alphabet",
                 () -> System.out.println(reservationController.getSortedReservations(
-                        ReservationSortCriterion.first_name))));
+                        ReservationSortCriterion.NAME))));
         itemsClients.add(new MenuItem("Display last reservations and residents of a room", () -> {
             Integer roomId = UserInteraction.getNaturalIntWithMessage("Enter id of the room");
             if (roomId == null) {
@@ -136,7 +136,7 @@ public class Builder {
                 return;
             }
             System.out.println(visitController.getSortedClientVisits(id,
-                    VisitSortCriterion.date));
+                    VisitSortCriterion.DATE));
         }));
         itemsSVC.add(new MenuItem("Display service of a client, sorted by price", () -> {
             Integer id = UserInteraction.getNaturalIntWithMessage("Enter id of the client");
@@ -144,7 +144,7 @@ public class Builder {
                 return;
             }
             System.out.println(visitController.getSortedClientVisits(id,
-                    VisitSortCriterion.price));
+                    VisitSortCriterion.PRICE));
         }));
         itemsSVC.add(new MenuItem("Display services", () ->
                 System.out.println(hotelServiceController.getServices())));

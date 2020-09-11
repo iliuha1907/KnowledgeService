@@ -29,7 +29,13 @@ public class RoomDaoImpl extends HibernateAbstractDao<Room> implements RoomDao {
             CriteriaQuery<Room> query = criteriaBuilder.createQuery(Room.class);
             Root<Room> root = query.from(Room.class);
             query.select(root);
-            query.orderBy(criteriaBuilder.asc(root.get(criterion.toString().toLowerCase())));
+            if (criterion.equals(RoomsSortCriterion.CAPACITY)) {
+                query.orderBy(criteriaBuilder.asc(root.get(Room_.CAPACITY)));
+            } else if (criterion.equals(RoomsSortCriterion.PRICE)) {
+                query.orderBy(criteriaBuilder.asc(root.get(Room_.PRICE)));
+            } else if (criterion.equals(RoomsSortCriterion.STARS)) {
+                query.orderBy(criteriaBuilder.asc(root.get(Room_.STARS)));
+            }
             return entityManager.createQuery(query).getResultList();
         } catch (Exception ex) {
             logger.error("Error at getting sorted rooms: " + ex.getMessage());
@@ -57,8 +63,14 @@ public class RoomDaoImpl extends HibernateAbstractDao<Room> implements RoomDao {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Room> query = criteriaBuilder.createQuery(Room.class);
             Root<Room> root = query.from(Room.class);
-            query.select(root).where(criteriaBuilder.equal(root.get(Room_.IS_FREE), 1))
-                    .orderBy(criteriaBuilder.asc(root.get(criterion.toString().toLowerCase())));
+            query.select(root).where(criteriaBuilder.equal(root.get(Room_.IS_FREE), 1));
+            if (criterion.equals(RoomsSortCriterion.CAPACITY)) {
+                query.orderBy(criteriaBuilder.asc(root.get(Room_.CAPACITY)));
+            } else if (criterion.equals(RoomsSortCriterion.PRICE)) {
+                query.orderBy(criteriaBuilder.asc(root.get(Room_.PRICE)));
+            } else if (criterion.equals(RoomsSortCriterion.STARS)) {
+                query.orderBy(criteriaBuilder.asc(root.get(Room_.STARS)));
+            }
             return entityManager.createQuery(query).getResultList();
         } catch (Exception ex) {
             logger.error("Error at getting sorted free rooms: " + ex.getMessage());
