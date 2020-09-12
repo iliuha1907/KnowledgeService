@@ -1,6 +1,6 @@
 **/out
 *.iml
 **/.idea
-**/META-INF
-**/target
 **/.jar
+**/target
+**/logs

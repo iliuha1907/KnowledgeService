@@ -5,12 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.senla.training.hoteladmin</groupId>
-    <artifactId>hotel_admin</artifactId>
+    <artifactId>hotel-admin</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
     <modules>
         <module>model</module>
-        <module>injectionAnnotation</module>
+        <module>annotationApi</module>
         <module>exception</module>
         <module>service</module>
         <module>controller</module>
@@ -19,18 +20,33 @@
         <module>util</module>
         <module>runner</module>
         <module>view</module>
-        <module>fileCsv</module>
+        <module>csvApi</module>
     </modules>
 
+    <repositories>
+        <repository>
+            <id>javaXml</id>
+            <url>https://mvnrepository.com/artifact/javax.xml.bind</url>
+        </repository>
+        <repository>
+            <id>buildHelperPlugin</id>
+            <url>https://mvnrepository.com/artifact/org.codehaus.mojo/build-helper-maven-plugin</url>
+        </repository>
+        <repository>
+            <id>jbossNexus</id>
+            <url>https://repository.jboss.org/nexus/content/repositories/public/</url>
+        </repository>
+    </repositories>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.1</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
             <plugin>
@@ -42,12 +58,32 @@
                     <suppressionsLocation>config/checkstyle-supressions.xml</suppressionsLocation>
                     <suppressionsFileExpression>checkstyle.supressions.file</suppressionsFileExpression>
                     <consoleOutput>true</consoleOutput>
+                    <encoding>UTF-8</encoding>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>check</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>target/generated-sources/annotations</source>
+                            </sources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -63,6 +99,37 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.0.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.18</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>5.4.21.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 

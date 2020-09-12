@@ -5,6 +5,8 @@
         "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
+    <suppress files="Client_.java|HotelService_.java|Visit_.java|Reservation_.java|Room_.java"
+              checks="[a-zA-Z0-9]*"/>
     <suppress checks="DesignForExtension"/>
     <suppress checks="JavadocVariable"/>
     <suppress checks="HiddenField"/>
@@ -12,7 +14,7 @@
     <suppress checks="EqualsHashCode"
               files="HotelService.java|Room.java"/>
     <suppress checks="MagicNumber"
-              files="UserInteraction.java"/>
+              files="Client.java|HotelService.java|Visit.java|Reservation.java|Room.java|UserInteraction.java"/>
     <suppress checks="HideUtilityClassConstructor"/>
     <suppress checks="AvoidInlineConditionals"
               files="ReservationDaoImpl.java|RoomDaoImpl.java|AbstractDao.java"/>
