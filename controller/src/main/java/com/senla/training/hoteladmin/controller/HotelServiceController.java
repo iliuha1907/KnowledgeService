@@ -3,7 +3,6 @@ package com.senla.training.hoteladmin.controller;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
-import com.senla.training.hoteladmin.service.client.ClientService;
 import com.senla.training.hoteladmin.service.hotelservice.HotelServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,8 +15,6 @@ public class HotelServiceController {
 
     @Autowired
     private HotelServiceService hotelServiceService;
-    @Autowired
-    private ClientService clientService;
 
     public String addService(final BigDecimal price, final HotelServiceType type) {
         try {
