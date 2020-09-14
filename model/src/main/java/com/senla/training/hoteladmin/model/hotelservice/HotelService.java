@@ -1,28 +1,32 @@
 package com.senla.training.hoteladmin.model.hotelservice;
 
+import com.senla.training.hoteladmin.model.AbstractEntity;
 import com.senla.training.hoteladmin.model.visit.Visit;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "hotel_services", schema = "hoteladmin_huzei")
-public class HotelService implements Serializable {
+@Table(name = "hotel_services")
+public class HotelService extends AbstractEntity {
 
-    private Integer id;
+    @Basic
+    @Column(name = "price", nullable = false, precision = 0)
     private BigDecimal price;
+    @Basic
+    @Column(name = "type", nullable = false, length = 20)
     private String type;
+    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
     private Set<Visit> clientVisits = new HashSet<>();
 
     public HotelService() {
     }
 
     public HotelService(final Integer id) {
-        this.id = id;
+        super(id);
     }
 
     public HotelService(final BigDecimal price, final HotelServiceType type) {
@@ -36,32 +40,16 @@ public class HotelService implements Serializable {
         this.type = type.toString();
     }
 
-    @Id
-    @Column(name = "id", nullable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
-        return id;
-    }
-
-    @Basic
-    @Column(name = "price", nullable = false, precision = 0)
     public BigDecimal getPrice() {
         return price;
     }
 
-    @Basic
-    @Column(name = "type", nullable = false, length = 20)
     public String getType() {
         return type;
     }
 
-    @OneToMany(mappedBy = "service", fetch = FetchType.LAZY)
     public Set<Visit> getClientVisits() {
         return clientVisits;
-    }
-
-    public void setId(final Integer id) {
-        this.id = id;
     }
 
     public void setPrice(final BigDecimal price) {

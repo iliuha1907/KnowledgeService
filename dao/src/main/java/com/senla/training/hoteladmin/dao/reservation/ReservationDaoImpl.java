@@ -1,7 +1,6 @@
 package com.senla.training.hoteladmin.dao.reservation;
 
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
-import com.senla.training.hoteladmin.dao.HibernateAbstractDao;
+import com.senla.training.hoteladmin.dao.AbstractDao;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.client.Client_;
@@ -9,6 +8,7 @@ import com.senla.training.hoteladmin.model.reservation.Reservation;
 import com.senla.training.hoteladmin.model.reservation.Reservation_;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -17,8 +17,8 @@ import javax.persistence.criteria.*;
 import java.util.Date;
 import java.util.List;
 
-@NeedInjectionClass
-public class ReservationDaoImpl extends HibernateAbstractDao<Reservation> implements ReservationDao {
+@Component
+public class ReservationDaoImpl extends AbstractDao<Reservation> implements ReservationDao {
 
     @Override
     public Class<Reservation> getEntityClass() {
@@ -31,12 +31,12 @@ public class ReservationDaoImpl extends HibernateAbstractDao<Reservation> implem
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
             Root<Client> clientRoot = query.from(Client.class);
-            Join<Client, Reservation> reservationJoin = clientRoot.join(Client_.CLIENT_RESERVATIONS);
+            Join<Client, Reservation> reservationJoin = clientRoot.join(Client_.clientReservations);
             query.select(reservationJoin);
             if (criterion.equals(ReservationSortCriterion.DEPARTURE)) {
-                query.orderBy(criteriaBuilder.asc(reservationJoin.get(Reservation_.DEPARTURE)));
+                query.orderBy(criteriaBuilder.asc(reservationJoin.get(Reservation_.departure)));
             } else if (criterion.equals(ReservationSortCriterion.NAME)) {
-                query.orderBy(criteriaBuilder.asc(clientRoot.get(Client_.NAME)));
+                query.orderBy(criteriaBuilder.asc(clientRoot.get(Client_.name)));
             }
             TypedQuery<Reservation> typedQuery = entityManager.createQuery(query);
             return typedQuery.getResultList();
@@ -53,7 +53,7 @@ public class ReservationDaoImpl extends HibernateAbstractDao<Reservation> implem
             CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
             Root<Reservation> root = query.from(Reservation.class);
             query.select(criteriaBuilder.countDistinct(root)).where(criteriaBuilder.equal(
-                    root.get(Reservation_.IS_ACTIVE), 1));
+                    root.get(Reservation_.isActive), 1));
             return entityManager.createQuery(query).getSingleResult();
         } catch (Exception ex) {
             logger.error("Error at getting number of residents: " + ex.getMessage());
@@ -67,7 +67,7 @@ public class ReservationDaoImpl extends HibernateAbstractDao<Reservation> implem
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
             Root<Reservation> root = query.from(Reservation.class);
-            query.select(root).where(criteriaBuilder.lessThan(root.get(Reservation_.DEPARTURE),
+            query.select(root).where(criteriaBuilder.lessThan(root.get(Reservation_.departure),
                     date));
             return entityManager.createQuery(query).getResultList();
         } catch (Exception ex) {
@@ -82,8 +82,8 @@ public class ReservationDaoImpl extends HibernateAbstractDao<Reservation> implem
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
             Root<Reservation> root = query.from(Reservation.class);
-            query.select(root).where(criteriaBuilder.equal(root.get(Reservation_.ROOM), room),
-                    criteriaBuilder.equal(root.get(Reservation_.IS_ACTIVE), 0));
+            query.select(root).where(criteriaBuilder.equal(root.get(Reservation_.room), room),
+                    criteriaBuilder.equal(root.get(Reservation_.isActive), 0));
             return entityManager.createQuery(query).getResultList();
         } catch (Exception ex) {
             logger.error("Error at getting last room visits: " + ex.getMessage());
@@ -97,9 +97,9 @@ public class ReservationDaoImpl extends HibernateAbstractDao<Reservation> implem
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
             Root<Reservation> root = query.from(Reservation.class);
-            query.select(root).where(criteriaBuilder.equal(root.get(Reservation_.RESIDENT),
-                    client), criteriaBuilder.equal(root.get(Reservation_.ROOM), room),
-                    criteriaBuilder.equal(root.get(Reservation_.IS_ACTIVE), 1));
+            query.select(root).where(criteriaBuilder.equal(root.get(Reservation_.resident),
+                    client), criteriaBuilder.equal(root.get(Reservation_.room), room),
+                    criteriaBuilder.equal(root.get(Reservation_.isActive), 1));
             return entityManager.createQuery(query).getSingleResult();
         } catch (NoResultException noResultException) {
             logger.error("Error at getting client reservations: no entity!");
@@ -116,9 +116,9 @@ public class ReservationDaoImpl extends HibernateAbstractDao<Reservation> implem
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaUpdate<Reservation> update = criteriaBuilder.createCriteriaUpdate(Reservation.class);
             Root<Reservation> root = update.from(Reservation.class);
-            update.set(Reservation_.IS_ACTIVE, 0);
-            update.where(criteriaBuilder.equal(root.get(Reservation_.RESIDENT),
-                    client), criteriaBuilder.equal(root.get(Reservation_.ROOM), room));
+            update.set(Reservation_.isActive, 0);
+            update.where(criteriaBuilder.equal(root.get(Reservation_.resident),
+                    client), criteriaBuilder.equal(root.get(Reservation_.room), room));
             entityManager.createQuery(update).executeUpdate();
         } catch (Exception ex) {
             logger.error("Error at deactivating client reservations: " + ex.getMessage());

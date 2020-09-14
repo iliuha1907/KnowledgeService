@@ -1,10 +1,10 @@
 package com.senla.training.hoteladmin.view;
 
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@NeedInjectionClass
+@Component
 public class Navigator {
 
     private Menu currentMenu;

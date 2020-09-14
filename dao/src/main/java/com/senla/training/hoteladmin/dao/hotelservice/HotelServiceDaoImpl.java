@@ -1,11 +1,11 @@
 package com.senla.training.hoteladmin.dao.hotelservice;
 
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
-import com.senla.training.hoteladmin.dao.HibernateAbstractDao;
+import com.senla.training.hoteladmin.dao.AbstractDao;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
+import org.springframework.stereotype.Component;
 
-@NeedInjectionClass
-public class HotelServiceDaoImpl extends HibernateAbstractDao<HotelService>
+@Component
+public class HotelServiceDaoImpl extends AbstractDao<HotelService>
         implements HotelServiceDao {
 
     @Override

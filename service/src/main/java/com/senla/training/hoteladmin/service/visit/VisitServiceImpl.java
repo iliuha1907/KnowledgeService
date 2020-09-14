@@ -1,7 +1,5 @@
 package com.senla.training.hoteladmin.service.visit;
 
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.dao.EntityManagerProvider;
 import com.senla.training.hoteladmin.dao.client.ClientDao;
 import com.senla.training.hoteladmin.dao.hotelservice.HotelServiceDao;
@@ -15,27 +13,33 @@ import com.senla.training.hoteladmin.util.DateUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.Date;
 import java.util.List;
 
-@NeedInjectionClass
+@Component
+@Transactional
 public class VisitServiceImpl implements VisitService {
 
     private static final Logger LOGGER = LogManager.getLogger(VisitServiceImpl.class);
-    @NeedInjectionField
+    @Autowired
     private VisitDao visitDao;
-    @NeedInjectionField
+    @Autowired
     private ClientDao clientDao;
-    @NeedInjectionField
+    @Autowired
     private HotelServiceDao hotelServiceDao;
+    @Autowired
+    private EntityManagerProvider entityManagerProvider;
+    @Autowired
+    private VisitReaderWriter visitReaderWriter;
 
     @Override
     public void addVisit(Integer serviceId, Integer clientId, Date date) {
-        EntityManager entityManager = EntityManagerProvider.getEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
+        EntityManager entityManager = entityManagerProvider.getEntityManager();
         Client client = clientDao.getById(clientId, entityManager);
         if (client == null) {
             LOGGER.error("Error at adding visit: No such client");
@@ -48,20 +52,17 @@ public class VisitServiceImpl implements VisitService {
             throw new BusinessException("No such hotel service");
         }
 
-        transaction.begin();
         try {
             visitDao.add(new Visit(client, hotelService, java.sql.Date.valueOf(DateUtil.getString(date)), true),
                     entityManager);
         } catch (Exception ex) {
-            transaction.rollback();
             throw ex;
         }
-        transaction.commit();
     }
 
     @Override
     public List<Visit> getSortedClientVisits(Integer clientId, VisitSortCriterion criterion) {
-        EntityManager entityManager = EntityManagerProvider.getEntityManager();
+        EntityManager entityManager = entityManagerProvider.getEntityManager();
         Client client = clientDao.getById(clientId, entityManager);
         if (client == null) {
             LOGGER.error("Error at getting visits: No such client");
@@ -72,15 +73,13 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public void exportVisits() {
-        VisitReaderWriter.writeVisits(visitDao.getAll(EntityManagerProvider.getEntityManager()));
+        visitReaderWriter.writeVisits(visitDao.getAll(entityManagerProvider.getEntityManager()));
     }
 
     @Override
     public void importVisits() {
-        EntityManager entityManager = EntityManagerProvider.getEntityManager();
-        List<Visit> visits = VisitReaderWriter.readVisits();
-        EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
+        EntityManager entityManager = entityManagerProvider.getEntityManager();
+        List<Visit> visits = visitReaderWriter.readVisits();
         try {
             visits.forEach(visit -> {
                 Client client = clientDao.getById(visit.getClient().getId(), entityManager);
@@ -93,9 +92,7 @@ public class VisitServiceImpl implements VisitService {
                 }
             });
         } catch (Exception ex) {
-            transaction.rollback();
             throw ex;
         }
-        transaction.commit();
     }
 }

@@ -1,19 +1,19 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.visit.Visit;
 import com.senla.training.hoteladmin.service.visit.VisitService;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 
-@NeedInjectionClass
+@Component
 public class VisitController {
 
-    @NeedInjectionField
+    @Autowired
     private VisitService visitService;
 
     public String addVisit(final Integer serviceId, final Integer clientId, final Date date) {

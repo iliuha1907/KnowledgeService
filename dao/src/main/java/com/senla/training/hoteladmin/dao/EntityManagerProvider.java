@@ -1,40 +1,32 @@
 package com.senla.training.hoteladmin.dao;
 
-import com.senla.training.hoteladmin.annotationapi.ConfigProperty;
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
 import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
-@NeedInjectionClass
+@Component
 public class EntityManagerProvider {
 
-    private static final Logger LOGGER = LogManager.getLogger(EntityManagerProvider.class);
-    @ConfigProperty(propertyName = "dao.entityManager.entityManagerName", type = String.class)
-    private static String entityManagerName;
-    private static EntityManager entityManager;
-    private static EntityManagerFactory entityManagerFactory;
+    private final Logger logger = LogManager.getLogger(EntityManagerProvider.class);
+    @PersistenceContext
+    private EntityManager entityManager;
+    @PersistenceContext
+    private EntityManagerFactory entityManagerFactory;
 
-    public static EntityManager getEntityManager() {
-        try {
-            if (entityManager == null || !entityManager.isOpen()) {
-                if (entityManagerFactory == null || !entityManagerFactory.isOpen()) {
-                    entityManagerFactory = Persistence.createEntityManagerFactory(entityManagerName);
-                }
-                entityManager = entityManagerFactory.createEntityManager();
-            }
-            return entityManager;
-        } catch (Exception ex) {
-            LOGGER.error("Error at getting entity manager: " + ex.getMessage());
-            throw new IncorrectWorkException(ex.getMessage());
+    public EntityManager getEntityManager() {
+        if (entityManager == null || !entityManager.isOpen()) {
+            logger.error("Error at getting entity manager: it was not initialized");
+            throw new IncorrectWorkException("Error at getting entity manager: it was not initialized");
         }
+        return entityManager;
     }
 
-    public static void close() {
+    public void close() {
         try {
             if (entityManager != null) {
                 entityManager.close();
@@ -43,7 +35,7 @@ public class EntityManagerProvider {
                 entityManagerFactory.close();
             }
         } catch (Exception ex) {
-            LOGGER.error("Error at closing entity manager: " + ex.getMessage());
+            logger.error("Error at closing entity manager: " + ex.getMessage());
             throw new IncorrectWorkException(ex.getMessage());
         }
     }

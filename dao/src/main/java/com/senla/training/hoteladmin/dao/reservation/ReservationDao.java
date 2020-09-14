@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.dao.reservation;
 
-import com.senla.training.hoteladmin.dao.HibernateDao;
+import com.senla.training.hoteladmin.dao.GenericDao;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.reservation.Reservation;
 import com.senla.training.hoteladmin.model.room.Room;
@@ -10,7 +10,7 @@ import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 
-public interface ReservationDao extends HibernateDao<Reservation> {
+public interface ReservationDao extends GenericDao<Reservation> {
 
     List<Reservation> getSortedReservations(ReservationSortCriterion criterion, EntityManager entityManager);
 
