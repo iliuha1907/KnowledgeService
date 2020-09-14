@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
@@ -45,10 +44,11 @@ public abstract class AbstractDao<T extends AbstractEntity> implements GenericDa
     @Override
     public T getById(final Integer id, final EntityManager entityManager) {
         try {
-            return entityManager.find(getEntityClass(), id);
-        } catch (NoResultException noResultException) {
-            logger.error("Error at getting by id: no such entity!");
-            return null;
+            T entity = entityManager.find(getEntityClass(), id);
+            if (entity == null) {
+                logger.error("Error at getting by id: no such entity!");
+            }
+            return entity;
         } catch (Exception ex) {
             logger.error("Error at getting by id: " + ex.getMessage());
             throw new BusinessException(ex.getMessage());
@@ -67,7 +67,7 @@ public abstract class AbstractDao<T extends AbstractEntity> implements GenericDa
             update.where(criteriaBuilder.equal(root.get(keyAttribute), key));
             entityManager.createQuery(update).executeUpdate();
         } catch (Exception ex) {
-            logger.error("Error at updating by id: " + ex.getMessage());
+            logger.error("Error at updating by attribute: " + ex.getMessage());
             throw new BusinessException(ex.getMessage());
         }
     }

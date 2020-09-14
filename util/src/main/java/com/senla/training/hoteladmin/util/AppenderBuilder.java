@@ -16,16 +16,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppenderBuilder {
 
-    private static final String APPENDER_NAME = "SqlAppender";
-    private static final String LOGGER_NAME = "org.hibernate";
-    private static final String OUTPUT_FILE_NAME = "logs/sqlLog.log";
-    private static final Integer BUFFER_SIZE = 4000;
+    private final String appenderName = "SqlAppender";
+    private final String loggerName = "org.hibernate";
+    private final String outputFileName = "logs/sqlLog.log";
+    private final Integer bufferSize = 4000;
     @Value("${util.appenderBuilder.needSqlAppender:true}")
-    private static boolean needSqlAppender;
+    private boolean needSqlAppender;
     @Value("${util.appenderBuilder.logLevel:debug}")
-    private static String logLevel;
+    private String logLevel;
 
-    public static void build() {
+    public void build() {
         if (!needSqlAppender) {
             return;
         }
@@ -39,22 +39,22 @@ public class AppenderBuilder {
         LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         Configuration config = ctx.getConfiguration();
         Appender appender = FileAppender.newBuilder()
-                .withFileName(OUTPUT_FILE_NAME)
+                .withFileName(outputFileName)
                 .withAppend(false)
                 .withBufferedIo(true)
-                .withBufferSize(BUFFER_SIZE)
+                .withBufferSize(bufferSize)
                 .setConfiguration(config)
-                .setName(APPENDER_NAME)
+                .setName(appenderName)
                 .setLayout(PatternLayout.createDefaultLayout())
                 .build();
         appender.start();
         config.addAppender(appender);
-        AppenderRef ref = AppenderRef.createAppenderRef(APPENDER_NAME, null, null);
+        AppenderRef ref = AppenderRef.createAppenderRef(appenderName, null, null);
         AppenderRef[] refs = new AppenderRef[]{ref};
-        LoggerConfig loggerConfig = LoggerConfig.createLogger(false, level, LOGGER_NAME,
+        LoggerConfig loggerConfig = LoggerConfig.createLogger(false, level, loggerName,
                 "true", refs, null, config, null);
         loggerConfig.addAppender(appender, null, null);
-        config.addLogger(LOGGER_NAME, loggerConfig);
+        config.addLogger(loggerName, loggerConfig);
         ctx.updateLoggers();
     }
 }

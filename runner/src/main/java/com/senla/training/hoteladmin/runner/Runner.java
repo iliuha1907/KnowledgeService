@@ -2,6 +2,7 @@ package com.senla.training.hoteladmin.runner;
 
 import com.senla.training.hoteladmin.dao.EntityManagerProvider;
 import com.senla.training.hoteladmin.springconfiguration.*;
+import com.senla.training.hoteladmin.util.AppenderBuilder;
 import com.senla.training.hoteladmin.util.UserInteraction;
 import com.senla.training.hoteladmin.view.MenuController;
 import org.springframework.context.ApplicationContext;
@@ -18,6 +19,8 @@ public class Runner {
         try {
             ApplicationContext context = new AnnotationConfigApplicationContext(
                     ConfigurationsClassesProvider.getClasses());
+            AppenderBuilder appenderBuilder = context.getBean(AppenderBuilder.class);
+            appenderBuilder.build();
             entityManagerProvider = context.getBean(EntityManagerProvider.class);
             MenuController menuController = context.getBean(MenuController.class);
             menuController.run();
