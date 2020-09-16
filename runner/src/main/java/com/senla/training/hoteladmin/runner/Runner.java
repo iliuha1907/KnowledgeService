@@ -1,6 +1,6 @@
 package com.senla.training.hoteladmin.runner;
 
-import com.senla.training.hoteladmin.dao.HibernateConfigurator;
+import com.senla.training.hoteladmin.dao.HibernateWorkConfigurator;
 import com.senla.training.hoteladmin.util.AppenderBuilder;
 import com.senla.training.hoteladmin.util.UserInteraction;
 import com.senla.training.hoteladmin.view.MenuController;
@@ -18,7 +18,7 @@ public class Runner {
         UserInteraction.startWorking();
         try {
             ApplicationContext context = new AnnotationConfigApplicationContext(AppConfigurator.class,
-                    HibernateConfigurator.class);
+                    HibernateWorkConfigurator.class);
             AppenderBuilder appenderBuilder = context.getBean(AppenderBuilder.class);
             appenderBuilder.build();
             localEntityManagerFactoryBean = context.getBean(LocalEntityManagerFactoryBean.class);

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-public class HibernateConfigurator {
+public class HibernateWorkConfigurator {
 
     @Value("${dao.entityManager.entityManagerName:Manager}")
     private String managerName;
