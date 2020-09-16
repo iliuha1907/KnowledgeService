@@ -4,18 +4,17 @@ import com.senla.training.hoteladmin.dao.GenericDao;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 public interface RoomDao extends GenericDao<Room> {
 
-    List<Room> getSortedRooms(RoomsSortCriterion criterion, EntityManager entityManager);
+    List<Room> getSortedRooms(RoomsSortCriterion criterion);
 
-    List<Room> getFreeRooms(EntityManager entityManager);
+    List<Room> getFreeRooms();
 
-    List<Room> getSortedFreeRooms(RoomsSortCriterion criterion, EntityManager entityManager);
+    List<Room> getSortedFreeRooms(RoomsSortCriterion criterion);
 
-    Long getNumberOfFreeRooms(EntityManager entityManager);
+    Long getNumberOfFreeRooms();
 
-    Room getFirstFreeRoom(EntityManager entityManager);
+    Room getFirstFreeRoom();
 }

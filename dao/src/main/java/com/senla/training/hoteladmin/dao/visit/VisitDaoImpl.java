@@ -10,7 +10,6 @@ import com.senla.training.hoteladmin.model.visit.Visit_;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.List;
@@ -24,7 +23,7 @@ public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
     }
 
     @Override
-    public List<Visit> getSortedClientVisits(Client client, VisitSortCriterion criterion, EntityManager entityManager) {
+    public List<Visit> getSortedClientVisits(Client client, VisitSortCriterion criterion) {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Visit> query = criteriaBuilder.createQuery(Visit.class);

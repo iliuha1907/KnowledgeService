@@ -1,12 +1,14 @@
-package com.senla.training.hoteladmin.springconfiguration;
+package com.senla.training.hoteladmin.runner;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 @Configuration
-public class PropertyConfigurator {
+@ComponentScan(basePackages = {"com.senla.training.hoteladmin"})
+public class AppConfigurator {
 
     @Bean
     public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() throws Exception {

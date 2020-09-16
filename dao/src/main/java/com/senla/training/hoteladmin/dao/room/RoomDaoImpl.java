@@ -7,7 +7,6 @@ import com.senla.training.hoteladmin.model.room.Room_;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -23,7 +22,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     }
 
     @Override
-    public List<Room> getSortedRooms(RoomsSortCriterion criterion, EntityManager entityManager) {
+    public List<Room> getSortedRooms(RoomsSortCriterion criterion) {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Room> query = criteriaBuilder.createQuery(Room.class);
@@ -44,7 +43,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     }
 
     @Override
-    public List<Room> getFreeRooms(EntityManager entityManager) {
+    public List<Room> getFreeRooms() {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Room> query = criteriaBuilder.createQuery(Room.class);
@@ -58,7 +57,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     }
 
     @Override
-    public List<Room> getSortedFreeRooms(RoomsSortCriterion criterion, EntityManager entityManager) {
+    public List<Room> getSortedFreeRooms(RoomsSortCriterion criterion) {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Room> query = criteriaBuilder.createQuery(Room.class);
@@ -79,7 +78,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     }
 
     @Override
-    public Long getNumberOfFreeRooms(EntityManager entityManager) {
+    public Long getNumberOfFreeRooms() {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
@@ -94,7 +93,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     }
 
     @Override
-    public Room getFirstFreeRoom(EntityManager entityManager) {
+    public Room getFirstFreeRoom() {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Room> query = criteriaBuilder.createQuery(Room.class);

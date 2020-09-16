@@ -1,6 +1,5 @@
 package com.senla.training.hoteladmin.service.visit;
 
-import com.senla.training.hoteladmin.dao.EntityManagerProvider;
 import com.senla.training.hoteladmin.dao.client.ClientDao;
 import com.senla.training.hoteladmin.dao.hotelservice.HotelServiceDao;
 import com.senla.training.hoteladmin.dao.visit.VisitDao;
@@ -17,12 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 
 @Component
-@Transactional
 public class VisitServiceImpl implements VisitService {
 
     private static final Logger LOGGER = LogManager.getLogger(VisitServiceImpl.class);
@@ -33,66 +30,55 @@ public class VisitServiceImpl implements VisitService {
     @Autowired
     private HotelServiceDao hotelServiceDao;
     @Autowired
-    private EntityManagerProvider entityManagerProvider;
-    @Autowired
     private VisitReaderWriter visitReaderWriter;
 
     @Override
+    @Transactional
     public void addVisit(Integer serviceId, Integer clientId, Date date) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
-        Client client = clientDao.getById(clientId, entityManager);
+        Client client = clientDao.getById(clientId);
         if (client == null) {
             LOGGER.error("Error at adding visit: No such client");
             throw new BusinessException("No such client");
         }
 
-        HotelService hotelService = hotelServiceDao.getById(serviceId, entityManager);
+        HotelService hotelService = hotelServiceDao.getById(serviceId);
         if (hotelService == null) {
             LOGGER.error("Error at adding visit: No such hotel service");
             throw new BusinessException("No such hotel service");
         }
 
-        try {
-            visitDao.add(new Visit(client, hotelService, java.sql.Date.valueOf(DateUtil.getString(date)), true),
-                    entityManager);
-        } catch (Exception ex) {
-            throw ex;
-        }
+        visitDao.add(new Visit(client, hotelService, java.sql.Date.valueOf(DateUtil.getString(date)), true));
     }
 
     @Override
+    @Transactional
     public List<Visit> getSortedClientVisits(Integer clientId, VisitSortCriterion criterion) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
-        Client client = clientDao.getById(clientId, entityManager);
+        Client client = clientDao.getById(clientId);
         if (client == null) {
             LOGGER.error("Error at getting visits: No such client");
             throw new BusinessException("No such client");
         }
-        return visitDao.getSortedClientVisits(client, criterion, entityManager);
+        return visitDao.getSortedClientVisits(client, criterion);
     }
 
     @Override
+    @Transactional
     public void exportVisits() {
-        visitReaderWriter.writeVisits(visitDao.getAll(entityManagerProvider.getEntityManager()));
+        visitReaderWriter.writeVisits(visitDao.getAll());
     }
 
     @Override
+    @Transactional
     public void importVisits() {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
         List<Visit> visits = visitReaderWriter.readVisits();
-        try {
-            visits.forEach(visit -> {
-                Client client = clientDao.getById(visit.getClient().getId(), entityManager);
-                HotelService hotelService = hotelServiceDao.getById(visit.getService().getId(),
-                        entityManager);
-                if (client != null && hotelService != null) {
-                    visit.setClient(client);
-                    visit.setService(hotelService);
-                    visitDao.add(visit, entityManager);
-                }
-            });
-        } catch (Exception ex) {
-            throw ex;
-        }
+        visits.forEach(visit -> {
+            Client client = clientDao.getById(visit.getClient().getId());
+            HotelService hotelService = hotelServiceDao.getById(visit.getService().getId());
+            if (client != null && hotelService != null) {
+                visit.setClient(client);
+                visit.setService(hotelService);
+                visitDao.add(visit);
+            }
+        });
     }
 }

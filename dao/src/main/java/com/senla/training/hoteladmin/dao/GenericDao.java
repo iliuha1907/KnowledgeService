@@ -2,19 +2,15 @@ package com.senla.training.hoteladmin.dao;
 
 import com.senla.training.hoteladmin.model.AbstractEntity;
 
-import javax.persistence.EntityManager;
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.List;
 
 public interface GenericDao<T extends AbstractEntity> {
 
-    void add(T object, EntityManager entityManager);
+    void add(T object);
 
-    List<T> getAll(EntityManager entityManager);
+    List<T> getAll();
 
-    T getById(Integer id, EntityManager entityManager);
+    T getById(Integer id);
 
-    <X, Y> void updateByAttribute(X key, SingularAttribute<? super T, X> keyAttribute,
-                                  Y value, SingularAttribute<? super T, Y> valueAttribute,
-                                  EntityManager entityManager);
+    void update(T object);
 }

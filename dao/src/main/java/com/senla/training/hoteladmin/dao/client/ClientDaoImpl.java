@@ -5,7 +5,6 @@ import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -19,7 +18,7 @@ public class ClientDaoImpl extends AbstractDao<Client> implements ClientDao {
     }
 
     @Override
-    public Long getNumberOfClients(EntityManager entityManager) {
+    public Long getNumberOfClients() {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);

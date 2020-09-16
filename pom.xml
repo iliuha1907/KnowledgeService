@@ -19,7 +19,6 @@
         <module>runner</module>
         <module>view</module>
         <module>csv-import-export</module>
-        <module>spring-configuration</module>
     </modules>
 
     <build>

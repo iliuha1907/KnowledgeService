@@ -1,12 +1,10 @@
 package com.senla.training.hoteladmin.service.room;
 
-import com.senla.training.hoteladmin.dao.EntityManagerProvider;
 import com.senla.training.hoteladmin.dao.room.RoomDao;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.csvapi.writeread.RoomReaderWriter;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.model.room.Room_;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
@@ -15,107 +13,102 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Component
-@Transactional
 public class RoomServiceImpl implements RoomService {
 
     private static final Logger LOGGER = LogManager.getLogger(RoomServiceImpl.class);
     @Autowired
     private RoomDao roomDao;
     @Autowired
-    private EntityManagerProvider entityManagerProvider;
-    @Autowired
     private RoomReaderWriter roomReaderWriter;
     @Value("${rooms.changeStatus:true}")
     private boolean isChangeableStatus;
 
     @Override
+    @Transactional
     public void addRoom(RoomStatus status, BigDecimal price, Integer capacity, Integer stars) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
-        try {
-            roomDao.add(new Room(status, price, capacity, stars), entityManager);
-        } catch (Exception ex) {
-            throw ex;
-        }
+        roomDao.add(new Room(status, price, capacity, stars));
     }
 
     @Override
+    @Transactional
     public void setRoomStatus(Integer roomId, RoomStatus status) {
         if (!isChangeableStatus) {
             LOGGER.error("Error at setting RoomStatus: No permission to change status");
             throw new BusinessException("No permission to change status");
         }
-
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
-        try {
-            roomDao.updateByAttribute(roomId, Room_.id, status.toString(), Room_.status,
-                    entityManager);
-        } catch (Exception ex) {
-            throw ex;
+        Room room = roomDao.getById(roomId);
+        if (room == null) {
+            throw new BusinessException("Error at setting RoomStatus: no such room!");
         }
+        room.setStatus(status.toString());
+        roomDao.update(room);
     }
 
     @Override
+    @Transactional
     public void setRoomPrice(Integer roomId, BigDecimal price) {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
-        try {
-            roomDao.updateByAttribute(roomId, Room_.id, price, Room_.price, entityManager);
-        } catch (Exception ex) {
-            throw ex;
+        Room room = roomDao.getById(roomId);
+        if (room == null) {
+            throw new BusinessException("Error at setting RoomStatus: no such room!");
         }
+        room.setPrice(price);
+        roomDao.update(room);
     }
 
     @Override
+    @Transactional
     public List<Room> getSortedRooms(RoomsSortCriterion criterion) {
-        return roomDao.getSortedRooms(criterion, entityManagerProvider.getEntityManager());
+        return roomDao.getSortedRooms(criterion);
     }
 
     @Override
+    @Transactional
     public List<Room> getFreeRooms() {
-        return roomDao.getFreeRooms(entityManagerProvider.getEntityManager());
+        return roomDao.getFreeRooms();
     }
 
     @Override
+    @Transactional
     public List<Room> getSortedFreeRooms(RoomsSortCriterion criterion) {
-        return roomDao.getSortedFreeRooms(criterion, entityManagerProvider.getEntityManager());
+        return roomDao.getSortedFreeRooms(criterion);
     }
 
     @Override
+    @Transactional
     public BigDecimal getPriceRoom(Integer roomId) {
-        Room room = roomDao.getById(roomId, entityManagerProvider.getEntityManager());
+        Room room = roomDao.getById(roomId);
         return room.getPrice();
     }
 
     @Override
+    @Transactional
     public Room getRoom(Integer roomId) {
-        return roomDao.getById(roomId, entityManagerProvider.getEntityManager());
+        return roomDao.getById(roomId);
     }
 
     @Override
+    @Transactional
     public Long getNumberOfFreeRooms() {
-        return roomDao.getNumberOfFreeRooms(entityManagerProvider.getEntityManager());
+        return roomDao.getNumberOfFreeRooms();
     }
 
     @Override
+    @Transactional
     public void exportRooms() {
-        roomReaderWriter.writeRooms(roomDao.getAll(entityManagerProvider.getEntityManager()));
+        roomReaderWriter.writeRooms(roomDao.getAll());
     }
 
     @Override
+    @Transactional
     public void importRooms() {
-        EntityManager entityManager = entityManagerProvider.getEntityManager();
         List<Room> rooms = roomReaderWriter.readRooms();
-        try {
-            rooms.forEach(room -> {
-                room.setIsFree(1);
-                roomDao.add(room, entityManager);
-            });
-        } catch (Exception ex) {
-            throw ex;
-        }
+        rooms.forEach(room -> {
+            room.setIsFree(1);
+            roomDao.add(room);
+        });
     }
 }

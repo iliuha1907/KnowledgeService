@@ -16,10 +16,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppenderBuilder {
 
-    private final String appenderName = "SqlAppender";
-    private final String loggerName = "org.hibernate";
-    private final String outputFileName = "logs/sqlLog.log";
-    private final Integer bufferSize = 4000;
+    private static final String APPENDER_NAME = "SqlAppender";
+    private static final String LOGGER_NAME = "org.hibernate";
+    private static final String OUTPUT_FILE_NAME = "logs/sqlLog.log";
+    private static final Integer BUFFER_SIZE = 4000;
     @Value("${util.appenderBuilder.needSqlAppender:true}")
     private boolean needSqlAppender;
     @Value("${util.appenderBuilder.logLevel:debug}")
@@ -39,22 +39,22 @@ public class AppenderBuilder {
         LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         Configuration config = ctx.getConfiguration();
         Appender appender = FileAppender.newBuilder()
-                .withFileName(outputFileName)
+                .withFileName(OUTPUT_FILE_NAME)
                 .withAppend(false)
                 .withBufferedIo(true)
-                .withBufferSize(bufferSize)
+                .withBufferSize(BUFFER_SIZE)
                 .setConfiguration(config)
-                .setName(appenderName)
+                .setName(APPENDER_NAME)
                 .setLayout(PatternLayout.createDefaultLayout())
                 .build();
         appender.start();
         config.addAppender(appender);
-        AppenderRef ref = AppenderRef.createAppenderRef(appenderName, null, null);
+        AppenderRef ref = AppenderRef.createAppenderRef(APPENDER_NAME, null, null);
         AppenderRef[] refs = new AppenderRef[]{ref};
-        LoggerConfig loggerConfig = LoggerConfig.createLogger(false, level, loggerName,
+        LoggerConfig loggerConfig = LoggerConfig.createLogger(false, level, LOGGER_NAME,
                 "true", refs, null, config, null);
         loggerConfig.addAppender(appender, null, null);
-        config.addLogger(loggerName, loggerConfig);
+        config.addLogger(LOGGER_NAME, loggerConfig);
         ctx.updateLoggers();
     }
 }

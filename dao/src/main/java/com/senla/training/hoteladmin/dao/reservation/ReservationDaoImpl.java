@@ -10,7 +10,6 @@ import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
@@ -26,7 +25,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     }
 
     @Override
-    public List<Reservation> getSortedReservations(ReservationSortCriterion criterion, EntityManager entityManager) {
+    public List<Reservation> getSortedReservations(ReservationSortCriterion criterion) {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
@@ -47,7 +46,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     }
 
     @Override
-    public Long getNumberOfResidents(EntityManager entityManager) {
+    public Long getNumberOfResidents() {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
@@ -62,7 +61,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     }
 
     @Override
-    public List<Reservation> getReservationsExpiredAfterDate(Date date, EntityManager entityManager) {
+    public List<Reservation> getReservationsExpiredAfterDate(Date date) {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
@@ -77,7 +76,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     }
 
     @Override
-    public List<Reservation> getLastRoomReservations(Room room, Integer count, EntityManager entityManager) {
+    public List<Reservation> getLastRoomReservations(Room room, Integer count) {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
@@ -92,7 +91,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     }
 
     @Override
-    public Reservation getReservationByRoomClient(Client client, Room room, EntityManager entityManager) {
+    public Reservation getReservationByRoomClient(Client client, Room room) {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
@@ -111,7 +110,7 @@ public class ReservationDaoImpl extends AbstractDao<Reservation> implements Rese
     }
 
     @Override
-    public void deactivateClientReservation(Client client, Room room, EntityManager entityManager) {
+    public void deactivateClientReservation(Client client, Room room) {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaUpdate<Reservation> update = criteriaBuilder.createCriteriaUpdate(Reservation.class);

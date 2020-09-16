@@ -4,21 +4,24 @@ import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.AbstractEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.List;
 
+@Component
 public abstract class AbstractDao<T extends AbstractEntity> implements GenericDao<T> {
 
     protected final Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
+    @PersistenceContext
+    protected EntityManager entityManager;
 
     @Override
-    public void add(final T object, final EntityManager entityManager) {
+    public void add(final T object) {
         try {
             entityManager.persist(object);
         } catch (Exception ex) {
@@ -28,7 +31,7 @@ public abstract class AbstractDao<T extends AbstractEntity> implements GenericDa
     }
 
     @Override
-    public List<T> getAll(final EntityManager entityManager) {
+    public List<T> getAll() {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<T> query = criteriaBuilder.createQuery(getEntityClass());
@@ -42,7 +45,7 @@ public abstract class AbstractDao<T extends AbstractEntity> implements GenericDa
     }
 
     @Override
-    public T getById(final Integer id, final EntityManager entityManager) {
+    public T getById(final Integer id) {
         try {
             T entity = entityManager.find(getEntityClass(), id);
             if (entity == null) {
@@ -56,16 +59,9 @@ public abstract class AbstractDao<T extends AbstractEntity> implements GenericDa
     }
 
     @Override
-    public <X, Y> void updateByAttribute(final X key, final SingularAttribute<? super T, X> keyAttribute,
-                                         final Y value, final SingularAttribute<? super T, Y> valueAttribute,
-                                         final EntityManager entityManager) {
+    public void update(final T object) {
         try {
-            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-            CriteriaUpdate<T> update = criteriaBuilder.createCriteriaUpdate(getEntityClass());
-            Root<T> root = update.from(getEntityClass());
-            update.set(root.get(valueAttribute), value);
-            update.where(criteriaBuilder.equal(root.get(keyAttribute), key));
-            entityManager.createQuery(update).executeUpdate();
+            entityManager.merge(object);
         } catch (Exception ex) {
             logger.error("Error at updating by attribute: " + ex.getMessage());
             throw new BusinessException(ex.getMessage());
