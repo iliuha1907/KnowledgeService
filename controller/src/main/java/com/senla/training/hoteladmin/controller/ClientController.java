@@ -1,17 +1,17 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.service.client.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@NeedInjectionClass
+@Component
 public class ClientController {
 
-    @NeedInjectionField
+    @Autowired
     private ClientService clientService;
 
     public String addClient(final String firstName, final String lastName) {

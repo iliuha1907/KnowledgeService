@@ -1,29 +1,34 @@
 package com.senla.training.hoteladmin.model.client;
 
+import com.senla.training.hoteladmin.model.AbstractEntity;
 import com.senla.training.hoteladmin.model.reservation.Reservation;
 import com.senla.training.hoteladmin.model.visit.Visit;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "clients", schema = "hoteladmin_huzei")
-public class Client implements Serializable {
+@Table(name = "clients")
+public class Client extends AbstractEntity {
 
-    private Integer id;
+    @Basic
+    @Column(name = "first_name", nullable = false, length = 45)
     private String name;
+    @Basic
+    @Column(name = "last_name", nullable = false, length = 45)
     private String lastName;
+    @OneToMany(mappedBy = "resident", fetch = FetchType.LAZY)
     private Set<Reservation> clientReservations = new HashSet<>();
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     private Set<Visit> clientVisits = new HashSet<>();
 
     public Client() {
     }
 
     public Client(final Integer id) {
-        this.id = id;
+        super(id);
     }
 
     public Client(final String name, final String lastName) {
@@ -37,37 +42,20 @@ public class Client implements Serializable {
         this.lastName = lastName;
     }
 
-    @Id
-    @Column(name = "id", nullable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
-        return id;
-    }
-
-    @Basic
-    @Column(name = "first_name", nullable = false, length = 45)
     public String getName() {
         return name;
     }
 
-    @Basic
-    @Column(name = "last_name", nullable = false, length = 45)
     public String getLastName() {
         return lastName;
     }
 
-    @OneToMany(mappedBy = "resident", fetch = FetchType.LAZY)
     public Set<Reservation> getClientReservations() {
         return clientReservations;
     }
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     public Set<Visit> getClientVisits() {
         return clientVisits;
-    }
-
-    public void setId(final Integer id) {
-        this.id = id;
     }
 
     public void setName(final String name) {

@@ -1,23 +1,20 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
-import com.senla.training.hoteladmin.service.client.ClientService;
-import com.senla.training.hoteladmin.service.hotelserice.HotelServiceService;
+import com.senla.training.hoteladmin.service.hotelservice.HotelServiceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@NeedInjectionClass
+@Component
 public class HotelServiceController {
 
-    @NeedInjectionField
+    @Autowired
     private HotelServiceService hotelServiceService;
-    @NeedInjectionField
-    private ClientService clientService;
 
     public String addService(final BigDecimal price, final HotelServiceType type) {
         try {

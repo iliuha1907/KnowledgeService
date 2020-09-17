@@ -1,31 +1,41 @@
 package com.senla.training.hoteladmin.model.room;
 
+import com.senla.training.hoteladmin.model.AbstractEntity;
 import com.senla.training.hoteladmin.model.reservation.Reservation;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "rooms", schema = "hoteladmin_huzei")
-public class Room implements Serializable {
+@Table(name = "rooms")
+public class Room extends AbstractEntity {
 
-    private Integer id;
+    @Basic
+    @Column(name = "status", nullable = false, length = 45)
     private String status;
+    @Basic
+    @Column(name = "price", nullable = false, precision = 0)
     private BigDecimal price;
+    @Basic
+    @Column(name = "capacity", nullable = false)
     private Integer capacity;
+    @Basic
+    @Column(name = "stars", nullable = false)
     private Integer stars;
+    @Basic
+    @Column(name = "is_free", nullable = false)
     private Integer isFree;
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<Reservation> clientReservations = new HashSet<>();
 
     public Room() {
     }
 
     public Room(final Integer id) {
-        this.id = id;
+        super(id);
     }
 
     public Room(final RoomStatus status, final BigDecimal price, final Integer capacity,
@@ -64,50 +74,28 @@ public class Room implements Serializable {
         }
     }
 
-    @Id
-    @Column(name = "id", nullable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
-        return id;
-    }
-
-    @Basic
-    @Column(name = "status", nullable = false, length = 45)
     public String getStatus() {
         return status;
     }
 
-    @Basic
-    @Column(name = "price", nullable = false, precision = 0)
     public BigDecimal getPrice() {
         return price;
     }
 
-    @Basic
-    @Column(name = "capacity", nullable = false)
     public Integer getCapacity() {
         return capacity;
     }
 
-    @Basic
-    @Column(name = "stars", nullable = false)
     public Integer getStars() {
         return stars;
     }
 
-    @Basic
-    @Column(name = "is_free", nullable = false)
     public Integer getIsFree() {
         return isFree;
     }
 
-    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     public Set<Reservation> getClientReservations() {
         return clientReservations;
-    }
-
-    public void setId(final Integer id) {
-        this.id = id;
     }
 
     public void setStatus(final String status) {

@@ -1,8 +1,5 @@
 package com.senla.training.hoteladmin.view;
 
-import com.senla.training.hoteladmin.annotationapi.ConfigProperty;
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.controller.*;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
@@ -10,27 +7,30 @@ import com.senla.training.hoteladmin.util.UserInteraction;
 import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@NeedInjectionClass
+@Component
 public class Builder {
 
-    @ConfigProperty(propertyName = "date.dateFormat", type = String.class)
+    @Value("${date.dateFormat:yyyy-M-dd}")
     private String dateFormat;
     private Menu rootMenu;
-    @NeedInjectionField
+    @Autowired
     private ClientController clientController;
-    @NeedInjectionField
+    @Autowired
     private HotelServiceController hotelServiceController;
-    @NeedInjectionField
+    @Autowired
     private RoomController roomController;
-    @NeedInjectionField
+    @Autowired
     private VisitController visitController;
-    @NeedInjectionField
+    @Autowired
     private ReservationController reservationController;
 
     public Builder() {

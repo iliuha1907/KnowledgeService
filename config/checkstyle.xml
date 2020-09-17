@@ -75,7 +75,7 @@
     </module>
 
     <module name="RegexpMultiline">
-        <property name="format" value="^([^\n ]+ )*(class|interface|enum) [^{]*\{\n[^\n}]"/>
+        <property name="format" value="^([^\r\n ]+ )*(class|interface|enum) [^{]*\{\r\n[^\r\n}]"/>
         <property name="message" value="Leave empty row after class/interface/enum definition!"/>
         <property name="severity" value="error"/>
         <property name="fileExtensions" value="java"/>

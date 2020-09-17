@@ -1,15 +1,15 @@
 package com.senla.training.hoteladmin.view;
 
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.util.UserInteraction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@NeedInjectionClass
+@Component
 public class MenuController {
 
-    @NeedInjectionField
+    @Autowired
     private Builder builder;
-    @NeedInjectionField
+    @Autowired
     private Navigator navigator;
 
     public MenuController() {

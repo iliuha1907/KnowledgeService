@@ -1,20 +1,20 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
 import com.senla.training.hoteladmin.service.room.RoomService;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@NeedInjectionClass
+@Component
 public class RoomController {
 
-    @NeedInjectionField
+    @Autowired
     private RoomService roomService;
 
     public String addRoom(final RoomStatus status, final BigDecimal price, final Integer capacity,

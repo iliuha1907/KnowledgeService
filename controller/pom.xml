@@ -14,12 +14,6 @@
     <dependencies>
         <dependency>
             <groupId>com.senla.training.hoteladmin</groupId>
-            <artifactId>injectionAnnotation</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.senla.training.hoteladmin</groupId>
             <artifactId>service</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>

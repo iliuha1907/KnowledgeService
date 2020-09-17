@@ -1,19 +1,19 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionField;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.reservation.Reservation;
 import com.senla.training.hoteladmin.service.reservation.ReservationService;
 import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 
-@NeedInjectionClass
+@Component
 public class ReservationController {
 
-    @NeedInjectionField
+    @Autowired
     private ReservationService reservationService;
 
     public String addReservationForExistingClient(final Integer clientId, final Date arrivalDate,

@@ -1,21 +1,28 @@
 package com.senla.training.hoteladmin.model.visit;
 
+import com.senla.training.hoteladmin.model.AbstractEntity;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "visits", schema = "hoteladmin_huzei")
-public class Visit implements Serializable {
+@Table(name = "visits")
+public class Visit extends AbstractEntity {
 
-    private Integer id;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private Client client;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "hotel_service_id", referencedColumnName = "id", nullable = false)
     private HotelService service;
+    @Basic
+    @Column(name = "date", nullable = false)
     private Date date;
+    @Basic
+    @Column(name = "is_active", nullable = false)
     private Integer isActive;
 
     public Visit() {
@@ -38,39 +45,20 @@ public class Visit implements Serializable {
         }
     }
 
-    @Id
-    @Column(name = "id", nullable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
-        return id;
-    }
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     public Client getClient() {
         return client;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "hotel_service_id", referencedColumnName = "id", nullable = false)
     public HotelService getService() {
         return service;
     }
 
-    @Basic
-    @Column(name = "date", nullable = false)
     public Date getDate() {
         return date;
     }
 
-    @Basic
-    @Column(name = "is_active", nullable = false)
     public Integer getIsActive() {
         return isActive;
-    }
-
-    public void setId(final Integer id) {
-        this.id = id;
     }
 
     public void setClient(final Client client) {

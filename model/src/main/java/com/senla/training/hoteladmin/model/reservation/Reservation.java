@@ -1,22 +1,31 @@
 package com.senla.training.hoteladmin.model.reservation;
 
+import com.senla.training.hoteladmin.model.AbstractEntity;
 import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.room.Room;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "reservations", schema = "hoteladmin_huzei")
-public class Reservation implements Serializable {
+@Table(name = "reservations")
+public class Reservation extends AbstractEntity {
 
-    private Integer id;
+    @Basic
+    @Column(name = "arrival_date", nullable = false)
     private Date arrivalDate;
+    @Basic
+    @Column(name = "departure_date", nullable = false)
     private Date departure;
+    @Basic
+    @Column(name = "is_active", nullable = false)
     private Integer isActive;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_id", referencedColumnName = "id", nullable = false)
     private Room room;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resident_id", referencedColumnName = "id", nullable = false)
     private Client resident;
 
     public Reservation() {
@@ -38,45 +47,24 @@ public class Reservation implements Serializable {
         this.isActive = isActive;
     }
 
-    @Id
-    @Column(name = "id", nullable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getId() {
-        return id;
-    }
-
-    @Basic
-    @Column(name = "arrival_date", nullable = false)
     public Date getArrivalDate() {
         return arrivalDate;
     }
 
-    @Basic
-    @Column(name = "departure_date", nullable = false)
     public Date getDeparture() {
         return departure;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "resident_id", referencedColumnName = "id", nullable = false)
     public Client getResident() {
         return resident;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "room_id", referencedColumnName = "id", nullable = false)
     public Room getRoom() {
         return room;
     }
 
-    @Basic
-    @Column(name = "is_active", nullable = false)
     public Integer getIsActive() {
         return isActive;
-    }
-
-    public void setId(final Integer id) {
-        this.id = id;
     }
 
     public void setArrivalDate(final Date arrivalDate) {

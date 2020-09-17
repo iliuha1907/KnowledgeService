@@ -1,7 +1,5 @@
 package com.senla.training.hoteladmin.util;
 
-import com.senla.training.hoteladmin.annotationapi.ConfigProperty;
-import com.senla.training.hoteladmin.annotationapi.NeedInjectionClass;
 import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -12,20 +10,22 @@ import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-@NeedInjectionClass
+@Component
 public class AppenderBuilder {
 
     private static final String APPENDER_NAME = "SqlAppender";
     private static final String LOGGER_NAME = "org.hibernate";
     private static final String OUTPUT_FILE_NAME = "logs/sqlLog.log";
     private static final Integer BUFFER_SIZE = 4000;
-    @ConfigProperty(propertyName = "util.appenderBuilder.needSqlAppender", type = Boolean.class)
-    private static Boolean needSqlAppender;
-    @ConfigProperty(propertyName = "util.appenderBuilder.logLevel", type = String.class)
-    private static String logLevel;
+    @Value("${util.appenderBuilder.needSqlAppender:true}")
+    private boolean needSqlAppender;
+    @Value("${util.appenderBuilder.logLevel:debug}")
+    private String logLevel;
 
-    public static void build() {
+    public void build() {
         if (!needSqlAppender) {
             return;
         }
