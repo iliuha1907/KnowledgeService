@@ -6,13 +6,13 @@ import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Component
+@Service
 public class HotelServiceServiceImpl implements HotelServiceService {
 
     @Autowired

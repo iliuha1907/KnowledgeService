@@ -4,12 +4,12 @@ import com.senla.training.hoteladmin.dao.client.ClientDao;
 import com.senla.training.hoteladmin.csvapi.writeread.ClientReaderWriter;
 import com.senla.training.hoteladmin.model.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
+@Service
 public class ClientServiceImpl implements ClientService {
 
     @Autowired

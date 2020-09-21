@@ -15,13 +15,13 @@ import com.senla.training.hoteladmin.util.DateUtil;
 import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
-@Component
+@Service
 public class ReservationServiceImpl implements ReservationService {
 
     private static final Logger LOGGER = LogManager.getLogger(ReservationServiceImpl.class);
@@ -36,29 +36,13 @@ public class ReservationServiceImpl implements ReservationService {
     @Value("${clients.numberOfRecords:1}")
     private Integer numberOfResidents;
 
-
-    @Override
-    @Transactional
-    public void addReservation(Client client, Date arrivalDate, Date departureDate) {
-        Room room = roomDao.getFirstFreeRoom();
-        if (room == null) {
-            LOGGER.error("Error at adding reservation: No free rooms");
-            throw new BusinessException("No free rooms");
-        }
-
-        reservationDao.add(new Reservation(room, client, java.sql.Date.valueOf(DateUtil.getString(arrivalDate)),
-                java.sql.Date.valueOf(DateUtil.getString(departureDate)), 1));
-        room.setIsFree(0);
-        roomDao.update(room);
-    }
-
     @Override
     @Transactional
     public void addReservationForExistingClient(Integer clientId, Date arrivalDate, Date departureDate) {
         Client client = clientDao.getById(clientId);
         if (client == null) {
             LOGGER.error("Error at adding reservation: No such client");
-            throw new BusinessException("No such client");
+            throw new BusinessException("Error at adding reservation: No such client");
         }
         addReservation(client, arrivalDate, departureDate);
     }
@@ -70,7 +54,7 @@ public class ReservationServiceImpl implements ReservationService {
         Room room = roomDao.getById(roomId);
         if (client == null || room == null) {
             LOGGER.error("Error at deactivating reservation: No such entity");
-            throw new BusinessException("No such entity");
+            throw new BusinessException("Error at deactivating reservation: No such entity");
         }
 
         reservationDao.deactivateClientReservation(client, room);
@@ -94,7 +78,7 @@ public class ReservationServiceImpl implements ReservationService {
         Room room = roomDao.getById(roomId);
         if (room == null) {
             LOGGER.error("Error at getting reservations: No such room");
-            throw new BusinessException("No free rooms");
+            throw new BusinessException("Error at getting reservations: No such room");
         }
         return reservationDao.getLastRoomReservations(room, numberOfResidents);
     }
@@ -131,5 +115,23 @@ public class ReservationServiceImpl implements ReservationService {
                 }
             }
         });
+    }
+
+    public void setNumberOfResidents(Integer numberOfResidents) {
+        this.numberOfResidents = numberOfResidents;
+    }
+
+    @Transactional
+    protected void addReservation(Client client, Date arrivalDate, Date departureDate) {
+        Room room = roomDao.getFirstFreeRoom();
+        if (room == null) {
+            LOGGER.error("Error at adding reservation: No free rooms");
+            throw new BusinessException("Error at adding reservation: No free rooms");
+        }
+
+        reservationDao.add(new Reservation(room, client, java.sql.Date.valueOf(DateUtil.getString(arrivalDate)),
+                java.sql.Date.valueOf(DateUtil.getString(departureDate)), 1));
+        room.setIsFree(0);
+        roomDao.update(room);
     }
 }
