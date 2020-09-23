@@ -10,13 +10,13 @@ import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Component
+@Service
 public class RoomServiceImpl implements RoomService {
 
     private static final Logger LOGGER = LogManager.getLogger(RoomServiceImpl.class);
@@ -81,6 +81,9 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     public BigDecimal getPriceRoom(Integer roomId) {
         Room room = roomDao.getById(roomId);
+        if (room == null) {
+            throw new BusinessException("Error at getting Room price: no such room!");
+        }
         return room.getPrice();
     }
 
@@ -110,5 +113,9 @@ public class RoomServiceImpl implements RoomService {
             room.setIsFree(1);
             roomDao.add(room);
         });
+    }
+
+    public void setChangeableStatus(boolean changeableStatus) {
+        isChangeableStatus = changeableStatus;
     }
 }

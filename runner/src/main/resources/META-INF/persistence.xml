@@ -4,7 +4,7 @@
   http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
     <persistence-unit name="Manager">
-        <description>Persistence Unit For test</description>
+        <description>Persistence Unit</description>
         <class>com.senla.training.hoteladmin.model.client.Client</class>
         <class>com.senla.training.hoteladmin.model.room.Room</class>
         <class>com.senla.training.hoteladmin.model.hotelservice.HotelService</class>

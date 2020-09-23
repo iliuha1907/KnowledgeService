@@ -13,13 +13,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
-@Component
+@Service
 public class VisitServiceImpl implements VisitService {
 
     private static final Logger LOGGER = LogManager.getLogger(VisitServiceImpl.class);
@@ -38,13 +38,13 @@ public class VisitServiceImpl implements VisitService {
         Client client = clientDao.getById(clientId);
         if (client == null) {
             LOGGER.error("Error at adding visit: No such client");
-            throw new BusinessException("No such client");
+            throw new BusinessException("Error at adding visit: No such client");
         }
 
         HotelService hotelService = hotelServiceDao.getById(serviceId);
         if (hotelService == null) {
             LOGGER.error("Error at adding visit: No such hotel service");
-            throw new BusinessException("No such hotel service");
+            throw new BusinessException("Error at adding visit: No such hotel service");
         }
 
         visitDao.add(new Visit(client, hotelService, java.sql.Date.valueOf(DateUtil.getString(date)), true));
@@ -56,7 +56,7 @@ public class VisitServiceImpl implements VisitService {
         Client client = clientDao.getById(clientId);
         if (client == null) {
             LOGGER.error("Error at getting visits: No such client");
-            throw new BusinessException("No such client");
+            throw new BusinessException("Error at getting visits: No such client");
         }
         return visitDao.getSortedClientVisits(client, criterion);
     }
