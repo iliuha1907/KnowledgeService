@@ -2,7 +2,7 @@
 <Configuration status="warn">
 <Appenders>
     <RollingFile name="logFile"
-                 fileName="/D:/SENLA/MVCSpring/huzei_ilya-master/logs/log4j2.log"
+                 fileName="/D:/SENLA/logs/log4j2.log"
                  filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
         <PatternLayout>
             <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
