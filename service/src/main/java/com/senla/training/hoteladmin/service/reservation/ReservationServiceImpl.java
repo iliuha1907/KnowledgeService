@@ -9,6 +9,7 @@ import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.reservation.Reservation;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.util.UserInteraction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.DateUtil;
@@ -39,7 +40,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public void addReservationForExistingClient(Integer clientId, Date arrivalDate, Date departureDate) {
-        Client client = clientDao.getById(clientId);
+        Client client = clientDao.getByPrimaryKey(clientId);
         if (client == null) {
             LOGGER.error("Error at adding reservation: No such client");
             throw new BusinessException("Error at adding reservation: No such client");
@@ -49,33 +50,42 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void deactivateReservation(Integer clientId, Integer roomId) {
-        Client client = clientDao.getById(clientId);
-        Room room = roomDao.getById(roomId);
-        if (client == null || room == null) {
-            LOGGER.error("Error at deactivating reservation: No such entity");
-            throw new BusinessException("Error at deactivating reservation: No such entity");
+    public void deactivateReservation(Integer id) {
+        Reservation existing = reservationDao.getByPrimaryKey(id);
+        if (existing == null) {
+            throw new BusinessException("Error at deactivating reservation: no such entity!");
         }
 
-        reservationDao.deactivateClientReservation(client, room);
+        existing.setIsActive(0);
+        reservationDao.update(existing);
     }
 
     @Override
     @Transactional
     public List<Reservation> getReservationsExpiredAfterDate(Date date) {
+        if (date == null) {
+            LOGGER.error("Error at deactivating reservation: wrong date");
+            throw new BusinessException("Error at deactivating reservation: wrong date");
+        }
         return reservationDao.getReservationsExpiredAfterDate(date);
     }
 
     @Override
     @Transactional
-    public List<Reservation> getSortedReservations(ReservationSortCriterion criterion) {
-        return reservationDao.getSortedReservations(criterion);
+    public List<Reservation> getSortedReservations(String criterion) {
+        ReservationSortCriterion reservationSortCriterion = UserInteraction
+                .getReservationSortCriterionFromString(criterion);
+        if (reservationSortCriterion == null) {
+            throw new BusinessException("Error at getting reservations: Wrong criterion");
+        }
+
+        return reservationDao.getSortedReservations(reservationSortCriterion);
     }
 
     @Override
     @Transactional
     public List<Reservation> getLastRoomReservations(Integer roomId) {
-        Room room = roomDao.getById(roomId);
+        Room room = roomDao.getByPrimaryKey(roomId);
         if (room == null) {
             LOGGER.error("Error at getting reservations: No such room");
             throw new BusinessException("Error at getting reservations: No such room");
@@ -100,8 +110,8 @@ public class ReservationServiceImpl implements ReservationService {
     public void importReservations() {
         List<Reservation> reservations = reservationReaderWriter.readReservations();
         reservations.forEach(reservation -> {
-            Room room = roomDao.getById(reservation.getRoom().getId());
-            Client client = clientDao.getById(reservation.getResident().getId());
+            Room room = roomDao.getByPrimaryKey(reservation.getRoom().getId());
+            Client client = clientDao.getByPrimaryKey(reservation.getResident().getId());
             if (room != null && client != null) {
                 Reservation existing = reservationDao.getReservationByRoomClient(client, room);
                 if (existing == null && room.getIsFree().equals(1)

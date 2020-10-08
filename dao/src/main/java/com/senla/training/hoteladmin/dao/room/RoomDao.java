@@ -6,7 +6,7 @@ import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 
 import java.util.List;
 
-public interface RoomDao extends GenericDao<Room> {
+public interface RoomDao extends GenericDao<Room, Integer> {
 
     List<Room> getSortedRooms(RoomsSortCriterion criterion);
 

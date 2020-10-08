@@ -9,7 +9,7 @@ import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
 import java.util.Date;
 import java.util.List;
 
-public interface ReservationDao extends GenericDao<Reservation> {
+public interface ReservationDao extends GenericDao<Reservation, Integer> {
 
     List<Reservation> getSortedReservations(ReservationSortCriterion criterion);
 

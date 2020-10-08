@@ -1,7 +1,7 @@
 package com.senla.training.hoteladmin.csvapi.writeread;
 
-import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.csvapi.parsing.ClientConverter;
+import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,13 +18,15 @@ public class ClientReaderWriter {
     private static final Logger LOGGER = LogManager.getLogger(ClientReaderWriter.class);
     @Value("${csv.clients.import.filePath:csv/clients.csv}")
     private String fileNameImport;
-    @Value("${csv.clients.export.filePath:exportCsv/clients.csv}")
+    @Value("${csv.export.directoryPath:export-csv}")
+    private String exportDirectory;
+    @Value("${csv.clients.export.fileName:clients.csv}")
     private String fileNameExport;
     @Value("${csv.separator:;}")
     private String separator;
 
     public void writeClients(final List<Client> clients) {
-        try (FileWriter fileWriter = new FileWriter(new File(fileNameExport))) {
+        try (FileWriter fileWriter = new FileWriter(new File(exportDirectory + "/" + fileNameExport))) {
             for (Client client : clients) {
                 fileWriter.write(ClientConverter.getStringFromClient(client, separator) + "\n");
             }

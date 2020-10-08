@@ -9,6 +9,7 @@ import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.visit.Visit;
 import com.senla.training.hoteladmin.util.DateUtil;
+import com.senla.training.hoteladmin.util.UserInteraction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
@@ -35,13 +36,13 @@ public class VisitServiceImpl implements VisitService {
     @Override
     @Transactional
     public void addVisit(Integer serviceId, Integer clientId, Date date) {
-        Client client = clientDao.getById(clientId);
+        Client client = clientDao.getByPrimaryKey(clientId);
         if (client == null) {
             LOGGER.error("Error at adding visit: No such client");
             throw new BusinessException("Error at adding visit: No such client");
         }
 
-        HotelService hotelService = hotelServiceDao.getById(serviceId);
+        HotelService hotelService = hotelServiceDao.getByPrimaryKey(serviceId);
         if (hotelService == null) {
             LOGGER.error("Error at adding visit: No such hotel service");
             throw new BusinessException("Error at adding visit: No such hotel service");
@@ -52,13 +53,18 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     @Transactional
-    public List<Visit> getSortedClientVisits(Integer clientId, VisitSortCriterion criterion) {
-        Client client = clientDao.getById(clientId);
+    public List<Visit> getSortedClientVisits(Integer clientId, String criterion) {
+        VisitSortCriterion visitSortCriterion = UserInteraction.getVisitSortCriterionFromString(criterion);
+        if (visitSortCriterion == null) {
+            throw new BusinessException("Error at getting visits: Wrong criterion");
+        }
+
+        Client client = clientDao.getByPrimaryKey(clientId);
         if (client == null) {
             LOGGER.error("Error at getting visits: No such client");
             throw new BusinessException("Error at getting visits: No such client");
         }
-        return visitDao.getSortedClientVisits(client, criterion);
+        return visitDao.getSortedClientVisits(client, visitSortCriterion);
     }
 
     @Override
@@ -72,8 +78,8 @@ public class VisitServiceImpl implements VisitService {
     public void importVisits() {
         List<Visit> visits = visitReaderWriter.readVisits();
         visits.forEach(visit -> {
-            Client client = clientDao.getById(visit.getClient().getId());
-            HotelService hotelService = hotelServiceDao.getById(visit.getService().getId());
+            Client client = clientDao.getByPrimaryKey(visit.getClient().getId());
+            HotelService hotelService = hotelServiceDao.getByPrimaryKey(visit.getService().getId());
             if (client != null && hotelService != null) {
                 visit.setClient(client);
                 visit.setService(hotelService);

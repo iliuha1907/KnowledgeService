@@ -5,6 +5,7 @@ import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.csvapi.writeread.RoomReaderWriter;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.util.UserInteraction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
@@ -35,34 +36,30 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public void setRoomStatus(Integer roomId, RoomStatus status) {
+    public void updateRoom(Room room, Integer id) {
+        if (room == null) {
+            LOGGER.error("Error at updating Room: Room is null");
+            throw new BusinessException("Error at updating Room: Room is null");
+        }
+
         if (!isChangeableStatus) {
-            LOGGER.error("Error at setting RoomStatus: No permission to change status");
-            throw new BusinessException("No permission to change status");
+            LOGGER.error("Error at updating Room: No permission to change status");
+            throw new BusinessException("Error at updating Room: No permission to change status");
         }
-        Room room = roomDao.getById(roomId);
-        if (room == null) {
-            throw new BusinessException("Error at setting RoomStatus: no such room!");
-        }
-        room.setStatus(status.toString());
+
+        room.setId(id);
         roomDao.update(room);
     }
 
     @Override
     @Transactional
-    public void setRoomPrice(Integer roomId, BigDecimal price) {
-        Room room = roomDao.getById(roomId);
-        if (room == null) {
-            throw new BusinessException("Error at setting RoomStatus: no such room!");
+    public List<Room> getSortedRooms(String criterion) {
+        RoomsSortCriterion roomSortCriterion = UserInteraction.getRoomsSortCriterionFromString(criterion);
+        if (roomSortCriterion == null) {
+            throw new BusinessException("Error at getting rooms: Wrong criterion");
         }
-        room.setPrice(price);
-        roomDao.update(room);
-    }
 
-    @Override
-    @Transactional
-    public List<Room> getSortedRooms(RoomsSortCriterion criterion) {
-        return roomDao.getSortedRooms(criterion);
+        return roomDao.getSortedRooms(roomSortCriterion);
     }
 
     @Override
@@ -73,14 +70,19 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public List<Room> getSortedFreeRooms(RoomsSortCriterion criterion) {
-        return roomDao.getSortedFreeRooms(criterion);
+    public List<Room> getSortedFreeRooms(String criterion) {
+        RoomsSortCriterion roomSortCriterion = UserInteraction.getRoomsSortCriterionFromString(criterion);
+        if (roomSortCriterion == null) {
+            throw new BusinessException("Error at getting rooms: Wrong criterion");
+        }
+
+        return roomDao.getSortedFreeRooms(roomSortCriterion);
     }
 
     @Override
     @Transactional
     public BigDecimal getPriceRoom(Integer roomId) {
-        Room room = roomDao.getById(roomId);
+        Room room = roomDao.getByPrimaryKey(roomId);
         if (room == null) {
             throw new BusinessException("Error at getting Room price: no such room!");
         }
@@ -90,7 +92,11 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional
     public Room getRoom(Integer roomId) {
-        return roomDao.getById(roomId);
+        Room room = roomDao.getByPrimaryKey(roomId);
+        if (room == null) {
+            throw new BusinessException("Error at getting Room: no such entity!");
+        }
+        return roomDao.getByPrimaryKey(roomId);
     }
 
     @Override

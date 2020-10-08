@@ -1,66 +1,51 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.exception.BusinessException;
-import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.dto.ClientDto;
+import com.senla.training.hoteladmin.dto.MessageDto;
+import com.senla.training.hoteladmin.dto.mapper.ClientMapper;
+import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
 import com.senla.training.hoteladmin.service.client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Component
+@RestController
+@RequestMapping("/clients")
 public class ClientController {
 
     @Autowired
     private ClientService clientService;
+    @Autowired
+    private ClientMapper clientMapper;
+    @Autowired
+    private MessageDtoMapper messageDtoMapper;
 
-    public String addClient(final String firstName, final String lastName) {
-        try {
-            clientService.addClient(firstName, lastName);
-            return "Successfully added client";
-        } catch (Exception ex) {
-            return "Error at adding client: " + ex.getMessage();
-        }
+    @GetMapping
+    public List<ClientDto> getClients() {
+        return (clientMapper.listToDto(clientService.getClients()));
     }
 
-    public String getClients() {
-        List<Client> clients;
-        try {
-            clients = clientService.getClients();
-        } catch (Exception ex) {
-            return "Error at getting rooms: " + ex.getMessage();
-        }
-
-        StringBuilder result = new StringBuilder("Clients:\n");
-        clients.forEach(client ->
-                result.append(client).append("\n")
-        );
-        return result.toString();
+    @PostMapping
+    public MessageDto addClient(@RequestBody ClientDto client) {
+        clientService.addClient(client.getName(), client.getLastName());
+        return messageDtoMapper.toDto("Successfully added client");
     }
 
-    public String getNumberOfClients() {
-        try {
-            return clientService.getNumberOfClients().toString();
-        } catch (Exception ex) {
-            return "Error at getting number of clients: " + ex.getMessage();
-        }
+    @GetMapping("/total")
+    public Long getNumberOfClients() {
+        return clientService.getNumberOfClients();
     }
 
-    public String exportClients() {
-        try {
-            clientService.exportClients();
-            return "Successfully exported clients";
-        } catch (BusinessException ex) {
-            return ex.getMessage();
-        }
+    @PostMapping("/export/csv")
+    public MessageDto exportClients() {
+        clientService.exportClients();
+        return messageDtoMapper.toDto("Successfully exported clients");
     }
 
-    public String importClients() {
-        try {
-            clientService.importClients();
-            return "Successfully imported clients";
-        } catch (BusinessException ex) {
-            return ex.getMessage();
-        }
+    @PostMapping("/import/csv")
+    public MessageDto importClients() {
+        clientService.importClients();
+        return messageDtoMapper.toDto("Successfully imported clients");
     }
 }

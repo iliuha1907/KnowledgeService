@@ -1,61 +1,47 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.exception.BusinessException;
-import com.senla.training.hoteladmin.model.visit.Visit;
+import com.senla.training.hoteladmin.dto.MessageDto;
+import com.senla.training.hoteladmin.dto.VisitDto;
+import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
+import com.senla.training.hoteladmin.dto.mapper.VisitMapper;
 import com.senla.training.hoteladmin.service.visit.VisitService;
-import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
-@Component
+@RestController
+@RequestMapping("/visits")
 public class VisitController {
 
     @Autowired
     private VisitService visitService;
+    @Autowired
+    private VisitMapper visitMapper;
+    @Autowired
+    private MessageDtoMapper messageDtoMapper;
 
-    public String addVisit(final Integer serviceId, final Integer clientId, final Date date) {
-        try {
-            visitService.addVisit(serviceId, clientId, date);
-            return "Successfully added visit";
-        } catch (Exception ex) {
-            return "Error at adding visit: " + ex.getMessage();
-        }
+    @PostMapping
+    public MessageDto addVisit(@RequestBody VisitDto visit) {
+        visitService.addVisit(visit.getServiceId(), visit.getClientId(), visit.getDate());
+        return messageDtoMapper.toDto("Successfully added visit");
     }
 
-    public String getSortedClientVisits(final Integer clientId, final VisitSortCriterion criterion) {
-        List<Visit> visits;
-        try {
-            visits = visitService.getSortedClientVisits(clientId, criterion);
-        } catch (Exception ex) {
-            return "Error at getting visits: " + ex.getMessage();
-        }
-
-        StringBuilder result = new StringBuilder("Visits:\n");
-        visits.forEach(visit ->
-                result.append(visit).append("\n")
-        );
-        return result.toString();
+    @GetMapping()
+    public List<VisitDto> getSortedClientVisits(@RequestParam(name = "clientId") Integer id,
+                                                @RequestParam(name = "criterion", defaultValue = "PRICE") String criterion) {
+        return visitMapper.listToDto(visitService.getSortedClientVisits(id, criterion.toUpperCase()));
     }
 
-    public String exportVisits() {
-        try {
-            visitService.exportVisits();
-            return "Successfully exported visits";
-        } catch (BusinessException ex) {
-            return ex.getMessage();
-        }
+    @PostMapping("/export/csv")
+    public MessageDto exportVisits() {
+        visitService.exportVisits();
+        return messageDtoMapper.toDto("Successfully exported visits");
     }
 
-    public String importVisits() {
-        try {
-            visitService.importVisits();
-            return "Successfully imported visits";
-        } catch (BusinessException ex) {
-            return ex.getMessage();
-        }
+    @PostMapping("/import/csv")
+    public MessageDto importVisits() {
+        visitService.importVisits();
+        return messageDtoMapper.toDto("Successfully imported visits");
     }
 }
-

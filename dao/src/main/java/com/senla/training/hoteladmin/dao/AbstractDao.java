@@ -14,7 +14,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Component
-public abstract class AbstractDao<T extends AbstractEntity> implements GenericDao<T> {
+public abstract class AbstractDao<T extends AbstractEntity, PK> implements GenericDao<T, PK> {
 
     protected final Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
     @PersistenceContext
@@ -45,9 +45,9 @@ public abstract class AbstractDao<T extends AbstractEntity> implements GenericDa
     }
 
     @Override
-    public T getById(final Integer id) {
+    public T getByPrimaryKey(final PK key) {
         try {
-            T entity = entityManager.find(getEntityClass(), id);
+            T entity = entityManager.find(getEntityClass(), key);
             if (entity == null) {
                 logger.error("Error at getting by id: no such entity!");
             }

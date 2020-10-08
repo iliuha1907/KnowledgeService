@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class ReservationDaoImpl extends AbstractDao<Reservation> implements ReservationDao {
+public class ReservationDaoImpl extends AbstractDao<Reservation, Integer> implements ReservationDao {
 
     @Override
     public Class<Reservation> getEntityClass() {

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -57,7 +58,7 @@ class ReservationImplTest {
     @Test
     void ReservationImpl_addReservationForExistingClient_BusinessException_noClient() {
         String message = "Error at adding reservation: No such client";
-        Mockito.doReturn(null).when(clientDao).getById(0);
+        Mockito.doReturn(null).when(clientDao).getByPrimaryKey(0);
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
                 () -> reservationService.addReservationForExistingClient(0, null, null));
@@ -68,7 +69,7 @@ class ReservationImplTest {
     @Test
     void ReservationImpl_addReservationForExistingClient_BusinessException_noFreeRoom() {
         String message = "Error at adding reservation: No free rooms";
-        Mockito.doReturn(reservations.get(0).getResident()).when(clientDao).getById(1);
+        Mockito.doReturn(reservations.get(0).getResident()).when(clientDao).getByPrimaryKey(1);
         Mockito.doReturn(null).when(roomDao).getFirstFreeRoom();
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
@@ -85,54 +86,12 @@ class ReservationImplTest {
         Room room = reservation.getRoom();
         Client client = reservation.getResident();
 
-        Mockito.doReturn(client).when(clientDao).getById(1);
+        Mockito.doReturn(client).when(clientDao).getByPrimaryKey(1);
         Mockito.doReturn(room).when(roomDao).getFirstFreeRoom();
         Mockito.doThrow(new BusinessException(message)).when(roomDao).update(room);
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
                 () -> reservationService.addReservationForExistingClient(1, date, date));
-
-        Assertions.assertTrue(thrown.getMessage().contains(message));
-    }
-
-    @Test
-    void ReservationImpl_deactivateReservationForExistingClient_BusinessException() {
-        String message = "Error at deactivating";
-        Reservation reservation = reservations.get(0);
-        Room room = reservation.getRoom();
-        Client client = reservation.getResident();
-
-        Mockito.doReturn(client).when(clientDao).getById(1);
-        Mockito.doReturn(room).when(roomDao).getById(1);
-        Mockito.doThrow(new BusinessException(message)).when(reservationDao)
-                .deactivateClientReservation(client, room);
-        BusinessException thrown = Assertions.assertThrows(
-                BusinessException.class,
-                () -> reservationService.deactivateReservation(1, 1));
-
-        Assertions.assertTrue(thrown.getMessage().contains(message));
-    }
-
-    @Test
-    void ReservationImpl_deactivateReservationForExistingClient_BusinessException_noClient() {
-        String message = "Error at deactivating reservation: No such entity";
-        Mockito.doReturn(null).when(clientDao).getById(0);
-        Mockito.doReturn(reservations.get(0).getRoom()).when(roomDao).getById(1);
-        BusinessException thrown = Assertions.assertThrows(
-                BusinessException.class,
-                () -> reservationService.deactivateReservation(0, 1));
-
-        Assertions.assertTrue(thrown.getMessage().contains(message));
-    }
-
-    @Test
-    void ReservationImpl_deactivateReservationForExistingClient_BusinessException_noRoom() {
-        String message = "Error at deactivating reservation: No such entity";
-        Mockito.doReturn(reservations.get(0).getResident()).when(clientDao).getById(1);
-        Mockito.doReturn(null).when(roomDao).getById(0);
-        BusinessException thrown = Assertions.assertThrows(
-                BusinessException.class,
-                () -> reservationService.deactivateReservation(1, 0));
 
         Assertions.assertTrue(thrown.getMessage().contains(message));
     }
@@ -158,18 +117,66 @@ class ReservationImplTest {
     }
 
     @Test
+    void ReservationImpl_getReservationsExpiredAfterDate_BusinessException_wrongDate() {
+        String message = "Error at deactivating reservation: wrong date";
+        BusinessException thrown = Assertions.assertThrows(
+                BusinessException.class,
+                () -> reservationService.getReservationsExpiredAfterDate(null));
+
+        Assertions.assertTrue(thrown.getMessage().contains(message));
+    }
+
+    @Test
     void ReservationImpl_getSortedReservations() {
-        ReservationSortCriterion criterion = ReservationSortCriterion.NAME;
-        Mockito.doReturn(reservations).when(reservationDao).getSortedReservations(criterion);
+        String criterion = "NAME";
+        Mockito.doReturn(reservations).when(reservationDao).getSortedReservations(ReservationSortCriterion.NAME);
 
         Assertions.assertIterableEquals(reservations, reservationService.getSortedReservations(criterion));
     }
 
     @Test
+    void ReservationImpl_deactivateReservation_BusinessException() {
+        String message = "Error at deactivating reservation";
+        Reservation reservation = reservations.get(0);
+
+        Mockito.doReturn(reservation).when(reservationDao).getByPrimaryKey(1);
+        Mockito.doThrow(new BusinessException(message)).when(reservationDao).update(reservation);
+        BusinessException thrown = Assertions.assertThrows(
+                BusinessException.class,
+                () -> reservationService.deactivateReservation(1));
+
+        Assertions.assertTrue(thrown.getMessage().contains(message));
+    }
+
+    @Test
+    void ReservationImpl_deactivateReservation_BusinessException_null() {
+        String message = "Error at deactivating reservation: no such entity!";
+
+        Mockito.doReturn(null).when(reservationDao).getByPrimaryKey(0);
+        BusinessException thrown = Assertions.assertThrows(
+                BusinessException.class,
+                () -> reservationService.deactivateReservation(0));
+
+        Assertions.assertTrue(thrown.getMessage().contains(message));
+    }
+
+    @Test
     void ReservationImpl_getSortedReservations_BusinessException() {
         String message = "Error at getting";
-        ReservationSortCriterion criterion = ReservationSortCriterion.NAME;
-        Mockito.doThrow(new BusinessException(message)).when(reservationDao).getSortedReservations(criterion);
+        String criterion = "NAME";
+        Mockito.doThrow(new BusinessException(message)).when(reservationDao)
+                .getSortedReservations(ReservationSortCriterion.NAME);
+        BusinessException thrown = Assertions.assertThrows(
+                BusinessException.class,
+                () -> reservationService.getSortedReservations(criterion));
+
+        Assertions.assertTrue(thrown.getMessage().contains(message));
+    }
+
+    @Test
+    void ReservationImpl_getSortedReservations_BusinessException_wrongCriterion() {
+        String message = "Error at getting";
+        String criterion = "wrong";
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
                 () -> reservationService.getSortedReservations(criterion));
@@ -181,7 +188,7 @@ class ReservationImplTest {
     void ReservationImpl_getLastRoomReservations() {
         Room room = reservations.get(0).getRoom();
         reservationService.setNumberOfResidents(2);
-        Mockito.doReturn(room).when(roomDao).getById(room.getId());
+        Mockito.doReturn(room).when(roomDao).getByPrimaryKey(room.getId());
         Mockito.doReturn(reservations).when(reservationDao).getLastRoomReservations(room, 2);
 
         Assertions.assertIterableEquals(reservations, reservationService.getLastRoomReservations(room.getId()));
@@ -203,7 +210,7 @@ class ReservationImplTest {
     @Test
     void ReservationImpl_getLastRoomReservations_BusinessException_noRoom() {
         String message = "Error at getting reservations: No such room";
-        Mockito.doReturn(null).when(roomDao).getById(0);
+        Mockito.doReturn(null).when(roomDao).getByPrimaryKey(0);
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
                 () -> reservationService.getLastRoomReservations(0));
@@ -272,8 +279,8 @@ class ReservationImplTest {
         Client client = reservation.getResident();
         Room room = reservation.getRoom();
 
-        Mockito.doReturn(client).when(clientDao).getById(1);
-        Mockito.doReturn(room).when(roomDao).getById(1);
+        Mockito.doReturn(client).when(clientDao).getByPrimaryKey(1);
+        Mockito.doReturn(room).when(roomDao).getByPrimaryKey(1);
         Mockito.doReturn(null).when(reservationDao).getReservationByRoomClient(client, room);
         Mockito.doReturn(reservations).when(reservationReaderWriter).readReservations();
         Mockito.doThrow(new BusinessException(message)).when(roomDao).update(room);

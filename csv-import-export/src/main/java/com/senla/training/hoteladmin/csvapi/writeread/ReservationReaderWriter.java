@@ -21,13 +21,15 @@ public class ReservationReaderWriter {
     private static final Logger LOGGER = LogManager.getLogger(ReservationReaderWriter.class);
     @Value("${csv.reservations.import.filePath:csv/reservations.csv}")
     private String fileNameImport;
-    @Value("${csv.reservations.export.filePath:exportCsv/reservations.csv}")
+    @Value("${csv.export.directoryPath:export-csv}")
+    private String exportDirectory;
+    @Value("${csv.reservations.export.fileName:reservations.csv}")
     private String fileNameExport;
     @Value("${csv.separator:;}")
     private String separator;
 
     public void writeReservations(final List<Reservation> reservations) {
-        try (FileWriter fileWriter = new FileWriter(new File(fileNameExport))) {
+        try (FileWriter fileWriter = new FileWriter(new File(exportDirectory + "/" + fileNameExport))) {
             for (Reservation reservation : reservations) {
                 fileWriter.write(ReservationConverter.getStringFromReservation(reservation, separator) + "\n");
             }
