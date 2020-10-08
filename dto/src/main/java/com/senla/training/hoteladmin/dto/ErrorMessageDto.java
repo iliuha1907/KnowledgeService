@@ -10,9 +10,6 @@ public class ErrorMessageDto {
         this.reason = reason;
     }
 
-    public ErrorMessageDto() {
-    }
-
     public String getExceptionType() {
         return exceptionType;
     }
