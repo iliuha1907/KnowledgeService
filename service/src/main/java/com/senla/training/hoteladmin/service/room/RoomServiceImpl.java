@@ -5,7 +5,6 @@ import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.csvapi.writeread.RoomReaderWriter;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.util.UserInteraction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
@@ -53,13 +52,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public List<Room> getSortedRooms(String criterion) {
-        RoomsSortCriterion roomSortCriterion = UserInteraction.getRoomsSortCriterionFromString(criterion);
-        if (roomSortCriterion == null) {
-            throw new BusinessException("Error at getting rooms: Wrong criterion");
-        }
-
-        return roomDao.getSortedRooms(roomSortCriterion);
+    public List<Room> getSortedRooms(RoomsSortCriterion criterion) {
+        return roomDao.getSortedRooms(criterion);
     }
 
     @Override
@@ -70,13 +64,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public List<Room> getSortedFreeRooms(String criterion) {
-        RoomsSortCriterion roomSortCriterion = UserInteraction.getRoomsSortCriterionFromString(criterion);
-        if (roomSortCriterion == null) {
-            throw new BusinessException("Error at getting rooms: Wrong criterion");
-        }
-
-        return roomDao.getSortedFreeRooms(roomSortCriterion);
+    public List<Room> getSortedFreeRooms(RoomsSortCriterion criterion) {
+        return roomDao.getSortedFreeRooms(criterion);
     }
 
     @Override

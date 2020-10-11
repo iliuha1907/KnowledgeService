@@ -1,6 +1,5 @@
-package com.senla.training.hoteladmin.webmodule;
+package com.senla.training.hoteladmin.controller.config;
 
-import com.senla.training.hoteladmin.webmodule.config.WebMvcConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;

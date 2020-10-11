@@ -1,7 +1,6 @@
-package com.senla.training.hoteladmin.webmodule.config;
+package com.senla.training.hoteladmin.controller.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 @Configuration
-public class MapperConfig extends WebMvcConfigurationSupport {
+public class WebMappingConfig extends WebMvcConfigurationSupport {
 
     @Value("${date.dateFormat:yyyy-M-dd}")
     private String dateFormat;
@@ -41,14 +40,5 @@ public class MapperConfig extends WebMvcConfigurationSupport {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(messageConverter());
         addDefaultHttpMessageConverters(converters);
-    }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setFieldMatchingEnabled(true)
-                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
-
-        return modelMapper;
     }
 }

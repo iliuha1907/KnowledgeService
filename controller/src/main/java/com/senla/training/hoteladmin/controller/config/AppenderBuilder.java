@@ -1,4 +1,4 @@
-package com.senla.training.hoteladmin.webmodule;
+package com.senla.training.hoteladmin.controller.config;
 
 import com.senla.training.hoteladmin.exception.IncorrectWorkException;
 import org.apache.logging.log4j.Level;

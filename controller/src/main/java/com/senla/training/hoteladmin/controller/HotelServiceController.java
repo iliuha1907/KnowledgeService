@@ -21,7 +21,7 @@ public class HotelServiceController {
     @Autowired
     private MessageDtoMapper messageDtoMapper;
 
-    @GetMapping()
+    @GetMapping
     public List<HotelServiceDto> getServices() {
         return hotelServiceMapper.listToDto(hotelServiceService.getServices());
     }
@@ -29,7 +29,7 @@ public class HotelServiceController {
     @PostMapping
     public MessageDto addService(@RequestBody HotelServiceDto hotelService) {
         hotelServiceService.addService(hotelService.getPrice(),
-                (hotelService.getType()));
+                hotelService.getType());
         return messageDtoMapper.toDto("Successfully added service");
     }
 

@@ -2,6 +2,7 @@ package com.senla.training.hoteladmin.service.room;
 
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
+import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -15,11 +16,11 @@ public interface RoomService {
 
     void updateRoom(Room room, Integer id);
 
-    List<Room> getSortedRooms(String criterion);
+    List<Room> getSortedRooms(RoomsSortCriterion criterion);
 
     List<Room> getFreeRooms();
 
-    List<Room> getSortedFreeRooms(String criterion);
+    List<Room> getSortedFreeRooms(RoomsSortCriterion criterion);
 
     BigDecimal getPriceRoom(Integer roomId);
 

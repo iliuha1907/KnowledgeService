@@ -5,8 +5,9 @@ import com.senla.training.hoteladmin.dto.ReservationDto;
 import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
 import com.senla.training.hoteladmin.dto.mapper.ReservationMapper;
 import com.senla.training.hoteladmin.service.reservation.ReservationService;
-import com.senla.training.hoteladmin.util.DateUtil;
+import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -38,14 +39,13 @@ public class ReservationController {
 
     @GetMapping()
     public List<ReservationDto> getReservations(@RequestParam(name = "criterion", defaultValue = "DEPARTURE")
-                                                        String criterion) {
+                                                        ReservationSortCriterion criterion) {
         return reservationMapper.listToDto(reservationService.getSortedReservations(criterion));
     }
 
     @GetMapping("/expired")
-    public List<ReservationDto> getReservationsExpiredAfterDate(@RequestParam(name = "date", defaultValue = "2010-1-1")
-                                                                            String dateString) {
-        Date date = DateUtil.getDate(dateString);
+    public List<ReservationDto> getReservationsExpiredAfterDate(@RequestParam(name = "date", defaultValue = "2001-1-1")
+                                                                @DateTimeFormat(pattern = "yyyy-M-dd") Date date) {
         return reservationMapper.listToDto(reservationService.getReservationsExpiredAfterDate(date));
     }
 

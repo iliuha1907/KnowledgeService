@@ -9,7 +9,6 @@ import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.visit.Visit;
 import com.senla.training.hoteladmin.util.DateUtil;
-import com.senla.training.hoteladmin.util.UserInteraction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
@@ -53,18 +52,13 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     @Transactional
-    public List<Visit> getSortedClientVisits(Integer clientId, String criterion) {
-        VisitSortCriterion visitSortCriterion = UserInteraction.getVisitSortCriterionFromString(criterion);
-        if (visitSortCriterion == null) {
-            throw new BusinessException("Error at getting visits: Wrong criterion");
-        }
-
+    public List<Visit> getSortedClientVisits(Integer clientId, VisitSortCriterion criterion) {
         Client client = clientDao.getByPrimaryKey(clientId);
         if (client == null) {
             LOGGER.error("Error at getting visits: No such client");
             throw new BusinessException("Error at getting visits: No such client");
         }
-        return visitDao.getSortedClientVisits(client, visitSortCriterion);
+        return visitDao.getSortedClientVisits(client, criterion);
     }
 
     @Override

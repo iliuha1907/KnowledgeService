@@ -14,7 +14,7 @@ public class DateUtil {
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-M-dd");
 
     static {
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone(TIME_ZONE));
+        TimeZone.setDefault(TimeZone.getTimeZone(TIME_ZONE));
     }
 
     public static Date getDate(final String data) {

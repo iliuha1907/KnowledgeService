@@ -9,7 +9,6 @@ import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.reservation.Reservation;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import com.senla.training.hoteladmin.util.UserInteraction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.DateUtil;
@@ -72,14 +71,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public List<Reservation> getSortedReservations(String criterion) {
-        ReservationSortCriterion reservationSortCriterion = UserInteraction
-                .getReservationSortCriterionFromString(criterion);
-        if (reservationSortCriterion == null) {
-            throw new BusinessException("Error at getting reservations: Wrong criterion");
-        }
-
-        return reservationDao.getSortedReservations(reservationSortCriterion);
+    public List<Reservation> getSortedReservations(ReservationSortCriterion criterion) {
+        return reservationDao.getSortedReservations(criterion);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.senla.training.hoteladmin.dto.RoomDto;
 import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
 import com.senla.training.hoteladmin.dto.mapper.RoomMapper;
 import com.senla.training.hoteladmin.service.room.RoomService;
+import com.senla.training.hoteladmin.util.sort.RoomsSortCriterion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +30,9 @@ public class RoomController {
         return messageDtoMapper.toDto("Successfully added room");
     }
 
-    @GetMapping()
-    public List<RoomDto> getRooms(@RequestParam(name = "criterion", defaultValue = "PRICE") String criterion) {
+    @GetMapping
+    public List<RoomDto> getRooms(@RequestParam(name = "criterion", defaultValue = "PRICE")
+                                              RoomsSortCriterion criterion) {
         return roomMapper.listToDto(roomService.getSortedRooms(criterion));
     }
 
@@ -42,8 +44,9 @@ public class RoomController {
     }
 
     @GetMapping("/free")
-    public List<RoomDto> getFreeRooms(@RequestParam(name = "criterion", defaultValue = "") String criterion) {
-        if (criterion.equals("")) {
+    public List<RoomDto> getFreeRooms(@RequestParam(name = "criterion", defaultValue = "NATURAL")
+                                                  RoomsSortCriterion criterion) {
+        if (criterion.equals(RoomsSortCriterion.NATURAL)) {
             return roomMapper.listToDto(roomService.getFreeRooms());
         }
         return roomMapper.listToDto(roomService.getSortedFreeRooms(criterion));

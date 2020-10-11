@@ -23,7 +23,7 @@ public class ClientController {
 
     @GetMapping
     public List<ClientDto> getClients() {
-        return (clientMapper.listToDto(clientService.getClients()));
+        return clientMapper.listToDto(clientService.getClients());
     }
 
     @PostMapping

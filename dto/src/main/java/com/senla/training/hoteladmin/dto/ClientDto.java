@@ -1,5 +1,7 @@
 package com.senla.training.hoteladmin.dto;
 
+import java.util.Objects;
+
 public class ClientDto extends AbstractDto {
 
     private String name;
@@ -29,5 +31,26 @@ public class ClientDto extends AbstractDto {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        ClientDto clientDto = (ClientDto) o;
+        return Objects.equals(name, clientDto.name)
+                && Objects.equals(lastName, clientDto.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name, lastName);
     }
 }

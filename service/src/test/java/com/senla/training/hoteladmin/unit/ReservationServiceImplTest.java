@@ -29,7 +29,7 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfigurator.class)
-class ReservationImplTest {
+class ReservationServiceImplTest {
 
     private static List<Reservation> reservations;
     @Autowired
@@ -128,7 +128,8 @@ class ReservationImplTest {
 
     @Test
     void ReservationImpl_getSortedReservations() {
-        String criterion = "NAME";
+        ReservationSortCriterion criterion = ReservationSortCriterion.NAME;
+
         Mockito.doReturn(reservations).when(reservationDao).getSortedReservations(ReservationSortCriterion.NAME);
 
         Assertions.assertIterableEquals(reservations, reservationService.getSortedReservations(criterion));
@@ -163,20 +164,10 @@ class ReservationImplTest {
     @Test
     void ReservationImpl_getSortedReservations_BusinessException() {
         String message = "Error at getting";
-        String criterion = "NAME";
+        ReservationSortCriterion criterion = ReservationSortCriterion.NAME;
+
         Mockito.doThrow(new BusinessException(message)).when(reservationDao)
                 .getSortedReservations(ReservationSortCriterion.NAME);
-        BusinessException thrown = Assertions.assertThrows(
-                BusinessException.class,
-                () -> reservationService.getSortedReservations(criterion));
-
-        Assertions.assertTrue(thrown.getMessage().contains(message));
-    }
-
-    @Test
-    void ReservationImpl_getSortedReservations_BusinessException_wrongCriterion() {
-        String message = "Error at getting";
-        String criterion = "wrong";
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
                 () -> reservationService.getSortedReservations(criterion));
