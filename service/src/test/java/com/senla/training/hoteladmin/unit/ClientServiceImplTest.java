@@ -31,12 +31,12 @@ class ClientServiceImplTest {
     private ClientReaderWriter clientReaderWriter;
 
     @BeforeAll
-    public static void setUp(){
+    public static void setUp() {
         Client clientMike = new Client(1, "Mike", "Johnson");
         Client clientJohn = new Client(2, "John", "Robertson");
         clients = Arrays.asList(clientMike, clientJohn);
     }
-    
+
     @Test
     void ClientServiceImpl_getClients() {
         Mockito.doReturn(clients).when(clientDao).getAll();
@@ -74,7 +74,7 @@ class ClientServiceImplTest {
     }
 
     @Test
-    void ClientServiceImpl_exportClients_BusinessException_byWriting(){
+    void ClientServiceImpl_exportClients_BusinessException_byWriting() {
         String message = "Error at writing clients";
         Mockito.doReturn(clients).when(clientDao).getAll();
         Mockito.doThrow(new BusinessException(message)).when(clientReaderWriter).writeClients(clients);
@@ -86,7 +86,7 @@ class ClientServiceImplTest {
     }
 
     @Test
-    void ClientServiceImpl_exportClients_BusinessException_byGetting(){
+    void ClientServiceImpl_exportClients_BusinessException_byGetting() {
         String message = "Error at getting clients";
         Mockito.doThrow(new BusinessException(message)).when(clientDao).getAll();
         BusinessException thrown = Assertions.assertThrows(
@@ -97,7 +97,7 @@ class ClientServiceImplTest {
     }
 
     @Test
-    void ClientServiceImpl_importClients_BusinessException_byReading(){
+    void ClientServiceImpl_importClients_BusinessException_byReading() {
         String message = "Error at reading clients";
         Mockito.doThrow(new BusinessException(message)).when(clientReaderWriter).readClients();
         BusinessException thrown = Assertions.assertThrows(
@@ -108,7 +108,7 @@ class ClientServiceImplTest {
     }
 
     @Test
-    void ClientServiceImpl_importClients_BusinessException_byAdding(){
+    void ClientServiceImpl_importClients_BusinessException_byAdding() {
         String message = "Error at adding client";
         Mockito.doThrow(new BusinessException(message)).when(clientDao).add(clients.get(0));
         Mockito.doReturn(clients).when(clientReaderWriter).readClients();

@@ -10,7 +10,7 @@ public interface HotelServiceService {
 
     void addService(BigDecimal price, HotelServiceType type);
 
-    void setServicePrice(Integer id, BigDecimal price);
+    void updateService(HotelService service, Integer id);
 
     List<HotelService> getServices();
 

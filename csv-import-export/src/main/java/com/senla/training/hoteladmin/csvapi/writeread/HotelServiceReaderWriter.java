@@ -21,13 +21,15 @@ public class HotelServiceReaderWriter {
     private static final Logger LOGGER = LogManager.getLogger(HotelServiceReaderWriter.class);
     @Value("${csv.services.import.filePath:csv/services.csv}")
     private String fileNameImport;
-    @Value("${csv.services.export.filePath:exportCsv/services.csv}")
+    @Value("${csv.export.directoryPath:export-csv}")
+    private String exportDirectory;
+    @Value("${csv.services.export.fileName:services.csv}")
     private String fileNameExport;
     @Value("${csv.separator:;}")
     private String separator;
 
     public void writeServices(final List<HotelService> hotelServices) {
-        try (FileWriter fileWriter = new FileWriter(new File(fileNameExport))) {
+        try (FileWriter fileWriter = new FileWriter(new File(exportDirectory + "/" + fileNameExport))) {
             for (HotelService hotelService : hotelServices) {
                 fileWriter.write(HotelServiceConverter.getStringFromService(hotelService, separator) + "\n");
             }

@@ -4,6 +4,7 @@ public enum RoomsSortCriterion {
 
     PRICE,
     STARS,
-    CAPACITY
+    CAPACITY,
+    NATURAL
 }
 

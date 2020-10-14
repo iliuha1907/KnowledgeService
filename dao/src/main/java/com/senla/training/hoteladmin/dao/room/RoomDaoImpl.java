@@ -14,7 +14,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Component
-public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
+public class RoomDaoImpl extends AbstractDao<Room, Integer> implements RoomDao {
 
     @Override
     public Class<Room> getEntityClass() {

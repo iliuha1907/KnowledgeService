@@ -35,13 +35,13 @@ public class VisitServiceImpl implements VisitService {
     @Override
     @Transactional
     public void addVisit(Integer serviceId, Integer clientId, Date date) {
-        Client client = clientDao.getById(clientId);
+        Client client = clientDao.getByPrimaryKey(clientId);
         if (client == null) {
             LOGGER.error("Error at adding visit: No such client");
             throw new BusinessException("Error at adding visit: No such client");
         }
 
-        HotelService hotelService = hotelServiceDao.getById(serviceId);
+        HotelService hotelService = hotelServiceDao.getByPrimaryKey(serviceId);
         if (hotelService == null) {
             LOGGER.error("Error at adding visit: No such hotel service");
             throw new BusinessException("Error at adding visit: No such hotel service");
@@ -53,7 +53,7 @@ public class VisitServiceImpl implements VisitService {
     @Override
     @Transactional
     public List<Visit> getSortedClientVisits(Integer clientId, VisitSortCriterion criterion) {
-        Client client = clientDao.getById(clientId);
+        Client client = clientDao.getByPrimaryKey(clientId);
         if (client == null) {
             LOGGER.error("Error at getting visits: No such client");
             throw new BusinessException("Error at getting visits: No such client");
@@ -72,8 +72,8 @@ public class VisitServiceImpl implements VisitService {
     public void importVisits() {
         List<Visit> visits = visitReaderWriter.readVisits();
         visits.forEach(visit -> {
-            Client client = clientDao.getById(visit.getClient().getId());
-            HotelService hotelService = hotelServiceDao.getById(visit.getService().getId());
+            Client client = clientDao.getByPrimaryKey(visit.getClient().getId());
+            HotelService hotelService = hotelServiceDao.getByPrimaryKey(visit.getService().getId());
             if (client != null && hotelService != null) {
                 visit.setClient(client);
                 visit.setService(hotelService);

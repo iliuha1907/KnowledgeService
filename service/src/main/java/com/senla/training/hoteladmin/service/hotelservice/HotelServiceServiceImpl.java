@@ -5,6 +5,8 @@ import com.senla.training.hoteladmin.csvapi.writeread.HotelServiceReaderWriter;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import java.util.List;
 @Service
 public class HotelServiceServiceImpl implements HotelServiceService {
 
+    private static final Logger LOGGER = LogManager.getLogger(HotelServiceService.class);
     @Autowired
     private HotelServiceDao hotelServiceDao;
     @Autowired
@@ -28,12 +31,12 @@ public class HotelServiceServiceImpl implements HotelServiceService {
 
     @Override
     @Transactional
-    public void setServicePrice(Integer id, BigDecimal price) {
-        HotelService service = hotelServiceDao.getById(id);
+    public void updateService(HotelService service, Integer id) {
         if (service == null) {
-            throw new BusinessException("Error at setting service price: no such service");
+            LOGGER.error("Error at updating Service: Service is null");
+            throw new BusinessException("Error at updating Service: Service is null");
         }
-        service.setPrice(price);
+        service.setId(id);
         hotelServiceDao.update(service);
     }
 

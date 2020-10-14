@@ -10,7 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 @Component
-public class ClientDaoImpl extends AbstractDao<Client> implements ClientDao {
+public class ClientDaoImpl extends AbstractDao<Client, Integer> implements ClientDao {
 
     @Override
     public Class<Client> getEntityClass() {

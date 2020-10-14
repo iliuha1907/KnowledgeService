@@ -15,7 +15,7 @@ import javax.persistence.criteria.*;
 import java.util.List;
 
 @Component
-public class VisitDaoImpl extends AbstractDao<Visit> implements VisitDao {
+public class VisitDaoImpl extends AbstractDao<Visit, Integer> implements VisitDao {
 
     @Override
     public Class<Visit> getEntityClass() {

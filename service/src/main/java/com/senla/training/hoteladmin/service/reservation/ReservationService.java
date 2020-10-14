@@ -10,7 +10,7 @@ public interface ReservationService {
 
     void addReservationForExistingClient(Integer clientId, Date arrivalDate, Date departureDate);
 
-    void deactivateReservation(Integer clientId, Integer roomId);
+    void deactivateReservation(Integer id);
 
     List<Reservation> getReservationsExpiredAfterDate(Date date);
 

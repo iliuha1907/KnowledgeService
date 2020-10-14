@@ -39,7 +39,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public void addReservationForExistingClient(Integer clientId, Date arrivalDate, Date departureDate) {
-        Client client = clientDao.getById(clientId);
+        Client client = clientDao.getByPrimaryKey(clientId);
         if (client == null) {
             LOGGER.error("Error at adding reservation: No such client");
             throw new BusinessException("Error at adding reservation: No such client");
@@ -49,20 +49,23 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void deactivateReservation(Integer clientId, Integer roomId) {
-        Client client = clientDao.getById(clientId);
-        Room room = roomDao.getById(roomId);
-        if (client == null || room == null) {
-            LOGGER.error("Error at deactivating reservation: No such entity");
-            throw new BusinessException("Error at deactivating reservation: No such entity");
+    public void deactivateReservation(Integer id) {
+        Reservation existing = reservationDao.getByPrimaryKey(id);
+        if (existing == null) {
+            throw new BusinessException("Error at deactivating reservation: no such entity!");
         }
 
-        reservationDao.deactivateClientReservation(client, room);
+        existing.setIsActive(0);
+        reservationDao.update(existing);
     }
 
     @Override
     @Transactional
     public List<Reservation> getReservationsExpiredAfterDate(Date date) {
+        if (date == null) {
+            LOGGER.error("Error at deactivating reservation: wrong date");
+            throw new BusinessException("Error at deactivating reservation: wrong date");
+        }
         return reservationDao.getReservationsExpiredAfterDate(date);
     }
 
@@ -75,7 +78,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional
     public List<Reservation> getLastRoomReservations(Integer roomId) {
-        Room room = roomDao.getById(roomId);
+        Room room = roomDao.getByPrimaryKey(roomId);
         if (room == null) {
             LOGGER.error("Error at getting reservations: No such room");
             throw new BusinessException("Error at getting reservations: No such room");
@@ -100,8 +103,8 @@ public class ReservationServiceImpl implements ReservationService {
     public void importReservations() {
         List<Reservation> reservations = reservationReaderWriter.readReservations();
         reservations.forEach(reservation -> {
-            Room room = roomDao.getById(reservation.getRoom().getId());
-            Client client = clientDao.getById(reservation.getResident().getId());
+            Room room = roomDao.getByPrimaryKey(reservation.getRoom().getId());
+            Client client = clientDao.getByPrimaryKey(reservation.getResident().getId());
             if (room != null && client != null) {
                 Reservation existing = reservationDao.getReservationByRoomClient(client, room);
                 if (existing == null && room.getIsFree().equals(1)

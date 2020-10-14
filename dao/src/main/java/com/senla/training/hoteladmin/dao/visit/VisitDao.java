@@ -7,7 +7,7 @@ import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
 
 import java.util.List;
 
-public interface VisitDao extends GenericDao<Visit> {
+public interface VisitDao extends GenericDao<Visit, Integer> {
 
     List<Visit> getSortedClientVisits(Client client, VisitSortCriterion criterion);
 }

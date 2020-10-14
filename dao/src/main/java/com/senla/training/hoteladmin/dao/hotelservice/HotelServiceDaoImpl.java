@@ -5,7 +5,7 @@ import com.senla.training.hoteladmin.model.hotelservice.HotelService;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HotelServiceDaoImpl extends AbstractDao<HotelService>
+public class HotelServiceDaoImpl extends AbstractDao<HotelService, Integer>
         implements HotelServiceDao {
 
     @Override

@@ -21,13 +21,15 @@ public class RoomReaderWriter {
     private static final Logger LOGGER = LogManager.getLogger(RoomReaderWriter.class);
     @Value("${csv.rooms.import.filePath:csv/rooms.csv}")
     private String fileNameImport;
-    @Value("${csv.rooms.export.filePath:exportCsv/rooms.csv}")
+    @Value("${csv.export.directoryPath:export-csv}")
+    private String exportDirectory;
+    @Value("${csv.rooms.export.fileName:rooms.csv}")
     private String fileNameExport;
     @Value("${csv.separator:;}")
     private String separator;
 
     public void writeRooms(final List<Room> rooms) {
-        try (FileWriter fileWriter = new FileWriter(new File(fileNameExport))) {
+        try (FileWriter fileWriter = new FileWriter(new File(exportDirectory + "/" + fileNameExport))) {
             for (Room room : rooms) {
                 fileWriter.write(RoomConverter.getStringFromRoom(room, separator) + "\n");
             }

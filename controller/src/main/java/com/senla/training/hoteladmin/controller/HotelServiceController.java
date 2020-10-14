@@ -1,70 +1,54 @@
 package com.senla.training.hoteladmin.controller;
 
-import com.senla.training.hoteladmin.exception.BusinessException;
-import com.senla.training.hoteladmin.model.hotelservice.HotelService;
-import com.senla.training.hoteladmin.model.hotelservice.HotelServiceType;
+import com.senla.training.hoteladmin.dto.HotelServiceDto;
+import com.senla.training.hoteladmin.dto.MessageDto;
+import com.senla.training.hoteladmin.dto.mapper.HotelServiceMapper;
+import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
 import com.senla.training.hoteladmin.service.hotelservice.HotelServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-@Component
+@RestController
+@RequestMapping("/services")
 public class HotelServiceController {
 
     @Autowired
     private HotelServiceService hotelServiceService;
+    @Autowired
+    private HotelServiceMapper hotelServiceMapper;
+    @Autowired
+    private MessageDtoMapper messageDtoMapper;
 
-    public String addService(final BigDecimal price, final HotelServiceType type) {
-        try {
-            hotelServiceService.addService(price, type);
-            return "Successfully added service";
-        } catch (Exception ex) {
-            return "Error at adding service: " + ex.getMessage();
-        }
+    @GetMapping
+    public List<HotelServiceDto> getServices() {
+        return hotelServiceMapper.listToDto(hotelServiceService.getServices());
     }
 
-    public String setServicePrice(final Integer id, final BigDecimal price) {
-        try {
-            hotelServiceService.setServicePrice(id, price);
-            return "Successfully updated service";
-        } catch (Exception ex) {
-            return "Error at updating service: " + ex.getMessage();
-        }
+    @PostMapping
+    public MessageDto addService(@RequestBody HotelServiceDto hotelService) {
+        hotelServiceService.addService(hotelService.getPrice(),
+                hotelService.getType());
+        return messageDtoMapper.toDto("Successfully added service");
     }
 
-    public String getServices() {
-        List<HotelService> hotelServices;
-        try {
-            hotelServices = hotelServiceService.getServices();
-        } catch (Exception ex) {
-            return "Error at getting services: " + ex.getMessage();
-        }
-
-        StringBuilder result = new StringBuilder("Services:\n");
-        hotelServices.forEach(hotelService ->
-                result.append(hotelService).append("\n")
-        );
-        return result.toString();
+    @PatchMapping("/{id}")
+    public MessageDto updateService(@RequestBody HotelServiceDto hotelService,
+                                @PathVariable("id") Integer id) {
+        hotelServiceService.updateService(hotelServiceMapper.toEntity(hotelService), id);
+        return messageDtoMapper.toDto("Successfully updated service");
     }
 
-    public String exportServices() {
-        try {
-            hotelServiceService.exportServices();
-            return "Successfully exported services";
-        } catch (BusinessException ex) {
-            return ex.getMessage();
-        }
+    @PostMapping("/export/csv")
+    public MessageDto exportServices() {
+        hotelServiceService.exportServices();
+        return messageDtoMapper.toDto("Successfully exported services");
     }
 
-    public String importServices() {
-        try {
-            hotelServiceService.importServices();
-            return "Successfully imported services";
-        } catch (BusinessException ex) {
-            return ex.getMessage();
-        }
+    @PostMapping("/import/csv")
+    public MessageDto importServices() {
+        hotelServiceService.importServices();
+        return messageDtoMapper.toDto("Successfully imported services");
     }
 }
-

@@ -35,27 +35,18 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public void setRoomStatus(Integer roomId, RoomStatus status) {
-        if (!isChangeableStatus) {
-            LOGGER.error("Error at setting RoomStatus: No permission to change status");
-            throw new BusinessException("No permission to change status");
-        }
-        Room room = roomDao.getById(roomId);
+    public void updateRoom(Room room, Integer id) {
         if (room == null) {
-            throw new BusinessException("Error at setting RoomStatus: no such room!");
+            LOGGER.error("Error at updating Room: Room is null");
+            throw new BusinessException("Error at updating Room: Room is null");
         }
-        room.setStatus(status.toString());
-        roomDao.update(room);
-    }
 
-    @Override
-    @Transactional
-    public void setRoomPrice(Integer roomId, BigDecimal price) {
-        Room room = roomDao.getById(roomId);
-        if (room == null) {
-            throw new BusinessException("Error at setting RoomStatus: no such room!");
+        if (!isChangeableStatus) {
+            LOGGER.error("Error at updating Room: No permission to change status");
+            throw new BusinessException("Error at updating Room: No permission to change status");
         }
-        room.setPrice(price);
+
+        room.setId(id);
         roomDao.update(room);
     }
 
@@ -80,7 +71,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional
     public BigDecimal getPriceRoom(Integer roomId) {
-        Room room = roomDao.getById(roomId);
+        Room room = roomDao.getByPrimaryKey(roomId);
         if (room == null) {
             throw new BusinessException("Error at getting Room price: no such room!");
         }
@@ -90,7 +81,11 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional
     public Room getRoom(Integer roomId) {
-        return roomDao.getById(roomId);
+        Room room = roomDao.getByPrimaryKey(roomId);
+        if (room == null) {
+            throw new BusinessException("Error at getting Room: no such entity!");
+        }
+        return roomDao.getByPrimaryKey(roomId);
     }
 
     @Override

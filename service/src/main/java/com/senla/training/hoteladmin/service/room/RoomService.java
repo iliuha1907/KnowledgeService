@@ -14,9 +14,7 @@ public interface RoomService {
     void addRoom(RoomStatus status, BigDecimal price, Integer capacity,
                  Integer stars);
 
-    void setRoomStatus(Integer roomId, RoomStatus status);
-
-    void setRoomPrice(Integer roomId, BigDecimal price);
+    void updateRoom(Room room, Integer id);
 
     List<Room> getSortedRooms(RoomsSortCriterion criterion);
 

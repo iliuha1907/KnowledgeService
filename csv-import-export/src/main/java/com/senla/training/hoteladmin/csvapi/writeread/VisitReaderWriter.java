@@ -21,13 +21,15 @@ public class VisitReaderWriter {
     private static final Logger LOGGER = LogManager.getLogger(VisitReaderWriter.class);
     @Value("${csv.visits.import.filePath:csv/visits.csv}")
     private String fileNameImport;
-    @Value("${csv.visits.export.filePath:exportCsv/visits.csv}")
+    @Value("${csv.export.directoryPath:export-csv}")
+    private String exportDirectory;
+    @Value("${csv.visits.export.fileName:visits.csv}")
     private String fileNameExport;
     @Value("${csv.separator:;}")
     private String separator;
 
     public void writeVisits(final List<Visit> visits) {
-        try (FileWriter fileWriter = new FileWriter(new File(fileNameExport))) {
+        try (FileWriter fileWriter = new FileWriter(new File(exportDirectory + "/" + fileNameExport))) {
             for (Visit visit : visits) {
                 fileWriter.write(VisitConverter.getStringFromVisit(visit, separator) + "\n");
             }

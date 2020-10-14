@@ -4,13 +4,13 @@ import com.senla.training.hoteladmin.model.AbstractEntity;
 
 import java.util.List;
 
-public interface GenericDao<T extends AbstractEntity> {
+public interface GenericDao<T extends AbstractEntity, PK> {
 
     void add(T object);
 
     List<T> getAll();
 
-    T getById(Integer id);
+    T getByPrimaryKey(PK key);
 
     void update(T object);
 }
