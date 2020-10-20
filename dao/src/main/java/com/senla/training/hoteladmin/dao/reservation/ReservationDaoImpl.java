@@ -25,13 +25,20 @@ public class ReservationDaoImpl extends AbstractDao<Reservation, Integer> implem
     }
 
     @Override
-    public List<Reservation> getSortedReservations(ReservationSortCriterion criterion) {
+    public List<Reservation> getSortedReservations(ReservationSortCriterion criterion, Date expiration) {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
             Root<Client> clientRoot = query.from(Client.class);
             Join<Client, Reservation> reservationJoin = clientRoot.join(Client_.clientReservations);
-            query.select(reservationJoin);
+            if (expiration != null) {
+                query.select(reservationJoin)
+                        .where(criteriaBuilder
+                                .lessThan(reservationJoin.get(Reservation_.departure), expiration));
+            } else {
+                query.select(reservationJoin);
+            }
+
             if (criterion.equals(ReservationSortCriterion.DEPARTURE)) {
                 query.orderBy(criteriaBuilder.asc(reservationJoin.get(Reservation_.departure)));
             } else if (criterion.equals(ReservationSortCriterion.NAME)) {
@@ -56,21 +63,6 @@ public class ReservationDaoImpl extends AbstractDao<Reservation, Integer> implem
             return entityManager.createQuery(query).getSingleResult();
         } catch (Exception ex) {
             logger.error("Error at getting number of residents: " + ex.getMessage());
-            throw new BusinessException(ex.getMessage());
-        }
-    }
-
-    @Override
-    public List<Reservation> getReservationsExpiredAfterDate(Date date) {
-        try {
-            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Reservation> query = criteriaBuilder.createQuery(Reservation.class);
-            Root<Reservation> root = query.from(Reservation.class);
-            query.select(root).where(criteriaBuilder.lessThan(root.get(Reservation_.departure),
-                    date));
-            return entityManager.createQuery(query).getResultList();
-        } catch (Exception ex) {
-            logger.error("Error at getting visits expired after date: " + ex.getMessage());
             throw new BusinessException(ex.getMessage());
         }
     }
@@ -105,22 +97,6 @@ public class ReservationDaoImpl extends AbstractDao<Reservation, Integer> implem
             return null;
         } catch (Exception ex) {
             logger.error("Error at getting client reservations: " + ex.getMessage());
-            throw new BusinessException(ex.getMessage());
-        }
-    }
-
-    @Override
-    public void deactivateClientReservation(Client client, Room room) {
-        try {
-            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-            CriteriaUpdate<Reservation> update = criteriaBuilder.createCriteriaUpdate(Reservation.class);
-            Root<Reservation> root = update.from(Reservation.class);
-            update.set(Reservation_.isActive, 0);
-            update.where(criteriaBuilder.equal(root.get(Reservation_.resident),
-                    client), criteriaBuilder.equal(root.get(Reservation_.room), room));
-            entityManager.createQuery(update).executeUpdate();
-        } catch (Exception ex) {
-            logger.error("Error at deactivating client reservations: " + ex.getMessage());
             throw new BusinessException(ex.getMessage());
         }
     }

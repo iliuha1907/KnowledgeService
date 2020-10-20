@@ -12,9 +12,7 @@ public interface ReservationService {
 
     void deactivateReservation(Integer id);
 
-    List<Reservation> getReservationsExpiredAfterDate(Date date);
-
-    List<Reservation> getSortedReservations(ReservationSortCriterion criterion);
+    List<Reservation> getSortedReservations(ReservationSortCriterion criterion, Date expiration);
 
     List<Reservation> getLastRoomReservations(Integer roomId);
 

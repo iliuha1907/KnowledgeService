@@ -14,7 +14,7 @@ public interface RoomDao extends GenericDao<Room, Integer> {
 
     List<Room> getSortedFreeRooms(RoomsSortCriterion criterion);
 
-    Long getNumberOfFreeRooms();
+    Long getNumberOfFreeRooms(Boolean freeOnly);
 
     Room getFirstFreeRoom();
 }

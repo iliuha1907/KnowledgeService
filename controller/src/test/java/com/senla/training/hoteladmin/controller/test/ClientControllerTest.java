@@ -5,7 +5,6 @@ import com.senla.training.hoteladmin.csvapi.writeread.ClientReaderWriter;
 import com.senla.training.hoteladmin.dao.client.ClientDao;
 import com.senla.training.hoteladmin.dto.ClientDto;
 import com.senla.training.hoteladmin.dto.MessageDto;
-import com.senla.training.hoteladmin.dto.config.DtoMapperConfiguration;
 import com.senla.training.hoteladmin.dto.mapper.ClientMapper;
 import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
 import com.senla.training.hoteladmin.exception.BusinessException;
@@ -24,8 +23,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ControllerTestConfigurator.class, DtoMapperConfiguration.class})
-public class ClientControllerTest {
+@ContextConfiguration(classes = {ControllerTestConfigurator.class})
+class ClientControllerTest {
 
     private static List<Client> clients;
     private static List<ClientDto> clientsDto;
@@ -69,7 +68,7 @@ public class ClientControllerTest {
     }
 
     @Test
-    void ClientController_getClients_BusinessException() {
+    void ClientController_getClients_BusinessException_clientDaoError() {
         String message = "Error at getting";
         Mockito.doThrow(new BusinessException(message)).when(clientDao).getAll();
         BusinessException thrown = Assertions.assertThrows(
@@ -88,7 +87,7 @@ public class ClientControllerTest {
     }
 
     @Test
-    void ClientController_getNumberOfClients_BusinessException() {
+    void ClientController_getNumberOfClients_BusinessException_clientDaoError() {
         String message = "Error at getting number";
         Mockito.doThrow(new BusinessException(message)).when(clientDao).getNumberOfClients();
         BusinessException thrown = Assertions.assertThrows(

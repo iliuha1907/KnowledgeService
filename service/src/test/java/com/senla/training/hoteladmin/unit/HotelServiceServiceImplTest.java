@@ -41,7 +41,7 @@ class HotelServiceServiceImplTest {
     }
 
     @Test
-    void HotelServiceServiceImpl_updateService_BusinessException() {
+    void HotelServiceServiceImpl_updateService_BusinessException_hotelServiceDaoError() {
         String message = "Error at updating Service";
         HotelService service = new HotelService();
 
@@ -54,7 +54,7 @@ class HotelServiceServiceImplTest {
     }
 
     @Test
-    void HotelServiceServiceImpl_updateService_BusinessException_null() {
+    void HotelServiceServiceImpl_updateService_BusinessException_serviceIsNull() {
         String message = "Error at updating Service: Service is null";
 
         BusinessException thrown = Assertions.assertThrows(
@@ -71,7 +71,7 @@ class HotelServiceServiceImplTest {
     }
 
     @Test
-    void HotelServiceServiceImpl_getServices_BusinessException() {
+    void HotelServiceServiceImpl_getServices_BusinessException_hotelServiceDaoError() {
         String message = "Error at getting";
         Mockito.doThrow(new BusinessException(message)).when(hotelServiceDao).getAll();
         BusinessException thrown = Assertions.assertThrows(

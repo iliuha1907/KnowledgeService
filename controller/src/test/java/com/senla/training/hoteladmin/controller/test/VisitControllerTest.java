@@ -7,7 +7,6 @@ import com.senla.training.hoteladmin.dao.hotelservice.HotelServiceDao;
 import com.senla.training.hoteladmin.dao.visit.VisitDao;
 import com.senla.training.hoteladmin.dto.MessageDto;
 import com.senla.training.hoteladmin.dto.VisitDto;
-import com.senla.training.hoteladmin.dto.config.DtoMapperConfiguration;
 import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
 import com.senla.training.hoteladmin.dto.mapper.VisitMapper;
 import com.senla.training.hoteladmin.exception.BusinessException;
@@ -32,8 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ControllerTestConfigurator.class, DtoMapperConfiguration.class})
-public class VisitControllerTest {
+@ContextConfiguration(classes = {ControllerTestConfigurator.class})
+class VisitControllerTest {
 
     private static List<Visit> visits;
     private static List<VisitDto> visitsDto;
@@ -119,7 +118,7 @@ public class VisitControllerTest {
     }
 
     @Test
-    void VisitController_getSortedClientVisits_BusinessException() {
+    void VisitController_getSortedClientVisits_BusinessException_visitDaoError() {
         String message = "Error at getting";
         Client client = visits.get(0).getClient();
         VisitSortCriterion criterion = VisitSortCriterion.PRICE;

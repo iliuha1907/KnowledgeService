@@ -90,8 +90,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public Long getNumberOfFreeRooms() {
-        return roomDao.getNumberOfFreeRooms();
+    public Long getNumberOfRooms(Boolean freeOnly) {
+        return roomDao.getNumberOfFreeRooms(freeOnly);
     }
 
     @Override

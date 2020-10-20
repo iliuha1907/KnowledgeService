@@ -5,7 +5,6 @@ import com.senla.training.hoteladmin.csvapi.writeread.HotelServiceReaderWriter;
 import com.senla.training.hoteladmin.dao.hotelservice.HotelServiceDao;
 import com.senla.training.hoteladmin.dto.HotelServiceDto;
 import com.senla.training.hoteladmin.dto.MessageDto;
-import com.senla.training.hoteladmin.dto.config.DtoMapperConfiguration;
 import com.senla.training.hoteladmin.dto.mapper.HotelServiceMapper;
 import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
 import com.senla.training.hoteladmin.exception.BusinessException;
@@ -26,8 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ControllerTestConfigurator.class, DtoMapperConfiguration.class})
-public class HotelServiceControllerTest {
+@ContextConfiguration(classes = {ControllerTestConfigurator.class})
+class HotelServiceControllerTest {
 
     private static List<HotelService> hotelServices;
     private static List<HotelServiceDto> hotelServicesDto;
@@ -78,7 +77,7 @@ public class HotelServiceControllerTest {
     }
 
     @Test
-    void HotelServiceController_updateService_BusinessException() {
+    void HotelServiceController_updateService_BusinessException_hotelServiceDaoError() {
         String message = "Error at updating Service";
         HotelService service = hotelServices.get(0);
         HotelServiceDto serviceDto = hotelServicesDto.get(0);
@@ -92,7 +91,7 @@ public class HotelServiceControllerTest {
     }
 
     @Test
-    void HotelServiceController_updateService_BusinessException_null() {
+    void HotelServiceController_updateService_BusinessException_serviceIsNull() {
         String message = "Error at updating Service: Service is null";
 
         BusinessException thrown = Assertions.assertThrows(
@@ -111,7 +110,7 @@ public class HotelServiceControllerTest {
     }
 
     @Test
-    void HotelServiceController_getServices_BusinessException() {
+    void HotelServiceController_getServices_BusinessException_hotelServiceDaoError() {
         String message = "Error at getting";
         Mockito.doThrow(new BusinessException(message)).when(hotelServiceDao).getAll();
         BusinessException thrown = Assertions.assertThrows(

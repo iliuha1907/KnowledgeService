@@ -9,8 +9,6 @@ import com.senla.training.hoteladmin.model.client.Client;
 import com.senla.training.hoteladmin.model.reservation.Reservation;
 import com.senla.training.hoteladmin.model.room.Room;
 import com.senla.training.hoteladmin.model.room.RoomStatus;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.senla.training.hoteladmin.util.DateUtil;
 import com.senla.training.hoteladmin.util.sort.ReservationSortCriterion;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import java.util.List;
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
-    private static final Logger LOGGER = LogManager.getLogger(ReservationServiceImpl.class);
     @Autowired
     private ReservationDao reservationDao;
     @Autowired
@@ -41,7 +38,6 @@ public class ReservationServiceImpl implements ReservationService {
     public void addReservationForExistingClient(Integer clientId, Date arrivalDate, Date departureDate) {
         Client client = clientDao.getByPrimaryKey(clientId);
         if (client == null) {
-            LOGGER.error("Error at adding reservation: No such client");
             throw new BusinessException("Error at adding reservation: No such client");
         }
         addReservation(client, arrivalDate, departureDate);
@@ -61,18 +57,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public List<Reservation> getReservationsExpiredAfterDate(Date date) {
-        if (date == null) {
-            LOGGER.error("Error at deactivating reservation: wrong date");
-            throw new BusinessException("Error at deactivating reservation: wrong date");
-        }
-        return reservationDao.getReservationsExpiredAfterDate(date);
-    }
-
-    @Override
-    @Transactional
-    public List<Reservation> getSortedReservations(ReservationSortCriterion criterion) {
-        return reservationDao.getSortedReservations(criterion);
+    public List<Reservation> getSortedReservations(ReservationSortCriterion criterion, Date expiration) {
+        return reservationDao.getSortedReservations(criterion, expiration);
     }
 
     @Override
@@ -80,7 +66,6 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> getLastRoomReservations(Integer roomId) {
         Room room = roomDao.getByPrimaryKey(roomId);
         if (room == null) {
-            LOGGER.error("Error at getting reservations: No such room");
             throw new BusinessException("Error at getting reservations: No such room");
         }
         return reservationDao.getLastRoomReservations(room, numberOfResidents);
@@ -128,7 +113,6 @@ public class ReservationServiceImpl implements ReservationService {
     protected void addReservation(Client client, Date arrivalDate, Date departureDate) {
         Room room = roomDao.getFirstFreeRoom();
         if (room == null) {
-            LOGGER.error("Error at adding reservation: No free rooms");
             throw new BusinessException("Error at adding reservation: No free rooms");
         }
 

@@ -1,11 +1,14 @@
 package config;
 
 import com.senla.training.hoteladmin.controller.*;
+import com.senla.training.hoteladmin.controller.security.TokenFilter;
+import com.senla.training.hoteladmin.controller.security.TokenProvider;
 import com.senla.training.hoteladmin.csvapi.writeread.*;
 import com.senla.training.hoteladmin.dao.client.ClientDao;
 import com.senla.training.hoteladmin.dao.hotelservice.HotelServiceDao;
 import com.senla.training.hoteladmin.dao.reservation.ReservationDao;
 import com.senla.training.hoteladmin.dao.room.RoomDao;
+import com.senla.training.hoteladmin.dao.user.UserDao;
 import com.senla.training.hoteladmin.dao.visit.VisitDao;
 import com.senla.training.hoteladmin.dto.mapper.*;
 import com.senla.training.hoteladmin.service.client.ClientService;
@@ -18,42 +21,30 @@ import com.senla.training.hoteladmin.service.room.RoomService;
 import com.senla.training.hoteladmin.service.room.RoomServiceImpl;
 import com.senla.training.hoteladmin.service.visit.VisitService;
 import com.senla.training.hoteladmin.service.visit.VisitServiceImpl;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.security.authentication.AuthenticationManager;
 
 import static org.mockito.Mockito.mock;
 
 @Configuration
+@ComponentScan(basePackages = {"com.senla.training.hoteladmin.controller","com.senla.training.hoteladmin.service"},
+        excludeFilters =@ComponentScan.Filter(
+                type = FilterType.REGEX,
+                pattern = "com\\.senla\\.training\\.hoteladmin\\.controller\\.[config|security].*"))
 public class ControllerTestConfigurator {
-
-    @Bean
-    public ClientController clientController(){
-        return new ClientController();
-    }
-
-    @Bean
-    public HotelServiceController hotelServiceController(){
-        return new HotelServiceController();
-    }
-
-    @Bean
-    public VisitController visitController(){
-        return new VisitController();
-    }
-
-    @Bean
-    public RoomController roomController(){
-        return new RoomController();
-    }
-
-    @Bean
-    public ReservationController reservationController(){
-        return new ReservationController();
-    }
 
     @Bean
     public ClientDao clientDao(){
         return mock(ClientDao.class);
+    }
+
+    @Bean
+    public UserDao userDao(){
+        return mock(UserDao.class);
     }
 
     @Bean
@@ -74,6 +65,11 @@ public class ControllerTestConfigurator {
     @Bean
     public ReservationDao reservationDao(){
         return mock(ReservationDao.class);
+    }
+
+    @Bean
+    public ModelMapper modelMapper(){
+        return mock(ModelMapper.class);
     }
 
     @Bean
@@ -107,28 +103,8 @@ public class ControllerTestConfigurator {
     }
 
     @Bean
-    public ClientService clientService(){
-        return new ClientServiceImpl();
-    }
-
-    @Bean
-    public HotelServiceService hotelServiceService(){
-        return new HotelServiceServiceImpl();
-    }
-
-    @Bean
-    public VisitService visitService(){
-        return new VisitServiceImpl();
-    }
-
-    @Bean
-    public RoomService roomService(){
-        return new RoomServiceImpl();
-    }
-
-    @Bean
-    public ReservationService reservationService(){
-        return new ReservationServiceImpl();
+    public TokenDtoMapper tokenDtoMapper(){
+        return mock(TokenDtoMapper.class);
     }
 
     @Bean
@@ -154,5 +130,10 @@ public class ControllerTestConfigurator {
     @Bean
     public ReservationReaderWriter reservationReaderWriter(){
         return mock(ReservationReaderWriter.class);
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(){
+        return mock(AuthenticationManager.class);
     }
 }

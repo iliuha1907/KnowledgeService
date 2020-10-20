@@ -11,15 +11,11 @@ import java.util.List;
 
 public interface ReservationDao extends GenericDao<Reservation, Integer> {
 
-    List<Reservation> getSortedReservations(ReservationSortCriterion criterion);
+    List<Reservation> getSortedReservations(ReservationSortCriterion criterion, Date expiration);
 
     Long getNumberOfResidents();
-
-    List<Reservation> getReservationsExpiredAfterDate(Date date);
 
     List<Reservation> getLastRoomReservations(Room room, Integer count);
 
     Reservation getReservationByRoomClient(Client client, Room room);
-
-    void deactivateClientReservation(Client client, Room room);
 }

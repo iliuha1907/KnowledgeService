@@ -13,7 +13,7 @@ public class RoomDto extends AbstractDto {
     private Integer isFree;
 
     public RoomDto() {
-        super(0);
+        super(null);
     }
 
     public RoomDto(Integer id, RoomStatus status, BigDecimal price, Integer capacity, Integer stars, Integer isFree) {

@@ -7,6 +7,7 @@ import com.senla.training.hoteladmin.dto.mapper.VisitMapper;
 import com.senla.training.hoteladmin.service.visit.VisitService;
 import com.senla.training.hoteladmin.util.sort.VisitSortCriterion;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,12 +24,14 @@ public class VisitController {
     private MessageDtoMapper messageDtoMapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MessageDto addVisit(@RequestBody VisitDto visit) {
         visitService.addVisit(visit.getServiceId(), visit.getClientId(), visit.getDate());
         return messageDtoMapper.toDto("Successfully added visit");
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'USER_ADMIN')")
     public List<VisitDto> getSortedClientVisits(@RequestParam(name = "clientId") Integer id,
                                                 @RequestParam(name = "criterion", defaultValue = "PRICE")
                                                         VisitSortCriterion criterion) {
@@ -36,12 +39,14 @@ public class VisitController {
     }
 
     @PostMapping("/export/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MessageDto exportVisits() {
         visitService.exportVisits();
         return messageDtoMapper.toDto("Successfully exported visits");
     }
 
     @PostMapping("/import/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MessageDto importVisits() {
         visitService.importVisits();
         return messageDtoMapper.toDto("Successfully imported visits");

@@ -50,7 +50,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void RoomServiceImpl_updateRoom_BusinessException() {
+    void RoomServiceImpl_updateRoom_BusinessException_roomDaoError() {
         String message = "Error at updating Room";
         Room room = new Room();
 
@@ -63,7 +63,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void RoomServiceImpl_updateRoom_BusinessException_null() {
+    void RoomServiceImpl_updateRoom_BusinessException_roomIsNull() {
         String message = "Error at updating Room: Room is null";
 
         BusinessException thrown = Assertions.assertThrows(
@@ -86,7 +86,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void RoomServiceImpl_getSortedRooms_BusinessException() {
+    void RoomServiceImpl_getSortedRooms_BusinessException_roomDaoError() {
         RoomsSortCriterion criterion = RoomsSortCriterion.CAPACITY;
         String message = "Error at getting";
 
@@ -105,7 +105,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void RoomServiceImpl_getFreeRooms_BusinessException() {
+    void RoomServiceImpl_getFreeRooms_BusinessException_roomDaoError() {
         String message = "Error at getting";
         Mockito.doThrow(new BusinessException(message)).when(roomDao).getFreeRooms();
         BusinessException thrown = Assertions.assertThrows(
@@ -124,7 +124,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void RoomServiceImpl_getSortedFreeRooms_BusinessException() {
+    void RoomServiceImpl_getSortedFreeRooms_BusinessException_roomDaoError() {
         RoomsSortCriterion criterion = RoomsSortCriterion.CAPACITY;
         String message = "Error at getting";
 
@@ -164,7 +164,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void RoomServiceImpl_getRoom_BusinessException() {
+    void RoomServiceImpl_getRoom_BusinessException_roomDaoError() {
         String message = "Error at getting";
         Mockito.doThrow(new BusinessException(message)).when(roomDao).getByPrimaryKey(0);
         BusinessException thrown = Assertions.assertThrows(
@@ -188,18 +188,18 @@ class RoomServiceImplTest {
     @Test
     void RoomServiceImpl_getNumberOfFreeRooms() {
         Long count = (long) rooms.size();
-        Mockito.doReturn(count).when(roomDao).getNumberOfFreeRooms();
+        Mockito.doReturn(count).when(roomDao).getNumberOfFreeRooms(true);
 
-        Assertions.assertEquals(count, roomService.getNumberOfFreeRooms());
+        Assertions.assertEquals(count, roomService.getNumberOfRooms(true));
     }
 
     @Test
-    void RoomServiceImpl_getNumberOfFreeRooms_BusinessException() {
+    void RoomServiceImpl_getNumberOfFreeRooms_BusinessException_roomDaoError() {
         String message = "Error at getting number";
-        Mockito.doThrow(new BusinessException(message)).when(roomDao).getNumberOfFreeRooms();
+        Mockito.doThrow(new BusinessException(message)).when(roomDao).getNumberOfFreeRooms(true);
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
-                () -> roomService.getNumberOfFreeRooms());
+                () -> roomService.getNumberOfRooms(true));
 
         Assertions.assertTrue(thrown.getMessage().contains(message));
     }

@@ -11,7 +11,7 @@ public class ReservationDto extends AbstractDto {
     private Integer residentId;
 
     public ReservationDto() {
-        super(0);
+        super(null);
     }
 
     public ReservationDto(Integer id, Date arrivalDate, Date departure,

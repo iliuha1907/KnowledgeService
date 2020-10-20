@@ -10,7 +10,7 @@ public class VisitDto extends AbstractDto {
     private Integer isActive;
 
     public VisitDto() {
-        super(0);
+        super(null);
     }
 
     public VisitDto(Integer id, Integer clientId, Integer serviceId, Date date, Integer isActive) {
