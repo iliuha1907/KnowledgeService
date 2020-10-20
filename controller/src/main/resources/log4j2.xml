@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn">
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-        </Console>
-        <RollingFile name="logFile"
-                     fileName="/D:/SENLA/log4j2.log"
+        <RollingFile name="allLog"
+                     fileName="/D:/SENLA/allLog.log"
+                     filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval = "1" />
+                <SizeBasedTriggeringPolicy
+                        size="250 MB" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="errorLog"
+                     fileName="/D:/SENLA/errorLog.log"
                      filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
@@ -17,7 +26,7 @@
             </Policies>
         </RollingFile>
         <RollingFile name="sqlAppender"
-                     fileName="/D:/SENLA/sqlLog2.log"
+                     fileName="/D:/SENLA/sqlLog.log"
                      filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
@@ -30,14 +39,13 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Logger name= "com.senla.training.hoteladmin" level="error" additivity="true">
-            <AppenderRef ref="logFile"/>
-        </Logger>
-        <Logger name= "org.hibernate" level="debug" additivity="true">
+        <Logger name= "org.hibernate" level="debug" additivity="false">
             <AppenderRef ref="sqlAppender"/>
         </Logger>
         <Root level="all">
-            <AppenderRef ref="Console"/>
+            <AppenderRef ref="allLog" level="trace"/>
+            <AppenderRef ref="errorLog" level = "error"/>
         </Root>
     </Loggers>
 </Configuration>
+
