@@ -14,7 +14,7 @@
     <suppress checks="EqualsHashCode"
               files="HotelService.java|Room.java"/>
     <suppress checks="MagicNumber"
-              files="Client.java|HotelService.java|Visit.java|Reservation.java|Room.java|UserInteraction.java"/>
+              files="Client.java|HotelService.java|Visit.java|Reservation.java|Room.java|UserInteraction.java|JwtTokenProvider.java|SecurityConfig.java|User.java|Role.java"/>
     <suppress checks="HideUtilityClassConstructor"/>
     <suppress checks="AvoidInlineConditionals"
               files="ReservationDaoImpl.java|RoomDaoImpl.java|AbstractDao.java"/>

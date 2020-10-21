@@ -7,7 +7,6 @@ import com.senla.training.hoteladmin.dao.reservation.ReservationDao;
 import com.senla.training.hoteladmin.dao.room.RoomDao;
 import com.senla.training.hoteladmin.dto.MessageDto;
 import com.senla.training.hoteladmin.dto.ReservationDto;
-import com.senla.training.hoteladmin.dto.config.DtoMapperConfiguration;
 import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
 import com.senla.training.hoteladmin.dto.mapper.ReservationMapper;
 import com.senla.training.hoteladmin.exception.BusinessException;
@@ -34,8 +33,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ControllerTestConfigurator.class, DtoMapperConfiguration.class})
-public class ReservationControllerTest {
+@ContextConfiguration(classes = {ControllerTestConfigurator.class})
+class ReservationControllerTest {
 
     private static List<Reservation> reservations;
     private static List<ReservationDto> reservationsDto;
@@ -55,7 +54,6 @@ public class ReservationControllerTest {
     ReservationMapper reservationMapper;
     @Autowired
     MessageDtoMapper messageDtoMapper;
-
 
     @BeforeAll
     public static void setUp() {
@@ -132,48 +130,25 @@ public class ReservationControllerTest {
     }
 
     @Test
-    void ReservationController_getReservationsExpiredAfterDate() {
-        java.util.Date date = new java.util.Date();
-
-        Mockito.doReturn(reservations).when(reservationDao).getReservationsExpiredAfterDate(date);
-        Mockito.doReturn(reservationsDto).when(reservationMapper).listToDto(reservations);
-
-        Assertions.assertIterableEquals(reservationsDto, reservationController
-                .getReservationsExpiredAfterDate(date));
-    }
-
-    @Test
-    void ReservationImpl_getReservationsExpiredAfterDate_BusinessException_wrongDate() {
-        String message = "Error at deactivating reservation: wrong date";
-
-        BusinessException thrown = Assertions.assertThrows(
-                BusinessException.class,
-                () -> reservationController.getReservationsExpiredAfterDate(null));
-
-        Assertions.assertTrue(thrown.getMessage().contains(message));
-    }
-
-    @Test
-    void ReservationController_getReservations_BusinessException() {
-        java.util.Date date = new java.util.Date();
-        String message = "Error at getting";
-
-        Mockito.doThrow(new BusinessException(message)).when(reservationDao).getReservationsExpiredAfterDate(date);
-        BusinessException thrown = Assertions.assertThrows(
-                BusinessException.class,
-                () -> reservationController.getReservationsExpiredAfterDate(date));
-
-        Assertions.assertTrue(thrown.getMessage().contains(message));
-    }
-
-    @Test
     void ReservationController_getReservations() {
         ReservationSortCriterion criterion = ReservationSortCriterion.NAME;
+        Date date = new Date(0);
 
-        Mockito.doReturn(reservations).when(reservationDao).getSortedReservations(criterion);
+        Mockito.doReturn(reservations).when(reservationDao).getSortedReservations(criterion, date);
         Mockito.doReturn(reservationsDto).when(reservationMapper).listToDto(reservations);
 
-        Assertions.assertIterableEquals(reservationsDto, reservationController.getReservations(criterion));
+        Assertions.assertIterableEquals(reservationsDto, reservationController.getReservations(criterion, date));
+    }
+
+    @Test
+    void ReservationController_getReservations_dateNull() {
+        ReservationSortCriterion criterion = ReservationSortCriterion.NAME;
+        Date date = null;
+
+        Mockito.doReturn(reservations).when(reservationDao).getSortedReservations(criterion, date);
+        Mockito.doReturn(reservationsDto).when(reservationMapper).listToDto(reservations);
+
+        Assertions.assertIterableEquals(reservationsDto, reservationController.getReservations(criterion, date));
     }
 
     @Test
@@ -190,7 +165,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    void ReservationController_deactivateReservation_BusinessException() {
+    void ReservationController_deactivateReservation_BusinessException_reservationDaoError() {
         String message = "Error at deactivating reservation";
         Reservation reservation = reservations.get(0);
 
@@ -204,7 +179,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    void ReservationController_deactivateReservation_BusinessException_null() {
+    void ReservationController_deactivateReservation_BusinessException_noReservation() {
         String message = "Error at deactivating reservation: no such entity!";
 
         Mockito.doReturn(null).when(reservationDao).getByPrimaryKey(0);
@@ -230,7 +205,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    void ReservationController_getLastRoomReservations_BusinessException() {
+    void ReservationController_getLastRoomReservations_BusinessException_reservationDaoError() {
         String message = "Error at getting";
         Room room = reservations.get(0).getRoom();
 
@@ -266,7 +241,7 @@ public class ReservationControllerTest {
     }
 
     @Test
-    void ReservationController_getNumberOfResidents_BusinessException() {
+    void ReservationController_getNumberOfResidents_BusinessException_reservationDaoError() {
         String message = "Error at getting number";
 
         Mockito.doThrow(new BusinessException(message)).when(reservationDao)

@@ -10,7 +10,7 @@ public class HotelServiceDto extends AbstractDto {
     private HotelServiceType type;
 
     public HotelServiceDto() {
-        super(0);
+        super(null);
     }
 
     public HotelServiceDto(Integer id, BigDecimal price, HotelServiceType type) {

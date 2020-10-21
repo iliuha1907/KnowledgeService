@@ -1,22 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn">
-<Appenders>
-    <RollingFile name="logFile"
-                 fileName="/D:/SENLA/MVCSpring/huzei_ilya-master/logs/log4j2.log"
-                 filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
-        <PatternLayout>
-            <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
-        </PatternLayout>
-        <Policies>
-            <TimeBasedTriggeringPolicy interval = "1" />
-            <SizeBasedTriggeringPolicy
-                    size="250 MB" />
-        </Policies>
-    </RollingFile>
-</Appenders>
-<Loggers>
-    <Root level="error">
-        <AppenderRef ref="logFile" />
-    </Root>
-</Loggers>
+    <Appenders>
+        <RollingFile name="allLog"
+                     fileName="/D:/SENLA/allLog.log"
+                     filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval = "1" />
+                <SizeBasedTriggeringPolicy
+                        size="250 MB" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="errorLog"
+                     fileName="/D:/SENLA/errorLog.log"
+                     filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval = "1" />
+                <SizeBasedTriggeringPolicy
+                        size="250 MB" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="sqlAppender"
+                     fileName="/D:/SENLA/sqlLog.log"
+                     filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval = "1" />
+                <SizeBasedTriggeringPolicy
+                        size="250 MB" />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name= "org.hibernate" level="debug" additivity="false">
+            <AppenderRef ref="sqlAppender"/>
+        </Logger>
+        <Root level="all">
+            <AppenderRef ref="allLog" level="trace"/>
+            <AppenderRef ref="errorLog" level = "error"/>
+        </Root>
+    </Loggers>
 </Configuration>
+

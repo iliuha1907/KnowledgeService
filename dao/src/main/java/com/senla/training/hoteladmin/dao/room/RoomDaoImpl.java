@@ -78,13 +78,17 @@ public class RoomDaoImpl extends AbstractDao<Room, Integer> implements RoomDao {
     }
 
     @Override
-    public Long getNumberOfFreeRooms() {
+    public Long getNumberOfFreeRooms(Boolean freeOnly) {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
             Root<Room> root = query.from(Room.class);
-            query.select(criteriaBuilder.count(root)).where(criteriaBuilder.equal(
-                    root.get(Room_.isFree), 1));
+            if (freeOnly) {
+                query.select(criteriaBuilder.count(root)).where(criteriaBuilder.equal(
+                        root.get(Room_.isFree), 1));
+            } else {
+                query.select(criteriaBuilder.count(root));
+            }
             return entityManager.createQuery(query).getSingleResult();
         } catch (Exception ex) {
             logger.error("Error at getting number of free rooms: " + ex.getMessage());

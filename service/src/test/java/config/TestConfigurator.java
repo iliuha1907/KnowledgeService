@@ -5,23 +5,26 @@ import com.senla.training.hoteladmin.dao.client.ClientDao;
 import com.senla.training.hoteladmin.dao.hotelservice.HotelServiceDao;
 import com.senla.training.hoteladmin.dao.reservation.ReservationDao;
 import com.senla.training.hoteladmin.dao.room.RoomDao;
+import com.senla.training.hoteladmin.dao.user.UserDao;
 import com.senla.training.hoteladmin.dao.visit.VisitDao;
-import com.senla.training.hoteladmin.service.client.ClientServiceImpl;
-import com.senla.training.hoteladmin.service.hotelservice.HotelServiceServiceImpl;
-import com.senla.training.hoteladmin.service.reservation.ReservationServiceImpl;
-import com.senla.training.hoteladmin.service.room.RoomServiceImpl;
-import com.senla.training.hoteladmin.service.visit.VisitServiceImpl;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import static org.mockito.Mockito.mock;
 
 @Configuration
+@ComponentScan(basePackages = {"com.senla.training.hoteladmin.service"})
 public class TestConfigurator {
 
     @Bean
     public ClientDao clientDao(){
         return mock(ClientDao.class);
+    }
+
+    @Bean
+    public UserDao userDao(){
+        return mock(UserDao.class);
     }
 
     @Bean
@@ -42,31 +45,6 @@ public class TestConfigurator {
     @Bean
     public ReservationDao reservationDao(){
         return mock(ReservationDao.class);
-    }
-
-    @Bean
-    public ClientServiceImpl clientServiceImpl(){
-        return new ClientServiceImpl();
-    }
-
-    @Bean
-    public RoomServiceImpl roomServiceImpl(){
-        return new RoomServiceImpl();
-    }
-
-    @Bean
-    public HotelServiceServiceImpl hotelServiceService(){
-        return new HotelServiceServiceImpl();
-    }
-
-    @Bean
-    public VisitServiceImpl visitServiceImpl(){
-        return new VisitServiceImpl();
-    }
-
-    @Bean
-    public ReservationServiceImpl reservationServiceImpl(){
-        return new ReservationServiceImpl();
     }
 
     @Bean

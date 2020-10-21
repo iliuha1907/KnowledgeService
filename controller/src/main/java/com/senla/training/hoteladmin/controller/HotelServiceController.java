@@ -6,6 +6,7 @@ import com.senla.training.hoteladmin.dto.mapper.HotelServiceMapper;
 import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
 import com.senla.training.hoteladmin.service.hotelservice.HotelServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,11 +23,13 @@ public class HotelServiceController {
     private MessageDtoMapper messageDtoMapper;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public List<HotelServiceDto> getServices() {
         return hotelServiceMapper.listToDto(hotelServiceService.getServices());
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MessageDto addService(@RequestBody HotelServiceDto hotelService) {
         hotelServiceService.addService(hotelService.getPrice(),
                 hotelService.getType());
@@ -34,6 +37,7 @@ public class HotelServiceController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MessageDto updateService(@RequestBody HotelServiceDto hotelService,
                                 @PathVariable("id") Integer id) {
         hotelServiceService.updateService(hotelServiceMapper.toEntity(hotelService), id);
@@ -41,12 +45,14 @@ public class HotelServiceController {
     }
 
     @PostMapping("/export/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MessageDto exportServices() {
         hotelServiceService.exportServices();
         return messageDtoMapper.toDto("Successfully exported services");
     }
 
     @PostMapping("/import/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MessageDto importServices() {
         hotelServiceService.importServices();
         return messageDtoMapper.toDto("Successfully imported services");

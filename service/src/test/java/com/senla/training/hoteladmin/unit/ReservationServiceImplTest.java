@@ -97,46 +97,17 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void ReservationImpl_getReservationsExpiredAfterDate() {
-        Date date = new Date();
-        Mockito.doReturn(reservations).when(reservationDao).getReservationsExpiredAfterDate(date);
-
-        Assertions.assertIterableEquals(reservations, reservationService.getReservationsExpiredAfterDate(date));
-    }
-
-    @Test
-    void ReservationImpl_getReservationsExpiredAfterDate_BusinessException() {
-        Date date = new Date();
-        String message = "Error at getting";
-        Mockito.doThrow(new BusinessException(message)).when(reservationDao).getReservationsExpiredAfterDate(date);
-        BusinessException thrown = Assertions.assertThrows(
-                BusinessException.class,
-                () -> reservationService.getReservationsExpiredAfterDate(date));
-
-        Assertions.assertTrue(thrown.getMessage().contains(message));
-    }
-
-    @Test
-    void ReservationImpl_getReservationsExpiredAfterDate_BusinessException_wrongDate() {
-        String message = "Error at deactivating reservation: wrong date";
-        BusinessException thrown = Assertions.assertThrows(
-                BusinessException.class,
-                () -> reservationService.getReservationsExpiredAfterDate(null));
-
-        Assertions.assertTrue(thrown.getMessage().contains(message));
-    }
-
-    @Test
     void ReservationImpl_getSortedReservations() {
         ReservationSortCriterion criterion = ReservationSortCriterion.NAME;
+        Date date = new Date(0);
 
-        Mockito.doReturn(reservations).when(reservationDao).getSortedReservations(ReservationSortCriterion.NAME);
+        Mockito.doReturn(reservations).when(reservationDao).getSortedReservations(ReservationSortCriterion.NAME, date);
 
-        Assertions.assertIterableEquals(reservations, reservationService.getSortedReservations(criterion));
+        Assertions.assertIterableEquals(reservations, reservationService.getSortedReservations(criterion, date));
     }
 
     @Test
-    void ReservationImpl_deactivateReservation_BusinessException() {
+    void ReservationImpl_deactivateReservation_BusinessException_reservationDaoError() {
         String message = "Error at deactivating reservation";
         Reservation reservation = reservations.get(0);
 
@@ -150,7 +121,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void ReservationImpl_deactivateReservation_BusinessException_null() {
+    void ReservationImpl_deactivateReservation_BusinessException_reservationIsNull() {
         String message = "Error at deactivating reservation: no such entity!";
 
         Mockito.doReturn(null).when(reservationDao).getByPrimaryKey(0);
@@ -162,15 +133,16 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void ReservationImpl_getSortedReservations_BusinessException() {
+    void ReservationImpl_getSortedReservations_BusinessException_reservationDaoError() {
         String message = "Error at getting";
+        Date date = new Date(0);
         ReservationSortCriterion criterion = ReservationSortCriterion.NAME;
 
         Mockito.doThrow(new BusinessException(message)).when(reservationDao)
-                .getSortedReservations(ReservationSortCriterion.NAME);
+                .getSortedReservations(ReservationSortCriterion.NAME, date);
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
-                () -> reservationService.getSortedReservations(criterion));
+                () -> reservationService.getSortedReservations(criterion, date));
 
         Assertions.assertTrue(thrown.getMessage().contains(message));
     }
@@ -186,7 +158,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void ReservationImpl_getLastRoomReservations_BusinessException() {
+    void ReservationImpl_getLastRoomReservations_BusinessException_reservationDaoError() {
         String message = "Error at getting";
         Room room = reservations.get(0).getRoom();
         reservationService.setNumberOfResidents(2);
@@ -218,7 +190,7 @@ class ReservationServiceImplTest {
     }
 
     @Test
-    void ReservationImpl_getNumberOfResidents_BusinessException() {
+    void ReservationImpl_getNumberOfResidents_BusinessException_reservationDaoError() {
         String message = "Error at getting number";
         Mockito.doThrow(new BusinessException(message)).when(reservationDao)
                 .getNumberOfResidents();

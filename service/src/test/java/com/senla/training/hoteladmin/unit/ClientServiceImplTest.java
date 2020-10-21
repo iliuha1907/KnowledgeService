@@ -4,6 +4,7 @@ import com.senla.training.hoteladmin.csvapi.writeread.ClientReaderWriter;
 import com.senla.training.hoteladmin.dao.client.ClientDao;
 import com.senla.training.hoteladmin.exception.BusinessException;
 import com.senla.training.hoteladmin.model.client.Client;
+import com.senla.training.hoteladmin.service.client.ClientService;
 import com.senla.training.hoteladmin.service.client.ClientServiceImpl;
 import config.TestConfigurator;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +25,7 @@ class ClientServiceImplTest {
 
     private static List<Client> clients;
     @Autowired
-    private ClientServiceImpl clientService;
+    private ClientService clientService;
     @Autowired
     private ClientDao clientDao;
     @Autowired
@@ -44,7 +45,7 @@ class ClientServiceImplTest {
     }
 
     @Test
-    void ClientServiceImpl_getClients_BusinessException() {
+    void ClientServiceImpl_getClients_BusinessException_clientDaoError() {
         String message = "Error at getting";
         Mockito.doThrow(new BusinessException(message)).when(clientDao).getAll();
         BusinessException thrown = Assertions.assertThrows(
@@ -63,7 +64,7 @@ class ClientServiceImplTest {
     }
 
     @Test
-    void ClientServiceImpl_getNumberOfClients_BusinessException() {
+    void ClientServiceImpl_getNumberOfClients_BusinessException_clientDaoError() {
         String message = "Error at getting number";
         Mockito.doThrow(new BusinessException(message)).when(clientDao).getNumberOfClients();
         BusinessException thrown = Assertions.assertThrows(

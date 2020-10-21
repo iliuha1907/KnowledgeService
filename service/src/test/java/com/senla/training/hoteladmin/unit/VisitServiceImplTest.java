@@ -87,7 +87,7 @@ class VisitServiceImplTest {
     }
 
     @Test
-    void VisitServiceImpl_getSortedClientVisits_BusinessException() {
+    void VisitServiceImpl_getSortedClientVisits_BusinessException_visitDaoError() {
         String message = "Error at getting";
         Client client = visits.get(0).getClient();
         VisitSortCriterion criterion = VisitSortCriterion.PRICE;

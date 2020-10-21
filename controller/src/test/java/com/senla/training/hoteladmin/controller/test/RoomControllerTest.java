@@ -5,7 +5,6 @@ import com.senla.training.hoteladmin.csvapi.writeread.RoomReaderWriter;
 import com.senla.training.hoteladmin.dao.room.RoomDao;
 import com.senla.training.hoteladmin.dto.MessageDto;
 import com.senla.training.hoteladmin.dto.RoomDto;
-import com.senla.training.hoteladmin.dto.config.DtoMapperConfiguration;
 import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
 import com.senla.training.hoteladmin.dto.mapper.RoomMapper;
 import com.senla.training.hoteladmin.exception.BusinessException;
@@ -29,8 +28,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ControllerTestConfigurator.class, DtoMapperConfiguration.class})
-public class RoomControllerTest {
+@ContextConfiguration(classes = {ControllerTestConfigurator.class})
+class RoomControllerTest {
 
     private static List<Room> rooms;
     private static List<RoomDto> roomsDto;
@@ -76,11 +75,11 @@ public class RoomControllerTest {
         Mockito.doReturn(rooms).when(roomDao).getSortedRooms(RoomsSortCriterion.CAPACITY);
         Mockito.doReturn(roomsDto).when(roomMapper).listToDto(rooms);
 
-        Assertions.assertIterableEquals(roomsDto, roomController.getRooms(criterion));
+        Assertions.assertIterableEquals(roomsDto, roomController.getRooms(criterion,false));
     }
 
     @Test
-    void RoomController_updateRoom_BusinessException() {
+    void RoomController_updateRoom_BusinessException_roomDaoError() {
         String message = "Error at updating Room";
         RoomDto roomDto = roomsDto.get(0);
         Room room = rooms.get(0);
@@ -95,7 +94,7 @@ public class RoomControllerTest {
     }
 
     @Test
-    void RoomController_updateRoom_BusinessException_null() {
+    void RoomController_updateRoom_BusinessException_roomIsNull() {
         String message = "Error at updating Room: Room is null";
 
         BusinessException thrown = Assertions.assertThrows(
@@ -127,18 +126,18 @@ public class RoomControllerTest {
         Mockito.doReturn(rooms).when(roomDao).getSortedRooms(roomsSortCriterion);
         Mockito.doReturn(roomsDto).when(roomMapper).listToDto(rooms);
 
-        Assertions.assertEquals(roomsDto, roomController.getRooms(criterion));
+        Assertions.assertEquals(roomsDto, roomController.getRooms(criterion, false));
     }
 
     @Test
-    void RoomController_getRooms_BusinessException() {
+    void RoomController_getRooms_BusinessException_roomDaoError() {
         RoomsSortCriterion criterion = RoomsSortCriterion.CAPACITY;
         String message = "Error at getting";
 
         Mockito.doThrow(new BusinessException(message)).when(roomDao).getSortedRooms(RoomsSortCriterion.CAPACITY);
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
-                () -> roomController.getRooms(criterion));
+                () -> roomController.getRooms(criterion, false));
 
         Assertions.assertTrue(thrown.getMessage().contains(message));
     }
@@ -150,41 +149,40 @@ public class RoomControllerTest {
         Mockito.doReturn(rooms).when(roomDao).getSortedFreeRooms(criterion);
         Mockito.doReturn(roomsDto).when(roomMapper).listToDto(rooms);
 
-        Assertions.assertIterableEquals(roomsDto, roomController.getFreeRooms(criterion));
+        Assertions.assertIterableEquals(roomsDto, roomController.getRooms(criterion, true));
     }
 
     @Test
     void RoomController_getFreeRooms_naturalCriterion() {
         RoomsSortCriterion criterion = RoomsSortCriterion.NATURAL;
-        RoomsSortCriterion roomsSortCriterion = RoomsSortCriterion.PRICE;
 
         Mockito.doReturn(rooms).when(roomDao).getFreeRooms();
         Mockito.doReturn(roomsDto).when(roomMapper).listToDto(rooms);
 
-        Assertions.assertIterableEquals(roomsDto, roomController.getFreeRooms(criterion));
+        Assertions.assertIterableEquals(roomsDto, roomController.getRooms(criterion, true));
     }
 
     @Test
-    void RoomServiceImpl_getFreeRooms_naturalCriterion_BusinessException() {
+    void RoomServiceImpl_getFreeRooms_naturalCriterion_BusinessException_roomDaoError() {
         RoomsSortCriterion criterion = RoomsSortCriterion.NATURAL;
         String message = "Error at getting";
         Mockito.doThrow(new BusinessException(message)).when(roomDao).getFreeRooms();
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
-                () -> roomController.getFreeRooms(criterion));
+                () -> roomController.getRooms(criterion, true));
 
         Assertions.assertTrue(thrown.getMessage().contains(message));
     }
 
     @Test
-    void RoomServiceImpl_getFreeRooms_BusinessException() {
+    void RoomServiceImpl_getFreeRooms_BusinessException_roomDaoError() {
         RoomsSortCriterion criterion = RoomsSortCriterion.PRICE;
         String message = "Error at getting";
 
         Mockito.doThrow(new BusinessException(message)).when(roomDao).getSortedFreeRooms(criterion);
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
-                () -> roomController.getFreeRooms(criterion));
+                () -> roomController.getRooms(criterion, true));
 
         Assertions.assertTrue(thrown.getMessage().contains(message));
     }
@@ -194,7 +192,7 @@ public class RoomControllerTest {
         Room room = rooms.get(0);
         Mockito.doReturn(room).when(roomDao).getByPrimaryKey(1);
 
-        Assertions.assertEquals(room.getPrice(), roomController.getPriceRoom(1));
+        Assertions.assertEquals(room.getPrice(), roomController.getRoomPrice(1));
     }
 
     @Test
@@ -204,7 +202,7 @@ public class RoomControllerTest {
         Mockito.doReturn(null).when(roomDao).getByPrimaryKey(0);
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
-                () -> roomController.getPriceRoom(0));
+                () -> roomController.getRoomPrice(0));
 
         Assertions.assertTrue(thrown.getMessage().contains(message));
     }
@@ -221,7 +219,7 @@ public class RoomControllerTest {
     }
 
     @Test
-    void RoomController_getRoom_BusinessException() {
+    void RoomController_getRoom_BusinessException_roomDaoError() {
         String message = "Error at getting";
 
         Mockito.doThrow(new BusinessException(message)).when(roomDao).getByPrimaryKey(0);
@@ -248,19 +246,19 @@ public class RoomControllerTest {
     void RoomController_getNumberOfFreeRooms() {
         Long count = (long) rooms.size();
 
-        Mockito.doReturn(count).when(roomDao).getNumberOfFreeRooms();
+        Mockito.doReturn(count).when(roomDao).getNumberOfFreeRooms(false);
 
-        Assertions.assertEquals(count, roomController.getNumberOfFreeRooms());
+        Assertions.assertEquals(count, roomController.getNumberOfRooms(false));
     }
 
     @Test
-    void RoomController_getNumberOfFreeRooms_BusinessException() {
+    void RoomController_getNumberOfFreeRooms_BusinessException_roomDaoError() {
         String message = "Error at getting number";
 
-        Mockito.doThrow(new BusinessException(message)).when(roomDao).getNumberOfFreeRooms();
+        Mockito.doThrow(new BusinessException(message)).when(roomDao).getNumberOfFreeRooms(false);
         BusinessException thrown = Assertions.assertThrows(
                 BusinessException.class,
-                () -> roomController.getNumberOfFreeRooms());
+                () -> roomController.getNumberOfRooms(false));
 
         Assertions.assertTrue(thrown.getMessage().contains(message));
     }

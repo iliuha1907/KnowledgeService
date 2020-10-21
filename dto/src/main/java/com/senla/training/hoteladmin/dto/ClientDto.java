@@ -8,7 +8,7 @@ public class ClientDto extends AbstractDto {
     private String lastName;
 
     public ClientDto() {
-        super(0);
+        super(null);
     }
 
     public ClientDto(Integer id, String name, String lastName) {

@@ -20,7 +20,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
@@ -30,19 +29,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ErrorHandler extends ResponseEntityExceptionHandler {
 
-    public ErrorHandler() {
-        super();
-    }
-
     @ExceptionHandler(BusinessException.class)
-    @ResponseBody
     public ResponseEntity<ErrorMessageDto> handleCustomException(BusinessException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorMessageDto(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
     @ExceptionHandler(IncorrectWorkException.class)
-    @ResponseBody
     public ResponseEntity<ErrorMessageDto> handleCustomException(IncorrectWorkException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorMessageDto(ex.getClass().getSimpleName(), ex.getMessage()));

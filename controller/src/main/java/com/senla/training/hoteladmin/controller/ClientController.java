@@ -6,6 +6,7 @@ import com.senla.training.hoteladmin.dto.mapper.ClientMapper;
 import com.senla.training.hoteladmin.dto.mapper.MessageDtoMapper;
 import com.senla.training.hoteladmin.service.client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,28 +23,33 @@ public class ClientController {
     private MessageDtoMapper messageDtoMapper;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public List<ClientDto> getClients() {
         return clientMapper.listToDto(clientService.getClients());
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MessageDto addClient(@RequestBody ClientDto client) {
         clientService.addClient(client.getName(), client.getLastName());
         return messageDtoMapper.toDto("Successfully added client");
     }
 
     @GetMapping("/total")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public Long getNumberOfClients() {
         return clientService.getNumberOfClients();
     }
 
     @PostMapping("/export/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MessageDto exportClients() {
         clientService.exportClients();
         return messageDtoMapper.toDto("Successfully exported clients");
     }
 
     @PostMapping("/import/csv")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MessageDto importClients() {
         clientService.importClients();
         return messageDtoMapper.toDto("Successfully imported clients");
