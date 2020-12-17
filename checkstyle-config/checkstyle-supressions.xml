@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+
+    <suppress checks="DesignForExtension"/>
+    <suppress checks="JavadocVariable"/>
+    <suppress checks="HiddenField"/>
+    <suppress checks="ParenPad"/>
+    <suppress checks="HideUtilityClassConstructor"/>
+    <suppress checks="FinalParameters"/>
+    <suppress checks="AvoidStarImport"/>
+    <suppress checks="MagicNumber"
+              files="(Course|Topic|Teacher|User|Section|UserProfile|Lesson).java"/>
+    <suppress checks="VisibilityModifier"
+              files="(AbstractDao|AbstractEntity).java"/>
+
+
+</suppressions>

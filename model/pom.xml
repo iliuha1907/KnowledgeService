@@ -2,14 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <parent>
-        <artifactId>hotel-admin</artifactId>
-        <groupId>com.senla.training.hoteladmin</groupId>
+        <artifactId>knowledge-service</artifactId>
+        <groupId>com.senla.training.knowledgeservice</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
+
     <artifactId>model</artifactId>
 
     <build>
@@ -17,11 +16,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>${compiler-plugin.version}</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                    <encoding>UTF-8</encoding>
+                    <source>${compiler-plugin.source.version}</source>
+                    <target>${compiler-plugin.target.version}</target>
+                    <encoding>${plugin.encoding}</encoding>
                     <compilerArguments>
                         <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
                     </compilerArguments>
@@ -42,7 +41,7 @@
             <version>${hibernate.version}</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
+
 
 </project>
