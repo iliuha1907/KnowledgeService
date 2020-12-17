@@ -77,8 +77,8 @@ public class CourseSubscriptionServiceImpl implements CourseSubscriptionService 
         }
         if (!RoleType.ROLE_ADMIN.equals(currentUser.getRoleType())
                 && !courseSubscription.getUser().getId().equals(currentUser.getId())) {
-            throw new BusinessException("Error at finding course subscription" +
-                    " by id: id of user in subscription is different from given");
+            throw new BusinessException("Error at finding course subscription"
+                    + " by id: id of user in subscription is different from given");
         }
         return courseSubscription;
     }

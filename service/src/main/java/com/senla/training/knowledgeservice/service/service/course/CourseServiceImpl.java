@@ -188,7 +188,7 @@ public class CourseServiceImpl implements CourseService {
         }
         if (course.getDescription() == null) {
             throw new BusinessException("Error at " + operation + " course:"
-                    + " is null");
+                    + " description is null");
         }
         if (course.getDuration() == null) {
             throw new BusinessException("Error at " + operation + " course:"

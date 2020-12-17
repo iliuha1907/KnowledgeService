@@ -39,10 +39,10 @@ class CourseServiceImplTest {
     @BeforeAll
     public static void setUp() {
         Section section = new Section();
-        Course courseOne = new Course(1, "Title", "Course", 1,
-                BigDecimal.TEN, section);
-        Course courseTwo = new Course(2, "Title", "Course two", 10,
-                BigDecimal.TEN, section);
+        Course courseOne = new Course(1, "Title", "Course",
+                1, BigDecimal.TEN, section);
+        Course courseTwo = new Course(2, "Title", "Course two",
+                10, BigDecimal.TEN, section);
         courses = Arrays.asList(courseOne, courseTwo);
     }
 
