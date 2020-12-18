@@ -14,8 +14,7 @@ public interface LessonSubscriptionDao
         extends GenericDao<LessonSubscription, Integer> {
 
     @CheckForNull
-    LessonSubscription findSubscriptionByUserAndLesson(@Nullable User user,
-                                                       @Nullable Lesson lesson);
+    LessonSubscription findSubscriptionByUserAndLesson(@Nullable User user, @Nullable Lesson lesson);
 
     void deleteByCourseAndUser(@Nullable Course course, @Nullable User user);
 

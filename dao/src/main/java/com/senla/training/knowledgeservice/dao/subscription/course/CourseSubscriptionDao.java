@@ -13,8 +13,7 @@ public interface CourseSubscriptionDao
         extends GenericDao<CourseSubscription, Integer> {
 
     @CheckForNull
-    CourseSubscription findSubscriptionByUserAndCourse(@Nullable User user,
-                                                       @Nullable Course course);
+    CourseSubscription findSubscriptionByUserAndCourse(@Nullable User user, @Nullable Course course);
 
     @Override
     @Deprecated(since = "Updating course subscription is forbidden")

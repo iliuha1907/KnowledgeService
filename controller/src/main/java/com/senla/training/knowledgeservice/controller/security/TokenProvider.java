@@ -55,8 +55,7 @@ public class TokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token)
-                    .getBody();
+            Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
             return !claims.getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException ex) {
             LOGGER.error(ex.getMessage(), ex);
@@ -86,7 +85,6 @@ public class TokenProvider {
     }
 
     private String getLogin(String token) {
-        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody()
-                .getSubject();
+        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
     }
 }

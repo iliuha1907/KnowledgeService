@@ -22,16 +22,14 @@ public class CourseSubscriptionDaoImpl
 
     @Override
     @CheckForNull
-    public CourseSubscription findSubscriptionByUserAndCourse(@Nullable User user,
-                                                              @Nullable Course course) {
+    public CourseSubscription findSubscriptionByUserAndCourse(@Nullable User user, @Nullable Course course) {
         try {
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<CourseSubscription> query = criteriaBuilder.createQuery(
                     CourseSubscription.class);
             Root<CourseSubscription> root = query.from(CourseSubscription.class);
             query.select(root);
-            query.where(criteriaBuilder.equal(root.get(CourseSubscription_.course),
-                    course),
+            query.where(criteriaBuilder.equal(root.get(CourseSubscription_.course), course),
                     criteriaBuilder.equal(root.get(CourseSubscription_.user), user));
             return entityManager.createQuery(query).getSingleResult();
         } catch (NoResultException ex) {
@@ -42,8 +40,7 @@ public class CourseSubscriptionDaoImpl
     @Override
     @Deprecated(since = "Updating course subscription is forbidden")
     public void update(@Nonnull CourseSubscription object) {
-        throw new UnsupportedOperationException("Updating course"
-                + " subscription is forbidden");
+        throw new UnsupportedOperationException("Updating course subscription is forbidden");
     }
 
     @Override

@@ -20,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public abstract class AbstractDao<T extends AbstractEntity, PK>
-        implements GenericDao<T, PK> {
+public abstract class AbstractDao<T extends AbstractEntity, PK> implements GenericDao<T, PK> {
 
     @PersistenceContext
     protected EntityManager entityManager;
@@ -55,10 +54,8 @@ public abstract class AbstractDao<T extends AbstractEntity, PK>
             query.orderBy(criteriaBuilder.asc(root.get(sortField)));
         }
         List<Predicate> predicates = new ArrayList<>();
-        addEqualParametersToPredicates(predicates, equalParameters,
-                criteriaBuilder, root);
-        addCompareParametersToPredicates(predicates, compareParameters,
-                criteriaBuilder, root);
+        addEqualParametersToPredicates(predicates, equalParameters, criteriaBuilder, root);
+        addCompareParametersToPredicates(predicates, compareParameters, criteriaBuilder, root);
         query.where(predicates.toArray(Predicate[]::new));
         return entityManager.createQuery(query).getResultList();
     }
