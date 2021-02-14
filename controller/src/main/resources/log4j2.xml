@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn">
     <Properties>
-        <Property name="dir">D:/SENLA/huzei_ilya-Task-Final</Property>
+        <Property name="dir">D:/SENLA/FINAL</Property>
     </Properties>
     <Appenders>
         <RollingFile name="allLog"
